@@ -7,14 +7,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     $categories = Category::query()->active()->ordered()->withCount('products')->get();
 
-    // Hero: o bancă reprezentativă, cu imagine.
-    $hero = Product::query()
-        ->where('is_active', true)
-        ->whereHas('categories', fn ($q) => $q->where('slug', 'banci-sezut'))
-        ->whereHas('images')
-        ->with('images')
-        ->first();
-
     // Produse featured: câte un produs cu imagine din primele categorii (variație).
     $featured = $categories
         ->take(8)
@@ -26,5 +18,10 @@ Route::get('/', function () {
         ->filter()
         ->values();
 
-    return view('home', compact('categories', 'hero', 'featured'));
+    $stats = [
+        'categories' => Category::count() ?: 11,
+        'products' => Product::count() ?: 127,
+    ];
+
+    return view('home', compact('categories', 'featured', 'stats'));
 })->name('home');

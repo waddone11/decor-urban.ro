@@ -62,3 +62,27 @@
         display: none !important;
     }
 }
+
+/*
+| Hero animat (GSAP) — stări inițiale doar când JS e activ (clasa .js pe <html>).
+| Fără JS: totul vizibil/desenat (fallback robust). GSAP preia de aici.
+*/
+.hero-draw {
+    stroke-dasharray: 1;
+}
+.js .hero-draw {
+    stroke-dashoffset: 1; /* ascuns până îl desenează GSAP */
+}
+.js .hero-reveal {
+    opacity: 0;
+}
+
+/* Reduced motion: starea finală, fără mișcare (și ca fallback CSS). */
+@media (prefers-reduced-motion: reduce) {
+    .js .hero-draw {
+        stroke-dashoffset: 0;
+    }
+    .js .hero-reveal {
+        opacity: 1;
+    }
+}

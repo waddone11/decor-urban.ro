@@ -10,6 +10,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="{{ $description }}">
 
+    {{-- Marchează JS activ devreme: stările inițiale ale hero-ului se aplică doar cu .js. --}}
+    <script>document.documentElement.classList.add('js');</script>
+
     <title>{{ $title ? $title.' — '.config('contact.brand') : config('contact.brand').' — Mobilier stradal & urban' }}</title>
 
     {{-- Fonturi via Bunny Fonts (GDPR-friendly). Display: Plus Jakarta Sans, Body: Inter. --}}
