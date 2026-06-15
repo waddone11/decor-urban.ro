@@ -14,11 +14,14 @@ class ProductImage extends Model
         'alt',
         'sort_order',
         'is_primary',
+        'source',
+        'enhanced_at',
     ];
 
     protected $casts = [
         'is_primary' => 'bool',
         'sort_order' => 'int',
+        'enhanced_at' => 'datetime',
     ];
 
     public function product(): BelongsTo

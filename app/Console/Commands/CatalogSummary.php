@@ -19,6 +19,8 @@ class CatalogSummary extends Command
         $this->info('=== Sumar catalog ===');
         $this->line('Produse total:        '.Product::count());
         $this->line('Imagini total:        '.ProductImage::count());
+        $this->line('  · AI (Nano Banana): '.ProductImage::where('source', 'ai')->count());
+        $this->line('  · legacy (scrape):  '.ProductImage::where('source', 'legacy')->count());
         $this->line('Categorii:            '.Category::count());
         $this->line('Rânduri pivot:        '.DB::table('category_product')->count());
         $this->newLine();
