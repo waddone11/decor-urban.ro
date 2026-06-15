@@ -28,6 +28,7 @@ class PromoteAiImages extends Command
         $only = $this->option('only');
         $dryRun = (bool) $this->option('dry-run');
         $disk = Storage::disk('public');
+        $backup = Storage::disk('local'); // storage/app/private
 
         $slugs = collect(File::directories($stagingBase))
             ->map(fn (string $d) => basename($d))
@@ -41,7 +42,7 @@ class PromoteAiImages extends Command
             return self::SUCCESS;
         }
 
-        $stats = ['copied' => 0, 'rows' => 0, 'no_row' => [], 'slugs' => 0];
+        $stats = ['copied' => 0, 'rows' => 0, 'no_row' => [], 'slugs' => 0, 'backed_up' => 0];
         $now = Carbon::now();
 
         foreach ($slugs as $slug) {
@@ -69,6 +70,14 @@ class PromoteAiImages extends Command
                     continue;
                 }
 
+                // Backup (dublă plasă): salvează poza publică CURENTĂ înainte de overwrite,
+                // o singură dată (nu suprascrie backup-ul existent → păstrăm versiunea legacy inițială).
+                $backupRel = "products-legacy-backup/{$slug}/{$name}";
+                if ($disk->exists($destRel) && ! $backup->exists($backupRel)) {
+                    $backup->put($backupRel, $disk->get($destRel));
+                    $stats['backed_up']++;
+                }
+
                 $disk->put($destRel, File::get($file->getPathname()));
                 $stats['copied']++;
 
@@ -90,6 +99,7 @@ class PromoteAiImages extends Command
             $this->info('Promovare gata.');
             $this->line("  Slug-uri:           {$stats['slugs']}");
             $this->line("  Fișiere copiate:    {$stats['copied']}");
+            $this->line("  Backup legacy:      {$stats['backed_up']}");
             $this->line("  Rânduri → source=ai:{$stats['rows']}");
         }
         if (! empty($stats['no_row'])) {

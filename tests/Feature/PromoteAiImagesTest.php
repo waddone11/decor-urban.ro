@@ -67,6 +67,28 @@ class PromoteAiImagesTest extends TestCase
         $this->assertNotNull($image->enhanced_at);
     }
 
+    public function test_promote_backs_up_current_public_image_once(): void
+    {
+        Storage::fake('public');
+        Storage::fake('local');
+        $this->makeProductWithImage('1.jpg');
+        // poza publică CURENTĂ (legacy) înainte de promovare
+        Storage::disk('public')->put("products/{$this->slug}/1.jpg", 'LEGACY-BYTES');
+        $this->makeStagingFile('1.jpg', 'AI-BYTES');
+
+        Artisan::call('images:promote-ai', ['--only' => $this->slug]);
+
+        // backup-ul păstrează versiunea legacy; public-ul are acum AI
+        Storage::disk('local')->assertExists("products-legacy-backup/{$this->slug}/1.jpg");
+        $this->assertSame('LEGACY-BYTES', Storage::disk('local')->get("products-legacy-backup/{$this->slug}/1.jpg"));
+        $this->assertSame('AI-BYTES', Storage::disk('public')->get("products/{$this->slug}/1.jpg"));
+
+        // re-rulare: backup-ul NU se suprascrie (rămâne versiunea legacy inițială)
+        $this->makeStagingFile('1.jpg', 'AI-BYTES-v2');
+        Artisan::call('images:promote-ai', ['--only' => $this->slug]);
+        $this->assertSame('LEGACY-BYTES', Storage::disk('local')->get("products-legacy-backup/{$this->slug}/1.jpg"));
+    }
+
     public function test_promote_is_idempotent(): void
     {
         Storage::fake('public');
