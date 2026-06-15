@@ -33,6 +33,6 @@ Thumbs.db
 /blob-report
 /.playwright-mcp
 
-# Scraper output (Faza 1) — poze + JSON mari, nu în repo
+# Scraper output (Faza 1) — poze + JSON mari, date locale, nu în repo
 /storage/scrape/
 scripts/scraper/node_modules
