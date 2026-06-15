@@ -34,8 +34,7 @@ function initHero() {
 
         const tl = gsap.timeline({ defaults: { ease: 'power2.out' } });
 
-        tl.to('[data-hero-nav]', { opacity: 1, y: 0, duration: 0.5 })
-            .to('[data-eyebrow]', { opacity: 1, y: 0, duration: 0.4 }, '-=0.25')
+        tl.to('[data-eyebrow]', { opacity: 1, y: 0, duration: 0.4 })
             // Banca se desenează, element cu element (montanți → spătar → brațe → șezut → picioare).
             .to(paths, { strokeDashoffset: 0, duration: 0.9, stagger: 0.12, ease: 'power1.inOut' }, '-=0.1')
             .to('[data-word]', { opacity: 1, y: 0, duration: 0.5, stagger: 0.08 }, '-=0.5')

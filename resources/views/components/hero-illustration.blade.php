@@ -24,8 +24,8 @@
         <circle data-particle cx="160" cy="395" r="3" opacity="0.4" />
     </g>
 
-    {{-- Banca (plutește în ansamblu) --}}
-    <g data-float stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    {{-- Banca (plutește în ansamblu) — stroke îngroșat (v2) ca să fie mai bold. --}}
+    <g data-float stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
         {{-- montanți (back posts) --}}
         <path class="hero-draw" pathLength="1" d="M150 110 L150 250" />
         <path class="hero-draw" pathLength="1" d="M370 110 L370 250" />

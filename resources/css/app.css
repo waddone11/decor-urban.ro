@@ -86,3 +86,45 @@
         opacity: 1;
     }
 }
+
+/*
+| Iconițe categorii (line-art, pathLength=1) — refolosibile (grilă + mega-menu).
+| Formele sunt în resources/views/components/icons/category/*.blade.php.
+| Draw-on doar pentru iconițele dintr-un container [data-draw-on] (grila), ca
+| iconițele din mega-menu să rămână desenate complet. GSAP preia ScrollTrigger.
+*/
+.cat-icon {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: stroke-width 0.25s ease;
+}
+.cat-draw {
+    stroke-dasharray: 1;
+}
+.js [data-draw-on] .cat-draw {
+    stroke-dashoffset: 1; /* ascuns până îl desenează GSAP la scroll */
+}
+/* Hover pe card → iconiță mai groasă (bold). */
+.group:hover .cat-icon {
+    stroke-width: 2.6;
+}
+
+/* Linia secțiunii „Cum lucrăm" — se trasează la scroll (GSAP scaleX). */
+.process-line {
+    transform-origin: left center;
+}
+.js [data-process] .process-line {
+    transform: scaleX(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .js [data-draw-on] .cat-draw {
+        stroke-dashoffset: 0;
+    }
+    .js [data-process] .process-line {
+        transform: scaleX(1);
+    }
+}

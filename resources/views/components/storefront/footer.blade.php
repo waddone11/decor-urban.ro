@@ -4,9 +4,10 @@
     $email = config('contact.email');
     $whatsapp = config('contact.whatsapp');
     $isPlaceholder = config('contact.is_placeholder');
+    $companyPlaceholder = config('company.is_placeholder');
 @endphp
 
-<footer class="mt-24 border-t border-line bg-surface-card">
+<footer id="contact" class="mt-24 border-t border-line bg-surface-card">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14">
         <div class="grid grid-cols-2 gap-10 md:grid-cols-4">
             {{-- Brand --}}
@@ -63,6 +64,10 @@
                 </ul>
             </div>
         </div>
+
+        @if ($companyPlaceholder)
+            <p class="mt-8 text-xs text-ink-muted">⚠️ TODO date firmă: CUI, cod CPV, prezență SEAP, ani experiență, proiecte livrate, referințe, standarde — de completat în <code>config/company.php</code>.</p>
+        @endif
 
         <div class="mt-12 flex flex-col gap-3 border-t border-line pt-6 sm:flex-row sm:items-center sm:justify-between">
             <p class="text-sm text-ink-muted">© {{ date('Y') }} Decor Urban. Toate drepturile rezervate.</p>
