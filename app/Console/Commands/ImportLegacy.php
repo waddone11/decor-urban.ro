@@ -35,7 +35,8 @@ class ImportLegacy extends Command
         // Asigură categoriile noi (idempotent).
         $this->call('db:seed', ['--class' => CategorySeeder::class, '--no-interaction' => true]);
 
-        $map = config('legacy_category_map');
+        $map = config('legacy_category_map.source_map');
+        $overrides = config('legacy_category_map.product_overrides', []);
         $products = json_decode(File::get($jsonPath), true, 512, JSON_THROW_ON_ERROR);
         $this->info('Importez '.count($products).' produse…');
 
@@ -43,7 +44,7 @@ class ImportLegacy extends Command
         $bar = $this->output->createProgressBar(count($products));
         $bar->start();
 
-        $stats = ['products' => 0, 'images' => 0, 'pivot' => 0, 'unmapped' => []];
+        $stats = ['products' => 0, 'images' => 0, 'pivot' => 0, 'overridden' => 0, 'unmapped' => []];
 
         foreach ($products as $p) {
             $product = $this->importProduct($p);
@@ -62,12 +63,22 @@ class ImportLegacy extends Command
                     }
                 }
             }
+
+            // Override per produs (după slug): înlocuiește complet maparea pe sursă.
+            $isOverride = isset($overrides[$p['slug']]);
+            if ($isOverride) {
+                $newSlugs = array_values($overrides[$p['slug']]);
+                $stats['overridden']++;
+            }
             if (empty($newSlugs)) {
                 $newSlugs = ['diverse-custom'];
             }
 
-            // Categoria principală: prima mapată care NU e diverse-custom, altfel diverse-custom.
-            $primarySlug = collect($newSlugs)->first(fn ($s) => $s !== 'diverse-custom') ?? 'diverse-custom';
+            // Categoria principală: la override = prima din listă; altfel prima
+            // mapată care NU e diverse-custom, altfel diverse-custom.
+            $primarySlug = $isOverride
+                ? $newSlugs[0]
+                : (collect($newSlugs)->first(fn ($s) => $s !== 'diverse-custom') ?? 'diverse-custom');
 
             $syncData = [];
             foreach ($newSlugs as $slug) {
@@ -95,6 +106,7 @@ class ImportLegacy extends Command
         $this->line("  Produse:        {$stats['products']}");
         $this->line("  Imagini:        {$stats['images']}");
         $this->line("  Rânduri pivot:  {$stats['pivot']}");
+        $this->line("  Cu override:    {$stats['overridden']}");
         if (! empty($stats['unmapped'])) {
             $this->warn('  Categorii sursă NEMAPATE: '.implode(', ', array_keys($stats['unmapped'])));
         }
