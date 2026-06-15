@@ -39,3 +39,6 @@ scripts/scraper/node_modules
 
 # Screenshot-uri de review (Faza 3) — nu în repo
 /faza3-*.png
+
+# Screenshot-uri de review (Faza 4a) — nu în repo
+/faza4a-*.png
