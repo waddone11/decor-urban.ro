@@ -36,3 +36,6 @@ Thumbs.db
 # Scraper output (Faza 1) — poze + JSON mari, date locale, nu în repo
 /storage/scrape/
 scripts/scraper/node_modules
+
+# Screenshot-uri de review (Faza 3) — nu în repo
+/faza3-*.png
