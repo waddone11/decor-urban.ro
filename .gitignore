@@ -47,3 +47,9 @@ scripts/scraper/node_modules
 /hero-*.png
 /logo-check.png
 /image.svg
+
+# Prototipuri de design (referință vizuală de forme/feel) — nu în repo
+/design/
+
+# Screenshot-uri de review (Homepage v2) — nu în repo
+/homepage-v2-*.png
