@@ -6,8 +6,11 @@
 // min. 1 produs / categorie, plus cele cu metal vopsit si cu lemn.
 //
 //   node review.mjs [--slug <slug>] [--failed]
-//     --slug   doar un produs
-//     --failed include si esecurile (cu marcaj), pentru diagnostic
+//     --slug                doar un produs
+//     --failed              include si esecurile (cu marcaj), pentru diagnostic
+//     --compare <dir>       a doua coloana AI (alt model), ex. storage/scrape/images-ai-flash
+//                           -> scrie compare.html cu 3 coloane: inainte / AI / AI(compare)
+//     --compare-label <s>   eticheta pt coloana de comparatie (default: numele dir-ului)
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -21,10 +24,12 @@ const PRODUCTS = path.join(ROOT, 'storage', 'scrape', 'products.json');
 const REVIEW = path.join(OUT_DIR, 'review.html');
 
 function parseArgs(argv) {
-  const a = { slug: null, failed: false };
+  const a = { slug: null, failed: false, compare: null, compareLabel: null };
   for (let i = 0; i < argv.length; i++) {
     if (argv[i] === '--slug') a.slug = argv[++i];
     else if (argv[i] === '--failed') a.failed = true;
+    else if (argv[i] === '--compare') a.compare = argv[++i];
+    else if (argv[i] === '--compare-label') a.compareLabel = argv[++i];
   }
   return a;
 }
@@ -46,6 +51,11 @@ function loadProductsBySlug() {
 
 function main() {
   const args = parseArgs(process.argv.slice(2));
+
+  const compareAbs = args.compare ? path.resolve(ROOT, args.compare) : null;
+  const compareLabel = args.compareLabel || (compareAbs ? path.basename(compareAbs) : null);
+  const outFile = compareAbs ? path.join(OUT_DIR, 'compare.html') : REVIEW;
+
   if (!fs.existsSync(MANIFEST)) {
     console.error(`Nu gasesc ${MANIFEST}. Ruleaza intai generate.mjs.`);
     process.exit(1);
@@ -98,6 +108,7 @@ function main() {
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;padding:8px 24px 24px}
   .card{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden}
   .pair{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line)}
+  .pair.three{grid-template-columns:1fr 1fr 1fr}
   .pair figure{margin:0;background:#000}
   .pair img{display:block;width:100%;height:200px;object-fit:contain;background:#111}
   .pair figcaption{font-size:11px;color:var(--muted);text-align:center;padding:4px 0;background:var(--card)}
@@ -111,7 +122,7 @@ function main() {
   .check{color:var(--muted);font-size:12px;padding:6px 12px 12px;border-top:1px dashed var(--line)}
 </style></head><body>
 <header>
-  <h1>Review poze AI — inainte (scrape) / dupa (Nano Banana)</h1>
+  <h1>Review poze AI — ${compareAbs ? `inainte / AI / ${esc(compareLabel)}` : 'inainte (scrape) / dupa (Nano Banana)'}</h1>
   <div class="sub">${doneCount} generate${failCount ? ` · ${failCount} esecuri` : ''} · verifica: numar de sipci/bare · proportii · culori · identitate produs</div>
 </header>`;
 
@@ -124,13 +135,22 @@ function main() {
       const badge = r.status === 'done'
         ? '<span class="badge ok">AI ok</span>'
         : '<span class="badge bad">esec</span>';
+      let cmpFigure = '';
+      if (compareAbs) {
+        const cmpAbsFile = path.join(compareAbs, r.slug, r.file);
+        const cmpRel = esc(path.relative(OUT_DIR, cmpAbsFile));
+        cmpFigure = fs.existsSync(cmpAbsFile)
+          ? `<figure><img loading="lazy" src="${cmpRel}" alt="${esc(compareLabel)}"><figcaption>${esc(compareLabel)}</figcaption></figure>`
+          : `<figure><div style="height:200px;display:flex;align-items:center;justify-content:center;color:#9aa0a6">(lipsa)</div><figcaption>${esc(compareLabel)}</figcaption></figure>`;
+      }
       html += `
   <div class="card">
-    <div class="pair">
+    <div class="pair${compareAbs ? ' three' : ''}">
       <figure><img loading="lazy" src="${before}" alt="inainte"><figcaption>INAINTE (scrape)</figcaption></figure>
       ${r.status === 'done'
-          ? `<figure><img loading="lazy" src="${after}" alt="dupa"><figcaption>DUPA (AI)</figcaption></figure>`
+          ? `<figure><img loading="lazy" src="${after}" alt="dupa"><figcaption>${compareAbs ? 'AI (primary)' : 'DUPA (AI)'}</figcaption></figure>`
           : `<figure><div style="height:200px;display:flex;align-items:center;justify-content:center;color:#f85149">esec</div><figcaption>DUPA</figcaption></figure>`}
+      ${cmpFigure}
     </div>
     <div class="meta"><span class="name">${esc(r.name)}</span> <span class="code">${esc(r.code)}</span> ${badge}</div>
     ${r.error ? `<div class="err">${esc(r.error)}</div>` : ''}
@@ -143,10 +163,10 @@ function main() {
   html += `\n</body></html>`;
 
   fs.mkdirSync(OUT_DIR, { recursive: true });
-  fs.writeFileSync(REVIEW, html);
-  console.log(`Scris ${REVIEW}`);
-  console.log(`  ${doneCount} perechi inainte/dupa${failCount ? `, ${failCount} esecuri` : ''}, ${byCat.size} categorii.`);
-  console.log('Deschide review.html in browser si verifica pastrarea identitatii inainte de promovare.');
+  fs.writeFileSync(outFile, html);
+  console.log(`Scris ${outFile}`);
+  console.log(`  ${doneCount} ${compareAbs ? 'randuri inainte/AI/' + compareLabel : 'perechi inainte/dupa'}${failCount ? `, ${failCount} esecuri` : ''}, ${byCat.size} categorii.`);
+  console.log(`Deschide ${path.basename(outFile)} in browser si verifica pastrarea identitatii inainte de promovare.`);
 }
 
 main();

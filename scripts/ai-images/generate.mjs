@@ -24,8 +24,8 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..', '..'); // radacina proiectului Laravel
 
 const SRC_DIR = path.join(ROOT, 'storage', 'scrape', 'images');
-const OUT_DIR = path.join(ROOT, 'storage', 'scrape', 'images-ai');
-const MANIFEST = path.join(OUT_DIR, 'manifest.json');
+let OUT_DIR = path.join(ROOT, 'storage', 'scrape', 'images-ai'); // override-abil cu --out
+let MANIFEST = path.join(OUT_DIR, 'manifest.json');
 const PROMPT_FILE = path.join(__dirname, 'prompt.txt');
 
 const IMAGE_EXTS = new Set(['.jpg', '.jpeg', '.png', '.webp']);
@@ -42,6 +42,7 @@ function parseArgs(argv) {
     concurrency: 3, // mic, ca sa respectam rate limit-ul
     aspect: '1:1',
     size: '2K', // "1K"|"2K"|"4K"
+    out: null, // dir staging alternativ (relativ la radacina), pt. comparatii intre modele
     retries: 4,
     costPerImage: null, // USD/imagine, optional, pentru estimare; vezi pricing in docs
     help: false,
@@ -58,6 +59,7 @@ function parseArgs(argv) {
       case '--concurrency': a.concurrency = Math.max(1, parseInt(next(), 10)); break;
       case '--aspect': a.aspect = next(); break;
       case '--size': a.size = next(); break;
+      case '--out': a.out = next(); break;
       case '--retries': a.retries = parseInt(next(), 10); break;
       case '--cost-per-image': a.costPerImage = parseFloat(next()); break;
       case '-h': case '--help': a.help = true; break;
@@ -78,6 +80,7 @@ Optiuni:
   --model <id>         Default gemini-3-pro-image (Pro). Alt.: gemini-3.1-flash-image (rapid).
   --size 1K|2K|4K      Rezolutie output (default 2K).
   --aspect 1:1         Aspect ratio (default 1:1).
+  --out <dir>          Dir staging alternativ (relativ la radacina), ex. pt. comparatii intre modele.
   --concurrency N      Cereri concurente (default 3).
   --retries N          Reincercari pe 429/5xx (default 4).
   --force              Re-genereaza chiar daca exista deja output in staging.
@@ -223,6 +226,11 @@ async function main() {
   const args = parseArgs(process.argv.slice(2));
   if (args.help) { console.log(HELP); return; }
 
+  if (args.out) {
+    OUT_DIR = path.resolve(ROOT, args.out);
+    MANIFEST = path.join(OUT_DIR, 'manifest.json');
+  }
+
   args.prompt = fs.readFileSync(PROMPT_FILE, 'utf8').trim();
 
   const apiKey = loadApiKey();
@@ -288,7 +296,7 @@ async function main() {
         aspect: args.aspect,
         size: args.size,
         timestamp: new Date().toISOString(),
-        ...(res.ok ? { output: `images-ai/${item.slug}/${item.file}`, bytes: res.bytes } : { error: res.error }),
+        ...(res.ok ? { output: path.relative(ROOT, path.join(OUT_DIR, item.slug, item.file)), bytes: res.bytes } : { error: res.error }),
       };
       saveManifest(manifest); // salveaza dupa fiecare -> reluabil
       if (res.ok) { done++; console.log('ok'); }

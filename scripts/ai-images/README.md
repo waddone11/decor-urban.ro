@@ -40,7 +40,19 @@ npm install            # @google/genai
 | `--retries N` | reîncercări pe 429/5xx (default 4) |
 | `--force` | re-generează chiar dacă există output |
 | `--all` | necesar pentru **batch-ul complet** (când lipsesc `--limit`/`--only`) |
+| `--out <dir>` | dir staging alternativ (relativ la rădăcină), ex. pentru comparații între modele |
 | `--cost-per-image U` | USD/imagine pentru estimare cost |
+
+### Comparație între modele
+
+```bash
+node generate.mjs --limit 5                                              # Pro -> images-ai/
+node generate.mjs --limit 5 --model gemini-3.1-flash-image --out storage/scrape/images-ai-flash
+node review.mjs --compare storage/scrape/images-ai-flash --compare-label "Flash"   # -> compare.html (inainte/Pro/Flash)
+```
+
+> Observație testată pe sample: **Flash păstrează watermark-ul sursei** și transformă minimal;
+> **Pro elimină watermark-ul** și face studio shot real, păstrând identitatea → folosește **Pro** pentru catalog.
 
 - **Idempotent / reluabil:** sare peste imaginile cu output deja în staging; `manifest.json`
   ține status per fișier (`done`/`failed`), model, timestamp, eroare. Se salvează după fiecare imagine.
