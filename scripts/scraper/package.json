@@ -1,0 +1,13 @@
+{
+  "name": "decor-urban-scraper",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Scraper catalog site vechi mobilier-stradal.ro (OpenCart) -> JSON + imagini full-res",
+  "scripts": {
+    "scrape": "node scrape.mjs"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0"
+  }
+}
