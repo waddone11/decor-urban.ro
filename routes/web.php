@@ -23,5 +23,29 @@ Route::get('/', function () {
         'products' => Product::count() ?: 127,
     ];
 
-    return view('home', compact('categories', 'featured', 'stats'));
+    // FAQ — folosit și în secțiunea acordeon, și în JSON-LD (FAQPage). Un singur loc.
+    $faqs = [
+        [
+            'q' => 'Cum cumpăr prin SEAP/SICAP?',
+            'a' => 'Pregătim o ofertă cu specificații și coduri CPV și trimitem documentația pentru caietul de sarcini. Ne contactați și vă ghidăm prin proces.',
+        ],
+        [
+            'q' => 'Faceți dimensiuni și culori custom?',
+            'a' => 'Da, producem la comandă: dimensiuni și culori RAL la alegere, plus personalizare cu stema localității sau logo.',
+        ],
+        [
+            'q' => 'Care e termenul de livrare?',
+            'a' => 'Variază după produs și cantitate; îl confirmăm în ofertă, în scris.',
+        ],
+        [
+            'q' => 'Oferiți factură și garanție?',
+            'a' => 'Da, factură fiscală și garanție; livrare în toată țara.',
+        ],
+        [
+            'q' => 'Cum se plătește?',
+            'a' => 'Ramburs la livrare sau prin transfer bancar; pentru instituții, cu factură.',
+        ],
+    ];
+
+    return view('home', compact('categories', 'featured', 'stats', 'faqs'));
 })->name('home');
