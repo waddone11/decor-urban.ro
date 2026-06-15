@@ -11,6 +11,17 @@
 */
 
 return [
+    // Identitate legală — afișată ca semnal de încredere pentru instituții.
+    'legal_name' => env('COMPANY_LEGAL_NAME', ''), // denumire firmă (SRL)
+    'brand' => env('COMPANY_BRAND', 'Decor Urban'),
+    'euid' => env('COMPANY_EUID', ''),             // identificator unic european
+    'address' => env('COMPANY_ADDRESS', ''),       // sediu social
+    'caen' => env('COMPANY_CAEN', ''),             // cod CAEN principal
+    'founded' => env('COMPANY_FOUNDED', ''),       // data înființării (Y-m-d)
+
+    // Cum ne descriem (configurabil — chestiune de CAEN, ajustabil fără cod).
+    'supplier_label' => env('COMPANY_SUPPLIER_LABEL', 'producător / furnizor direct'),
+
     // Identitate fiscală — afișate doar dacă sunt completate.
     'cui' => env('COMPANY_CUI', ''),            // ex. RO12345678
     'reg_com' => env('COMPANY_REG_COM', ''),    // ex. J40/1234/2010

@@ -6,12 +6,12 @@
 <svg viewBox="0 0 520 440" fill="none" aria-hidden="true"
      {{ $attributes->merge(['class' => 'h-full w-full text-accent']) }}>
 
-    {{-- Inel „compas" decorativ (se rotește lent) --}}
-    <g data-ring opacity="0.9">
-        <circle cx="260" cy="215" r="192" stroke="currentColor" stroke-width="1" opacity="0.20" stroke-dasharray="2 9" />
-        <circle cx="260" cy="215" r="150" stroke="currentColor" stroke-width="1" opacity="0.14" stroke-dasharray="1 7" />
-        <path d="M260 18 L260 36 M260 394 L260 412 M63 215 L81 215 M439 215 L457 215"
-              stroke="currentColor" stroke-width="1" opacity="0.20" />
+    {{-- Inel „ceas/compas" decorativ (se rotește lent) — roșu de accent, mai bold. --}}
+    <g data-ring class="text-signal" opacity="0.95">
+        <circle cx="260" cy="215" r="192" stroke="currentColor" stroke-width="2.5" opacity="0.55" stroke-dasharray="2.5 11" />
+        <circle cx="260" cy="215" r="150" stroke="currentColor" stroke-width="2" opacity="0.40" stroke-dasharray="1.5 9" />
+        <path d="M260 18 L260 38 M260 392 L260 412 M61 215 L81 215 M439 215 L459 215"
+              stroke="currentColor" stroke-width="3" stroke-linecap="round" opacity="0.7" />
     </g>
 
     {{-- Particule teal care driftează --}}

@@ -60,7 +60,7 @@
                             @endforeach
                         </div>
                         <div class="mt-3 flex items-center justify-between border-t border-line pt-3">
-                            <p class="text-xs text-ink-muted">Producător direct · {{ $categories->count() }} categorii de mobilier urban</p>
+                            <p class="text-xs text-ink-muted">{{ ucfirst(config('company.supplier_label')) }} · {{ $categories->count() }} categorii de mobilier urban</p>
                             <a href="{{ url('/') }}#categorii" class="text-sm font-semibold text-accent hover:text-accent-hover transition-colors">Vezi toate categoriile →</a>
                         </div>
                     </div>

@@ -2,8 +2,12 @@
     $whatsapp = config('contact.whatsapp');
     $waOferta = 'https://wa.me/'.$whatsapp;
 
-    // Date companie (placeholdere până le completează owner-ul — vezi config/company.php).
+    // Date companie (vezi config/company.php — unele reale, restul placeholder cu avertisment).
+    $legalName = config('company.legal_name');
     $cui = config('company.cui');
+    $regCom = config('company.reg_com');
+    $address = config('company.address');
+    $supplierLabel = config('company.supplier_label');
     $cpv = config('company.cpv');
     $seapPresent = config('company.seap_present');
     $years = (int) config('company.years');
@@ -13,7 +17,7 @@
 
     // SEO: titlu + descriere bogate pe keyword-uri reale.
     $metaTitle = 'Producător mobilier urban — bănci stradale, coșuri, mobilier stradal';
-    $metaDescription = 'Decor Urban — producător direct de mobilier urban și stradal: bănci, coșuri de gunoi, jardiniere, stații, locuri de joacă. Ofertăm pentru primării, școli și achiziții publice (SEAP/SICAP). Livrare în toată țara, cu factură.';
+    $metaDescription = 'Decor Urban — '.$supplierLabel.' de mobilier urban și stradal: bănci, coșuri de gunoi, jardiniere, stații, locuri de joacă. Ofertăm pentru primării, școli și achiziții publice (SEAP/SICAP). Livrare în toată țara, cu factură.';
 @endphp
 
 <x-layouts.storefront :title="$metaTitle" :description="$metaDescription">
@@ -79,7 +83,7 @@
                 {{-- Text (pe mobil dedesubtul ilustrației) --}}
                 <div class="order-2 lg:order-1 max-w-xl">
                     <p data-eyebrow class="hero-reveal inline-flex items-center gap-2 rounded-full bg-accent-soft px-3 py-1 text-sm font-semibold text-accent">
-                        Producător direct de mobilier urban
+                        {{ ucfirst($supplierLabel) }} de mobilier urban
                     </p>
                     <h1 class="mt-5 text-4xl font-extrabold leading-[1.08] text-ink sm:text-5xl lg:text-6xl">
                         <span data-word class="hero-reveal inline-block">Mobilier</span>
@@ -119,7 +123,7 @@
         <div class="mx-auto grid max-w-7xl grid-cols-2 divide-white/15 px-4 sm:px-6 lg:grid-cols-4 lg:divide-x lg:px-8">
             @php
                 $trust = [
-                    ['t' => 'Producător direct', 's' => 'Fabricăm ce vindem', 'i' => 'M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21'],
+                    ['t' => ucfirst($supplierLabel), 's' => 'Fabricăm ce vindem', 'i' => 'M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21'],
                     ['t' => 'Livrare în toată țara', 's' => 'Transport oriunde în România', 'i' => 'M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 0 0-3.213-9.193 2.056 2.056 0 0 0-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 0 0-10.026 0 1.106 1.106 0 0 0-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12'],
                     ['t' => 'Plata ramburs', 's' => 'Plătești la livrare', 'i' => 'M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z'],
                     ['t' => 'Comandă pe WhatsApp', 's' => 'Răspuns rapid, ofertă pe loc', 'i' => 'M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z'],
@@ -150,7 +154,7 @@
                         eyebrow="Pentru primării, școli și instituții"
                         title="Ofertăm pentru achiziții publice și licitații" />
                     <p class="mt-5 text-base leading-relaxed text-ink-soft">
-                        Suntem producător direct, cu factură și livrare în toată țara. Pregătim oferte pentru
+                        Suntem {{ $supplierLabel }}, cu factură și livrare în toată țara. Pregătim oferte pentru
                         SEAP/SICAP, cu specificații tehnice, coduri CPV și termene clare. Fără intermediari —
                         discutați direct cu producătorul.
                     </p>
@@ -171,11 +175,20 @@
                         @endforeach
                     </ul>
 
-                    @if ($cui || $cpv || $seapPresent)
-                        <div class="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-ink-soft">
-                            @if ($cui)<span><span class="text-ink-muted">CUI:</span> <span class="font-semibold text-ink">{{ $cui }}</span></span>@endif
-                            @if ($cpv)<span><span class="text-ink-muted">Cod CPV:</span> <span class="font-semibold text-ink">{{ $cpv }}</span></span>@endif
-                            @if ($seapPresent)<span class="inline-flex items-center gap-1.5 font-semibold text-accent">Prezenți în SEAP/SICAP</span>@endif
+                    @if ($legalName || $cui || $cpv || $seapPresent)
+                        <div class="mt-6 rounded-xl border border-line bg-tint-stone/60 p-4">
+                            @if ($legalName)
+                                <p class="text-sm font-semibold text-ink">{{ $legalName }}</p>
+                            @endif
+                            <div class="mt-1 flex flex-wrap items-center gap-x-5 gap-y-1 text-sm text-ink-soft">
+                                @if ($cui)<span><span class="text-ink-muted">CUI</span> <span class="font-semibold text-ink">{{ $cui }}</span></span>@endif
+                                @if ($regCom)<span><span class="text-ink-muted">Reg. Com.</span> <span class="font-semibold text-ink">{{ $regCom }}</span></span>@endif
+                                @if ($cpv)<span><span class="text-ink-muted">Cod CPV</span> <span class="font-semibold text-ink">{{ $cpv }}</span></span>@endif
+                                @if ($seapPresent)<span class="font-semibold text-accent">Prezenți în SEAP/SICAP</span>@endif
+                            </div>
+                            @if ($address)
+                                <p class="mt-1 text-xs text-ink-muted">{{ $address }}</p>
+                            @endif
                         </div>
                     @endif
 
@@ -200,9 +213,9 @@
             title="Explorează pe categorii"
             subtitle="Cele 11 categorii de mobilier urban — de la bănci și coșuri, la locuri de joacă și soluții custom." />
 
-        <div class="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+        <div data-cat-grid class="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
             @foreach ($categories as $category)
-                <a href="#categorii" data-draw-on
+                <a href="#categorii" data-draw-on data-cat-card
                    class="group flex flex-col items-start gap-4 rounded-card border border-line bg-tint-sky p-6 transition-all duration-300 hover:-translate-y-1 hover:border-accent hover:shadow-card-hover">
                     <span class="flex h-14 w-14 items-center justify-center rounded-2xl bg-surface-card text-accent shadow-sm transition-colors group-hover:bg-accent group-hover:text-white">
                         <x-category-icon :slug="$category->slug" class="h-8 w-8" />
@@ -216,45 +229,70 @@
         </div>
     </section>
 
-    {{-- 5. CUM LUCRĂM — 4 pași cu linie trasată la scroll --}}
-    <section id="proces" data-scroll-reveal class="border-y border-line bg-surface-card">
+    {{-- 5. CUM LUCRĂM — bandă teal, timeline cu punct călător (GSAP) --}}
+    <section id="proces" data-proces data-scroll-reveal class="bg-accent text-white">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20">
-            <x-section-heading
-                eyebrow="Cum lucrăm"
-                title="De la cerere la livrare, în 4 pași"
-                subtitle="Un proces simplu și transparent — discuți direct cu producătorul, totul confirmat în scris." />
+            <div class="max-w-2xl">
+                <p class="text-sm font-semibold uppercase tracking-wider text-white/70">Cum lucrăm</p>
+                <h2 class="mt-2 text-3xl font-bold text-white sm:text-4xl">De la cerere la livrare, în 4 pași</h2>
+                <p class="mt-3 text-base leading-relaxed text-white/80">Un proces simplu și transparent — discuți direct cu producătorul, totul confirmat în scris.</p>
+            </div>
 
-            <div data-process class="relative mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-                {{-- Linia care leagă pașii (doar desktop) — se trasează GSAP --}}
-                <div class="pointer-events-none absolute left-0 right-0 top-7 hidden lg:block" aria-hidden="true">
-                    <div class="process-line mx-[12.5%] h-0.5 origin-left bg-accent/30"></div>
+            <div class="relative mt-14">
+                {{-- Track desktop (orizontal) — linia + punctul călător --}}
+                <div class="pointer-events-none absolute inset-x-0 top-7 hidden lg:block" aria-hidden="true">
+                    <div class="relative mx-[12.5%] h-0.5 bg-white/20">
+                        <div data-line-h class="absolute inset-0 origin-left bg-white/80"></div>
+                        <div data-point-h class="absolute left-0 top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white shadow-[0_0_12px_4px_rgba(255,255,255,0.7)]"></div>
+                    </div>
+                </div>
+                {{-- Track mobil (vertical) --}}
+                <div class="pointer-events-none absolute bottom-7 left-7 top-7 w-0.5 lg:hidden" aria-hidden="true">
+                    <div class="relative h-full w-full bg-white/20">
+                        <div data-line-v class="absolute inset-0 origin-top bg-white/80"></div>
+                        <div data-point-v class="absolute left-1/2 top-0 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white shadow-[0_0_12px_4px_rgba(255,255,255,0.7)]"></div>
+                    </div>
                 </div>
 
-                @foreach ([
-                    ['n' => '1', 't' => 'Ceri ofertă', 'd' => 'Alegi din catalog sau ne spui ce ai nevoie — pe WhatsApp, email sau formular.'],
-                    ['n' => '2', 't' => 'Confirmăm', 'd' => 'Dimensiuni, finisaje, preț și termen — totul în scris, fără surprize.'],
-                    ['n' => '3', 't' => 'Producem', 'd' => 'În atelierul propriu, din materiale gândite pentru exterior.'],
-                    ['n' => '4', 't' => 'Livrăm', 'd' => 'În toată țara, cu factură.'],
-                ] as $step)
-                    <div class="relative">
-                        <div class="flex h-14 w-14 items-center justify-center rounded-full border-2 border-accent bg-surface text-xl font-bold text-accent">
-                            {{ $step['n'] }}
+                {{-- Pași --}}
+                <div class="relative grid gap-10 lg:grid-cols-4">
+                    @foreach ([
+                        ['n' => '1', 'icon' => 'cerere', 't' => 'Ceri ofertă', 'd' => 'Alegi din catalog sau ne spui ce ai nevoie — pe WhatsApp, email sau formular.'],
+                        ['n' => '2', 'icon' => 'confirmare', 't' => 'Confirmăm', 'd' => 'Dimensiuni, finisaje, preț și termen — totul în scris, fără surprize.'],
+                        ['n' => '3', 'icon' => 'productie', 't' => 'Producem', 'd' => 'În atelierul propriu, din materiale gândite pentru exterior.'],
+                        ['n' => '4', 'icon' => 'livrare', 't' => 'Livrăm', 'd' => 'În toată țara, cu factură.'],
+                    ] as $step)
+                        <div data-step class="flex items-start gap-4 lg:flex-col lg:items-center lg:gap-0 lg:text-center">
+                            <div class="relative shrink-0">
+                                <span data-step-pulse class="pointer-events-none absolute inset-0 rounded-full ring-2 ring-white/70 opacity-0"></span>
+                                <div data-step-circle class="relative flex h-14 w-14 items-center justify-center rounded-full border-2 border-white/70 bg-accent text-white">
+                                    <x-dynamic-component :component="'icons.step.'.$step['icon']" class="h-7 w-7" />
+                                </div>
+                            </div>
+                            <div data-step-label class="lg:mt-5">
+                                <div class="flex items-center gap-2 lg:justify-center">
+                                    <span class="text-xs font-bold text-white/60">{{ $step['n'] }}</span>
+                                    <h3 class="text-lg font-bold text-white">{{ $step['t'] }}</h3>
+                                </div>
+                                <p class="mt-1 text-sm leading-relaxed text-white/75">{{ $step['d'] }}</p>
+                            </div>
                         </div>
-                        <h3 class="mt-5 text-lg font-bold text-ink">{{ $step['t'] }}</h3>
-                        <p class="mt-2 text-sm leading-relaxed text-ink-soft">{{ $step['d'] }}</p>
-                    </div>
-                @endforeach
+                    @endforeach
+                </div>
             </div>
         </div>
     </section>
 
-    {{-- 6. CALITATE & MATERIALE --}}
-    <section id="calitate" data-scroll-reveal class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20">
+    {{-- 6. CALITATE & MATERIALE — iconițe material animate + sweep de finisaj --}}
+    <section id="calitate" data-scroll-reveal data-quality class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20">
         <div class="grid items-center gap-12 lg:grid-cols-2">
             <div>
-                <x-section-heading
-                    eyebrow="Calitate & materiale"
-                    title="Făcut să stea afară, ani la rând" />
+                <p class="text-sm font-semibold uppercase tracking-wider text-accent">Calitate &amp; materiale</p>
+                <h2 class="mt-2 text-3xl font-bold text-ink sm:text-4xl">
+                    Făcut să stea
+                    <span class="relative inline-block">afară<span data-underline class="absolute -bottom-1 left-0 h-[3px] w-full origin-left rounded-full bg-accent"></span></span>,
+                    ani la rând
+                </h2>
                 <p class="mt-5 text-base leading-relaxed text-ink-soft">
                     Lemn tratat pentru exterior, metal vopsit electrostatic și inox — alegem materiale
                     rezistente la intemperii, uz intens și vandalism. Mobilier gândit pentru spații publice,
@@ -269,17 +307,25 @@
                 </ul>
             </div>
 
-            <div class="grid grid-cols-3 gap-4">
+            {{-- Rândul de materiale + sweep de lumină (o singură trecere la intrarea în viewport) --}}
+            <div data-quality-row class="relative grid grid-cols-3 gap-4 overflow-hidden rounded-card">
                 @foreach ([
-                    ['t' => 'Lemn tratat', 's' => 'pentru exterior', 'bg' => 'bg-tint-sand'],
-                    ['t' => 'Metal vopsit', 's' => 'electrostatic', 'bg' => 'bg-tint-sky'],
-                    ['t' => 'Inox', 's' => 'anti-coroziune', 'bg' => 'bg-tint-stone'],
+                    ['icon' => 'lemn', 't' => 'Lemn tratat', 's' => 'pentru exterior', 'bg' => 'bg-tint-sand'],
+                    ['icon' => 'metal', 't' => 'Metal vopsit', 's' => 'electrostatic', 'bg' => 'bg-tint-sky'],
+                    ['icon' => 'inox', 't' => 'Inox', 's' => 'anti-coroziune', 'bg' => 'bg-tint-stone'],
                 ] as $m)
                     <div class="rounded-card border border-line {{ $m['bg'] }} p-6 text-center">
-                        <p class="text-base font-bold text-ink">{{ $m['t'] }}</p>
+                        <span class="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-surface-card text-accent shadow-sm">
+                            <x-dynamic-component :component="'icons.material.'.$m['icon']" class="h-7 w-7" />
+                        </span>
+                        <p class="mt-3 text-base font-bold text-ink">{{ $m['t'] }}</p>
                         <p class="mt-1 text-xs text-ink-soft">{{ $m['s'] }}</p>
                     </div>
                 @endforeach
+
+                {{-- Sweep: gradient de lumină care trece o dată peste rând --}}
+                <div data-quality-sweep aria-hidden="true"
+                     class="pointer-events-none absolute inset-y-0 -left-1/3 w-1/3 -skew-x-12 bg-gradient-to-r from-transparent via-white/55 to-transparent opacity-0"></div>
             </div>
         </div>
     </section>
@@ -388,7 +434,7 @@
         <div class="rounded-card border border-line bg-tint-sky px-8 py-14 text-center sm:px-12">
             <h2 class="text-3xl font-bold text-ink sm:text-4xl">Pregătit să ceri o ofertă?</h2>
             <p class="mx-auto mt-4 max-w-xl text-base text-ink-soft">
-                Producător direct, cu factură și livrare în toată țara. Răspundem rapid și pregătim
+                {{ ucfirst($supplierLabel) }}, cu factură și livrare în toată țara. Răspundem rapid și pregătim
                 oferta pe specificațiile tale — inclusiv pentru SEAP/SICAP.
             </p>
             <div class="mt-8 flex flex-wrap justify-center gap-3">
