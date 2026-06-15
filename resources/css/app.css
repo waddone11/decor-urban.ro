@@ -30,6 +30,7 @@
     --color-accent: #1f6f78;         /* linkuri / highlight — teal sobru (placeholder) */
     --color-accent-hover: #195a61;
     --color-accent-soft: #e7f0f1;
+    --color-signal: #e23a2e;         /* roșu de accent — inelul „ceas" din hero */
 
     /* Tinte foarte deschise pentru carduri categorii */
     --color-tint-sky: #eef4f5;
@@ -112,11 +113,49 @@
     stroke-width: 2.6;
 }
 
-/* Linia secțiunii „Cum lucrăm" — se trasează la scroll (GSAP scaleX). */
-.process-line {
-    transform-origin: left center;
+/*
+| „Cum lucrăm" — iconițe pas (draw-on) + linia/punctul care se animează la scroll.
+| Stări inițiale gated pe .js; GSAP (timeline + matchMedia) preia de aici.
+*/
+.step-icon {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
 }
-.js [data-process] .process-line {
+.step-draw {
+    stroke-dasharray: 1;
+}
+.js [data-proces] .step-draw {
+    stroke-dashoffset: 1;
+}
+.js [data-proces] [data-line-h] {
+    transform: scaleX(0);
+}
+.js [data-proces] [data-line-v] {
+    transform: scaleY(0);
+}
+.js [data-proces] [data-point-h],
+.js [data-proces] [data-point-v] {
+    opacity: 0;
+}
+
+/* „Calitate & materiale" — iconițe material (draw-on) + underline trasat sub cuvânt-cheie. */
+.material-icon {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+.material-draw {
+    stroke-dasharray: 1;
+}
+.js [data-quality] .material-draw {
+    stroke-dashoffset: 1;
+}
+.js [data-quality] [data-underline] {
     transform: scaleX(0);
 }
 
@@ -124,7 +163,24 @@
     .js [data-draw-on] .cat-draw {
         stroke-dashoffset: 0;
     }
-    .js [data-process] .process-line {
+    .js [data-proces] .step-draw {
+        stroke-dashoffset: 0;
+    }
+    .js [data-proces] [data-line-h] {
+        transform: scaleX(1);
+    }
+    .js [data-proces] [data-line-v] {
+        transform: scaleY(1);
+    }
+    /* Reduced-motion: fără punct călător. */
+    .js [data-proces] [data-point-h],
+    .js [data-proces] [data-point-v] {
+        opacity: 0 !important;
+    }
+    .js [data-quality] .material-draw {
+        stroke-dashoffset: 0;
+    }
+    .js [data-quality] [data-underline] {
         transform: scaleX(1);
     }
 }

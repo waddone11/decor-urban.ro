@@ -51,7 +51,8 @@ class HomepageTest extends TestCase
         $res->assertSee('Ofertăm pentru achiziții publice și licitații');
         $res->assertSee('Documentație tehnică pentru caietul de sarcini');
         $res->assertSee('Cum lucrăm');
-        $res->assertSee('Făcut să stea afară, ani la rând');
+        $res->assertSee('Făcut să stea'); // titlul are „afară” într-un span (underline animat)
+        $res->assertSee('ani la rând');
         $res->assertSee('Producem la comanda ta');
         $res->assertSee('Cere ofertă custom');
         $res->assertSee('Întrebări frecvente');
@@ -75,6 +76,22 @@ class HomepageTest extends TestCase
         $res->assertSee('data-draw-on', false);
         // Forma „bănci" din prototip (un path caracteristic).
         $res->assertSee('M9 22 V27', false);
+    }
+
+    public function test_homepage_has_animated_process_and_material_icons(): void
+    {
+        $this->seedCatalog();
+
+        $res = $this->get('/');
+
+        // „Cum lucrăm" — timeline animat cu iconițe pas + punct călător.
+        $res->assertSee('data-proces', false);
+        $res->assertSee('step-icon', false);
+        $res->assertSee('data-point-h', false);
+        // „Calitate & materiale" — iconițe material + sweep.
+        $res->assertSee('data-quality', false);
+        $res->assertSee('material-icon', false);
+        $res->assertSee('data-quality-sweep', false);
     }
 
     public function test_homepage_emits_structured_data(): void
