@@ -42,3 +42,8 @@ scripts/scraper/node_modules
 
 # Screenshot-uri de review (Faza 4a) — nu în repo
 /faza4a-*.png
+
+# Screenshot-uri hero + logo source brut (review) — nu în repo
+/hero-*.png
+/logo-check.png
+/image.svg

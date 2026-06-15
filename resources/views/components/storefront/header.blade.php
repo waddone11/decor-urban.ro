@@ -5,8 +5,9 @@
 
 <header x-data="{ mobileOpen: false }" class="sticky top-0 z-40 border-b border-line bg-surface/90 backdrop-blur">
     <div class="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-        {{-- Wordmark (logo SVG vine ulterior — acum text) --}}
-        <a href="{{ url('/') }}" class="flex items-center gap-2 shrink-0">
+        {{-- Logo real (marca „AR") + wordmark --}}
+        <a href="{{ url('/') }}" class="flex items-center gap-2.5 shrink-0">
+            <img src="{{ asset('images/logo.svg') }}" alt="Decor Urban" class="h-9 w-9 text-ink" width="36" height="36">
             <span class="text-xl font-extrabold tracking-tight text-ink">Decor<span class="text-accent">Urban</span></span>
         </a>
 
