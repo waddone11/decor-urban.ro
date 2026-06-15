@@ -19,10 +19,39 @@ class LegacyImportTest extends TestCase
     {
         Artisan::call('import:legacy');
 
-        $this->assertSame(9, Category::count(), '9 categorii noi');
-        $this->assertSame(127, Product::count(), '127 produse unice');
-        $this->assertSame(195, ProductImage::count(), '195 imagini');
-        $this->assertSame(136, DB::table('category_product')->count(), '136 rânduri pivot (118×1 + 9×2)');
+        $this->assertSame(11, Category::count(), '11 categorii (9 + Sport & stadion + Tarabe & piață)');
+        $this->assertSame(127, Product::count(), '127 produse unice (neschimbat — niciun produs pierdut)');
+        $this->assertSame(195, ProductImage::count(), '195 imagini (neschimbat)');
+        // 135 = 119×1 categorie + 8×2 (cross-listate rămase după override-ul lui PC100).
+        $this->assertSame(135, DB::table('category_product')->count(), '135 rânduri pivot');
+    }
+
+    public function test_reclassification_distribution(): void
+    {
+        Artisan::call('import:legacy');
+
+        $count = fn (string $slug) => Category::where('slug', $slug)->sole()->products()->count();
+
+        $this->assertSame(5, $count('sport-stadion'), '4 tribune + peluză');
+        $this->assertSame(7, $count('pergole-foisoare'), '3 pergole + 4 foișoare');
+        $this->assertSame(4, $count('tarabe-piata'), '4 tarabe');
+
+        // Niciun produs orfan.
+        $this->assertSame(0, Product::doesntHave('categories')->count(), 'niciun produs fără categorie');
+    }
+
+    public function test_two_ps100_products_land_in_different_categories(): void
+    {
+        Artisan::call('import:legacy');
+
+        // Re-validează că SLUG e cheia: două produse cu cod #PS100 în categorii diferite.
+        $peluza = Product::where('slug', 'peluza-stadion-ps100')->sole();
+        $panou = Product::where('slug', 'panou-stradal-din-alcobond-ps-100')->sole();
+
+        $this->assertSame('#PS100', $peluza->code);
+        $this->assertSame('#PS100', $panou->code);
+        $this->assertSame(['sport-stadion'], $peluza->categories()->pluck('slug')->all());
+        $this->assertSame(['placute-totemuri'], $panou->categories()->pluck('slug')->all());
     }
 
     public function test_cross_listed_product_belongs_to_two_categories_with_one_primary(): void
@@ -95,7 +124,8 @@ class LegacyImportTest extends TestCase
 
         $this->assertSame(127, Product::count());
         $this->assertSame(195, ProductImage::count());
-        $this->assertSame(136, DB::table('category_product')->count());
+        $this->assertSame(135, DB::table('category_product')->count());
+        $this->assertSame(11, Category::count());
     }
 
     public function test_catalog_summary_runs_and_reports_counts(): void
