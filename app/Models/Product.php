@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -52,6 +53,16 @@ class Product extends Model
 
     public function primaryImage(): ?ProductImage
     {
-        return $this->images->firstWhere('is_primary', true);
+        return $this->images->firstWhere('is_primary', true)
+            ?? $this->images->sortBy('sort_order')->first();
+    }
+
+    /**
+     * Calea imaginii primary (is_primary, fallback prima după sort_order),
+     * relativă la disk-ul public. Pentru ImageColumn în tabelul Filament.
+     */
+    protected function primaryImagePath(): Attribute
+    {
+        return Attribute::get(fn (): ?string => $this->primaryImage()?->path);
     }
 }
