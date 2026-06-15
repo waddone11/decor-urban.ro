@@ -15,21 +15,24 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { analyze, pool } from './qa.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..', '..');
 const OUT_DIR = path.join(ROOT, 'storage', 'scrape', 'images-ai');
+const SRC_IMAGES = path.join(ROOT, 'storage', 'scrape', 'images');
 const MANIFEST = path.join(OUT_DIR, 'manifest.json');
 const PRODUCTS = path.join(ROOT, 'storage', 'scrape', 'products.json');
 const REVIEW = path.join(OUT_DIR, 'review.html');
 
 function parseArgs(argv) {
-  const a = { slug: null, failed: false, compare: null, compareLabel: null };
+  const a = { slug: null, failed: false, compare: null, compareLabel: null, noQa: false };
   for (let i = 0; i < argv.length; i++) {
     if (argv[i] === '--slug') a.slug = argv[++i];
     else if (argv[i] === '--failed') a.failed = true;
     else if (argv[i] === '--compare') a.compare = argv[++i];
     else if (argv[i] === '--compare-label') a.compareLabel = argv[++i];
+    else if (argv[i] === '--no-qa') a.noQa = true;
   }
   return a;
 }
@@ -49,7 +52,7 @@ function loadProductsBySlug() {
   return map;
 }
 
-function main() {
+async function main() {
   const args = parseArgs(process.argv.slice(2));
 
   const compareAbs = args.compare ? path.resolve(ROOT, args.compare) : null;
@@ -85,6 +88,19 @@ function main() {
     a.category.localeCompare(b.category) || a.slug.localeCompare(b.slug) ||
     a.file.localeCompare(b.file, undefined, { numeric: true }));
 
+  // ---- Auto-QA: semnaleaza output-urile suspecte ----
+  if (!args.noQa) {
+    const doneRows = rows.filter((r) => r.status === 'done');
+    process.stdout.write(`Auto-QA pe ${doneRows.length} imagini… `);
+    await pool(doneRows, async (r) => {
+      const aiPath = path.join(OUT_DIR, r.slug, r.file);
+      const origPath = path.join(SRC_IMAGES, r.slug, r.file);
+      r.qa = await analyze(aiPath, fs.existsSync(origPath) ? origPath : null);
+    }, 8);
+    console.log('gata.');
+  }
+  const flagged = rows.filter((r) => r.qa?.flags?.length);
+
   const byCat = new Map();
   for (const r of rows) {
     if (!byCat.has(r.category)) byCat.set(r.category, []);
@@ -118,13 +134,24 @@ function main() {
   .badge{display:inline-block;font-size:11px;padding:1px 7px;border-radius:999px;border:1px solid var(--line)}
   .badge.ok{color:var(--ok);border-color:var(--ok)}
   .badge.bad{color:var(--bad);border-color:var(--bad)}
+  .badge.flag{color:#d29922;border-color:#d29922}
+  .flags{font-size:11px;color:#d29922;padding:0 12px 8px}
+  .card.flagged{outline:2px solid #d29922}
+  .summary{margin:12px 24px;padding:10px 14px;background:#1a1a1c;border:1px solid #d29922;border-radius:8px;font-size:13px}
+  .summary a{color:#d29922}
   .err{color:var(--bad);font-size:12px;padding:0 12px 10px}
   .check{color:var(--muted);font-size:12px;padding:6px 12px 12px;border-top:1px dashed var(--line)}
 </style></head><body>
 <header>
   <h1>Review poze AI — ${compareAbs ? `inainte / AI / ${esc(compareLabel)}` : 'inainte (scrape) / dupa (Nano Banana)'}</h1>
-  <div class="sub">${doneCount} generate${failCount ? ` · ${failCount} esecuri` : ''} · verifica: numar de sipci/bare · proportii · culori · identitate produs</div>
+  <div class="sub">${doneCount} generate${failCount ? ` · ${failCount} esecuri` : ''}${args.noQa ? '' : ` · ${flagged.length} flagged auto-QA`} · verifica: numar de sipci/bare · proportii · culori · identitate produs</div>
 </header>`;
+
+  if (!args.noQa && flagged.length) {
+    html += `\n<div class="summary"><b>Auto-QA — ${flagged.length} de verificat tintit:</b><br>` +
+      flagged.map((r) => `<a href="#${esc(r.slug)}-${esc(r.file)}">${esc(r.code || r.slug)} / ${esc(r.file)}</a>: ${esc(r.qa.flags.map((f) => f.msg).join('; '))}`).join('<br>') +
+      `</div>`;
+  }
 
   for (const [cat, items] of byCat) {
     html += `\n<h2>${esc(cat)} <span class="sub">(${items.length})</span></h2>\n<div class="grid">`;
@@ -143,8 +170,9 @@ function main() {
           ? `<figure><img loading="lazy" src="${cmpRel}" alt="${esc(compareLabel)}"><figcaption>${esc(compareLabel)}</figcaption></figure>`
           : `<figure><div style="height:200px;display:flex;align-items:center;justify-content:center;color:#9aa0a6">(lipsa)</div><figcaption>${esc(compareLabel)}</figcaption></figure>`;
       }
+      const qaFlags = r.qa?.flags || [];
       html += `
-  <div class="card">
+  <div class="card${qaFlags.length ? ' flagged' : ''}" id="${esc(r.slug)}-${esc(r.file)}">
     <div class="pair${compareAbs ? ' three' : ''}">
       <figure><img loading="lazy" src="${before}" alt="inainte"><figcaption>INAINTE (scrape)</figcaption></figure>
       ${r.status === 'done'
@@ -152,9 +180,10 @@ function main() {
           : `<figure><div style="height:200px;display:flex;align-items:center;justify-content:center;color:#f85149">esec</div><figcaption>DUPA</figcaption></figure>`}
       ${cmpFigure}
     </div>
-    <div class="meta"><span class="name">${esc(r.name)}</span> <span class="code">${esc(r.code)}</span> ${badge}</div>
+    <div class="meta"><span class="name">${esc(r.name)}</span> <span class="code">${esc(r.code)}</span> ${badge}${qaFlags.length ? ' <span class="badge flag">⚑ QA</span>' : ''}</div>
     ${r.error ? `<div class="err">${esc(r.error)}</div>` : ''}
-    <div class="check">${esc(r.file)} · ${esc(r.model || '')}</div>
+    ${qaFlags.length ? `<div class="flags">⚑ ${esc(qaFlags.map((f) => f.msg).join('; '))}</div>` : ''}
+    <div class="check">${esc(r.file)} · ${esc(r.model || '')}${r.qa?.width ? ` · ${r.qa.width}×${r.qa.height}` : ''}</div>
   </div>`;
     }
     html += `\n</div>`;
@@ -167,6 +196,12 @@ function main() {
   console.log(`Scris ${outFile}`);
   console.log(`  ${doneCount} ${compareAbs ? 'randuri inainte/AI/' + compareLabel : 'perechi inainte/dupa'}${failCount ? `, ${failCount} esecuri` : ''}, ${byCat.size} categorii.`);
   console.log(`Deschide ${path.basename(outFile)} in browser si verifica pastrarea identitatii inainte de promovare.`);
+  if (!args.noQa) {
+    console.log(`\nAuto-QA: ${flagged.length} flagged (de verificat tintit):`);
+    for (const r of flagged) {
+      console.log(`  ⚑ ${r.code || r.slug}/${r.file}: ${r.qa.flags.map((f) => f.msg).join('; ')}`);
+    }
+  }
 }
 
-main();
+main().catch((e) => { console.error(e); process.exit(1); });

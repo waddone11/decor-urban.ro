@@ -158,7 +158,9 @@ function isRetryable(err) {
   const msg = String(err?.message || '').toLowerCase();
   return msg.includes('429') || msg.includes('rate') || msg.includes('quota') ||
     msg.includes('overloaded') || msg.includes('unavailable') || msg.includes('internal') ||
-    msg.includes('timeout') || msg.includes('econnreset') || msg.includes('etimedout');
+    msg.includes('timeout') || msg.includes('econnreset') || msg.includes('etimedout') ||
+    msg.includes('fetch failed') || msg.includes('network') || msg.includes('socket') ||
+    msg.includes('enotfound') || msg.includes('eai_again');
 }
 
 // extrage prima imagine (inlineData) din raspuns
