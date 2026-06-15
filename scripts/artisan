@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Thin wrapper: run `php artisan ...` inside the app container.
+# Usage: ./scripts/artisan migrate
+set -euo pipefail
+exec docker compose exec -e HOME=/tmp app php artisan "$@"

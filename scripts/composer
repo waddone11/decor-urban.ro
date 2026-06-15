@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Thin wrapper: run `composer ...` inside the app container.
+# Usage: ./scripts/composer require vendor/package
+set -euo pipefail
+exec docker compose exec app composer "$@"
