@@ -31,3 +31,4 @@ Thumbs.db
 /playwright-report
 /playwright/.cache
 /blob-report
+/.playwright-mcp
