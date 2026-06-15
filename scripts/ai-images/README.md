@@ -9,11 +9,38 @@ păstrând identitatea exactă a produsului. Flux în 3 timpi cu **poartă de re
 1. GENERARE (staging)   node generate.mjs --limit 5
 2. REVIEW (înainte/după) node review.mjs        -> deschide storage/scrape/images-ai/review.html
 3. PROMOVARE (după OK)   php artisan images:promote-ai
+4. REVERT (dacă e cazul) php artisan images:revert-ai [--only <slug>]
 ```
+
+`review.mjs` rulează și **auto-QA** (sharp): marchează output-urile suspecte (aspect ≠ 1:1, rezoluție
+mică, fundal non-neutru, posibilă schimbare de culoare) ca să le verifici țintit.
 
 - **Sursă (intactă):** `storage/scrape/images/<slug>/<file>` — backup pristin, nu se atinge.
 - **Staging:** `storage/scrape/images-ai/<slug>/<file>` (+ `manifest.json`, `review.html`).
 - **Public (după promovare):** disk-ul `public` Laravel — `storage/app/public/products/<slug>/<file>`.
+- **Backup la promovare:** poza publică curentă e salvată o dată în
+  `storage/app/private/products-legacy-backup/<slug>/` înainte de overwrite (dublă plasă).
+
+## Promovare, revert, summary
+
+```bash
+php artisan images:promote-ai [--only <slug>] [--dry-run]   # AI -> public + source=ai + backup
+php artisan images:revert-ai  [--only <slug>] [--dry-run]   # restaurează originalul pristin + source=legacy
+php artisan catalog:summary                                 # câte imagini ai vs legacy
+```
+
+Produsele fără output AI valid rămân pe `legacy` (catalog consistent, mix ai/legacy).
+
+## Deploy (poze NU călătoresc prin git)
+
+`storage/` și `public/products` sunt **gitignored** — pozele nu intră în git. La deploy pe producție:
+
+1. **Codul** (migrație, comenzi, `source`/`enhanced_at`) ajunge prin git/merge.
+2. **Pozele AI** se duc manual pe server: sync `storage/scrape/images-ai/` → server, apoi
+   `php artisan images:promote-ai` **rulat pe server** (copiază în public + setează `source=ai`).
+3. `php artisan storage:link` trebuie să existe pe server (public/storage → storage/app/public).
+
+> Adică: merge-ul aduce doar codul; **promovarea efectivă se face rulând comanda în fiecare mediu.**
 
 ## Setup
 
