@@ -74,18 +74,15 @@
 
         {{-- Acțiuni dreapta --}}
         <div class="flex items-center gap-1">
-            {{-- Search placeholder (nefuncțional încă) --}}
-            <button class="rounded-lg p-2 text-ink-soft hover:bg-tint-stone hover:text-ink transition-colors" aria-label="Căutare">
-                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                </svg>
-            </button>
             {{-- Coș (count live, Livewire) --}}
             <livewire:cart-counter />
 
-            <x-button :href="'https://wa.me/'.$whatsapp" variant="accent" size="sm" class="hidden sm:inline-flex ml-1">
-                Cere ofertă
-            </x-button>
+            {{-- CTA doar pe desktop; pe mobil rămâne în meniul hamburger. --}}
+            <div class="hidden lg:block ml-1">
+                <x-button :href="'https://wa.me/'.$whatsapp" variant="accent" size="sm">
+                    Cere ofertă
+                </x-button>
+            </div>
 
             {{-- Hamburger mobil --}}
             <button @click="mobileOpen = !mobileOpen" :aria-expanded="mobileOpen ? 'true' : 'false'" class="lg:hidden rounded-lg p-2 text-ink hover:bg-tint-stone transition-colors" aria-label="Meniu">
