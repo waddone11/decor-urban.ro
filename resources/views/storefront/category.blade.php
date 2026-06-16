@@ -22,7 +22,18 @@
         @if ($products->isEmpty())
             <p class="py-16 text-center text-ink-muted">Nu există produse în această categorie momentan.</p>
         @else
-            <div class="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+            {{-- Sortare (GET, query-string linkabil) --}}
+            <form method="get" class="mt-6 flex items-center justify-end gap-2">
+                <label for="sort" class="text-sm text-ink-muted">Sortează:</label>
+                <select id="sort" name="sort" onchange="this.form.submit()"
+                        class="rounded-button border border-line bg-white py-1.5 pl-3 pr-8 text-sm text-ink focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent">
+                    <option value="recomandate" @selected($sort === 'recomandate')>Recomandate</option>
+                    <option value="nume" @selected($sort === 'nume')>Nume A–Z</option>
+                    <option value="cod" @selected($sort === 'cod')>Cod</option>
+                </select>
+            </form>
+
+            <div class="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
                 @foreach ($products as $product)
                     <x-product-card :product="$product" :href="route('product', $product->slug)" />
                 @endforeach
