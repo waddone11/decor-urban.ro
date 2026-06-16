@@ -75,6 +75,14 @@ class JsonLd
             'price' => $hasRealPrice ? number_format((float) $product->price, 2, '.', '') : null,
         ]);
 
+        // additionalProperty din specs (doar câmpurile prezente) + material.
+        $specs = $product->displaySpecs();
+        $additional = [];
+        foreach ($specs as $label => $value) {
+            $additional[] = ['@type' => 'PropertyValue', 'name' => $label, 'value' => $value];
+        }
+        $material = $product->materialLabel();
+
         return array_filter([
             '@context' => 'https://schema.org',
             '@type' => 'Product',
@@ -82,11 +90,13 @@ class JsonLd
             'image' => $images ?: null,
             'sku' => $product->code ? ltrim($product->code, '#') : null,
             'description' => $product->seoDescription(),
+            'material' => $material,
             'brand' => [
                 '@type' => 'Brand',
                 'name' => config('contact.brand'),
             ],
             'category' => $primaryCategory?->name,
+            'additionalProperty' => $additional ?: null,
             'offers' => $offer,
         ]);
     }
