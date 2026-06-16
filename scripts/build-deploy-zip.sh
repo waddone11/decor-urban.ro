@@ -45,12 +45,19 @@ rsync -a \
   --exclude='scripts/ai-images/' \
   --exclude='scripts/enrich/' \
   --exclude='dist/' \
+  --exclude='/.playwright-mcp/' \
+  --exclude='/design/' \
+  --exclude='/*.png' \
+  --exclude='.DS_Store' \
+  --exclude='.phpunit.result.cache' \
+  --exclude='/public/hot' \
   --exclude='*.sql' \
   --exclude='*.sql.gz' \
   ./ "$STAGE/"
 
-echo "==> 5. Vendor de PRODUCȚIE în staging (--no-dev)"
-$DC -w "/var/www/html/$STAGE" app composer install --no-dev --optimize-autoloader --no-interaction
+echo "==> 5. Vendor de PRODUCȚIE în staging (--no-dev, --no-scripts ca să nu boot-eze artisan fără .env)"
+$DC -w "/var/www/html/$STAGE" app composer install --no-dev --optimize-autoloader --no-scripts --no-interaction
+test -f "$STAGE/vendor/autoload.php" || { echo "!! EROARE: vendor/autoload.php lipsește în staging — opresc."; exit 1; }
 
 echo "==> 6. .env.prod (din example; secretele se completează pe server)"
 cp .env.prod.example "$PROD/.env.prod"
@@ -66,11 +73,13 @@ cd "$ROOT"
 echo "==> 8. Verificări"
 ZIP="$PROD/decor-urban-deploy-$TS.zip"
 echo "    ZIP: $ZIP ($(du -h "$ZIP" | cut -f1))"
-echo -n "    vendor/ în zip:        "; unzip -l "$ZIP" | grep -q 'decor-urban/vendor/autoload.php' && echo OK || echo LIPSĂ
-echo -n "    public/build/ în zip:  "; unzip -l "$ZIP" | grep -q 'decor-urban/public/build/' && echo OK || echo LIPSĂ
-echo -n "    poze produse în zip:   "; unzip -l "$ZIP" | grep -q 'decor-urban/storage/app/public/products/' && echo OK || echo LIPSĂ
-echo -n "    storage/scrape ABSENT: "; unzip -l "$ZIP" | grep -q 'storage/scrape/' && echo "!! PREZENT (greșit)" || echo OK
-echo -n "    .env ABSENT:           "; unzip -l "$ZIP" | grep -qE 'decor-urban/\.env$' && echo "!! PREZENT (greșit)" || echo OK
+L=$(unzip -l "$ZIP")
+echo -n "    vendor/ în zip:        "; echo "$L" | grep -q 'vendor/autoload.php' && echo OK || echo LIPSĂ
+echo -n "    public/build/ în zip:  "; echo "$L" | grep -q 'public/build/' && echo OK || echo LIPSĂ
+echo -n "    poze produse în zip:   "; echo "$L" | grep -q 'storage/app/public/products/' && echo OK || echo LIPSĂ
+echo -n "    storage/scrape ABSENT: "; echo "$L" | grep -q 'storage/scrape/' && echo "!! PREZENT (greșit)" || echo OK
+echo -n "    node_modules ABSENT:   "; echo "$L" | grep -q 'node_modules/' && echo "!! PREZENT (greșit)" || echo OK
+echo -n "    .env ABSENT:           "; echo "$L" | grep -qE 'decor-urban/\.env$' && echo "!! PREZENT (greșit)" || echo OK
 
 rm -rf "$STAGE"
 echo "==> Gata. Urcă zip-ul + importă dump-ul (vezi DEPLOY-PROD.md)."
