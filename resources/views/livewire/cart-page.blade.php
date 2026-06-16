@@ -23,7 +23,7 @@
                 <div class="flex items-center gap-4 p-4" wire:key="line-{{ $product->id }}">
                     <a href="{{ route('product', $product->slug) }}" class="block h-20 w-20 shrink-0 overflow-hidden rounded-lg border border-line bg-tint-stone">
                         @if ($img)
-                            <img src="{{ $img->url() }}" alt="{{ $product->name }}" class="h-full w-full object-cover">
+                            <img src="{{ $img->thumbUrl(400) }}" alt="{{ $product->name }}" loading="lazy" width="80" height="80" class="h-full w-full object-cover">
                         @endif
                     </a>
 

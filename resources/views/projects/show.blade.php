@@ -31,9 +31,10 @@
             <div class="mt-6" x-data="{ active: 0 }">
                 <div class="overflow-hidden rounded-card border border-line bg-tint-stone">
                     @foreach ($images as $i => $image)
-                        <img x-show="active === {{ $i }}" src="{{ $image->url() }}" alt="{{ $image->alt ?: $project->title }}"
+                        <img x-show="active === {{ $i }}" src="{{ $image->thumbUrl(800) }}" alt="{{ $image->alt ?: $project->title }}"
+                             width="800" height="600"
                              @if($i === 0) fetchpriority="high" @else loading="lazy" @endif
-                             class="w-full object-cover">
+                             class="aspect-[4/3] w-full object-cover">
                     @endforeach
                 </div>
                 @if ($images->count() > 1)
@@ -42,7 +43,7 @@
                             <button type="button" @click="active = {{ $i }}"
                                     :class="active === {{ $i }} ? 'ring-2 ring-accent' : 'ring-1 ring-line hover:ring-ink-muted'"
                                     class="overflow-hidden rounded-lg motion-safe:transition" aria-label="Imaginea {{ $i + 1 }}">
-                                <img src="{{ $image->url() }}" alt="" loading="lazy" class="aspect-square w-full object-cover">
+                                <img src="{{ $image->thumbUrl(400) }}" alt="" loading="lazy" width="400" height="400" class="aspect-square w-full object-cover">
                             </button>
                         @endforeach
                     </div>
@@ -69,7 +70,7 @@
                         @php $img = $item->primaryImage(); @endphp
                         <a href="{{ route('project.show', $item->slug) }}" class="group flex flex-col overflow-hidden rounded-card border border-line bg-surface-card shadow-card transition-all hover:shadow-card-hover hover:-translate-y-1">
                             <div class="aspect-[4/3] overflow-hidden bg-tint-stone">
-                                @if ($img)<img src="{{ $img->url() }}" alt="{{ $item->title }}" loading="lazy" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105">@endif
+                                @if ($img)<img src="{{ $img->thumbUrl(400) }}" srcset="{{ $img->thumbUrl(400) }} 400w, {{ $img->thumbUrl(800) }} 800w" sizes="(max-width:640px) 100vw, 320px" alt="{{ $item->title }}" loading="lazy" width="400" height="400" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105">@endif
                             </div>
                             <div class="p-4">
                                 <h3 class="font-semibold text-ink group-hover:text-accent transition-colors">{{ $item->title }}</h3>
