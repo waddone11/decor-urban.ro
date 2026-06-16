@@ -47,7 +47,14 @@ class StorefrontController extends Controller
                 ->get();
         }
 
-        return view('storefront.product', compact('product', 'primaryCategory', 'similar'));
+        // CTA WhatsApp: mesaj precompletat, URL-encoded corect (diacritice).
+        $code = $product->code ? ltrim($product->code, '#') : null;
+        $waText = 'Bună ziua, doresc o ofertă pentru: '.$product->name
+            .($code ? " (cod {$code})" : '')
+            .' — '.route('product', $product->slug);
+        $whatsappUrl = 'https://wa.me/'.config('contact.whatsapp').'?text='.rawurlencode($waText);
+
+        return view('storefront.product', compact('product', 'primaryCategory', 'similar', 'whatsappUrl'));
     }
 
     private function applySort($query, string $sort): void

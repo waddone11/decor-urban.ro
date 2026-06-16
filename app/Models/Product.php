@@ -85,6 +85,33 @@ class Product extends Model
     }
 
     /**
+     * Imaginile pentru galeria paginii produs: primary prima, apoi după sort_order.
+     * Dacă există coloana `source` (vine cu workstream-ul poze-ai) și produsul are
+     * imagini source='ai', folosește-le pe acelea. Altfel toate imaginile.
+     * Defensiv: merge și înainte ca migrația poze-ai să fie aplicată.
+     */
+    public function galleryImages(): \Illuminate\Support\Collection
+    {
+        $images = $this->images;
+
+        if ($this->productImagesHaveSourceColumn()) {
+            $ai = $images->where('source', 'ai');
+            if ($ai->isNotEmpty()) {
+                $images = $ai;
+            }
+        }
+
+        return $images->sortByDesc('is_primary')->values();
+    }
+
+    private function productImagesHaveSourceColumn(): bool
+    {
+        static $has = null;
+
+        return $has ??= \Illuminate\Support\Facades\Schema::hasColumn('product_images', 'source');
+    }
+
+    /**
      * Calea imaginii primary (is_primary, fallback prima după sort_order),
      * relativă la disk-ul public. Pentru ImageColumn în tabelul Filament.
      */
