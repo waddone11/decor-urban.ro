@@ -149,7 +149,7 @@ Rute publice:
 | `/categorie/{slug}`       | Listare categorie (sortare + paginare + breadcrumb)           |
 | `/produs/{slug}`          | Pagină produs: galerie + info + CTA WhatsApp + produse similare |
 | `/sitemap.xml`            | Sitemap dinamic (categorii + produse active)                  |
-| `/robots.txt`             | Permite, indică sitemap, blochează `/admin` și `/ops`         |
+| `/robots.txt`             | Permite, indică sitemap, blochează `/admin` și `/commands`    |
 
 Doar categoriile/produsele `is_active` apar în storefront; slug inexistent/inactiv → 404.
 URL-urile vechi (`legacy_urls`) fac **301** către canonicalul nou (vezi `App\Support\LegacyRedirects`;
@@ -163,7 +163,7 @@ Catalogul se reconstruiește dintr-un snapshot JSON commis, nu din scrape:
 # local/dev: exportă DB curentă → database/data/catalog.json (commite fișierul)
 php artisan catalog:export-snapshot
 
-# pe prod: reconstruiește tot (rulat din ops web sau SSH)
+# pe prod: reconstruiește tot (rulat din /commands sau SSH)
 php artisan migrate:fresh --seed --force   # CategorySeeder + CatalogSeeder
 ```
 
@@ -171,32 +171,31 @@ php artisan migrate:fresh --seed --force   # CategorySeeder + CatalogSeeder
 doar rândurile `product_images`. Pozele se urcă separat (FTP/cPanel) în
 `storage/app/public/products/<slug>/`, apoi `php artisan storage:link`.
 
-### Ops web-runner (hosting fără SSH)
+### `/commands` — helper artisan din URL (hosting fără SSH)
 
-Plasă pentru hosting fără terminal: rulează comenzi artisan din whitelist via URL.
-**Periculos** — ține-l dezactivat când nu-l folosești.
+Rulează comenzi artisan din URL, securizat cu **o singură cheie `secret`** din `.env`.
+Rutele rulează **fără sesiune/CSRF**, deci merg și pe o **DB proaspătă/goală** (înainte de migrate).
 
-1. În `.env`: `OPS_ENABLED=true` și `OPS_TOKEN=<token-lung-generat>`
-   (`php artisan str:random 48`). **Token-ul NU se comite.**
-2. `/ops?token=...` → pagină cu linkuri către comenzi. Fără token corect (sau cu
-   `OPS_ENABLED=false`) → **404** (nu dezvăluie că ruta există).
-3. Comenzile distructive (`fresh`) cer în plus `&confirm=YES`.
-4. Fiecare invocare e logată în `storage/logs/ops.log` (IP, comandă, timestamp).
-5. **După ce termini: `OPS_ENABLED=false` și rotește/șterge `OPS_TOKEN`.**
+1. În `.env`: `SECRET=<cheie-lungă-random>` (`php artisan str:random 48`). **NU o comite.**
+2. `/commands?secret=...` → pagină cu linkuri către comenzi. Fără `secret` corect (sau header
+   `X-Command-Secret`) → **404** (nu dezvăluie că ruta există).
+3. `migrate-fresh-seed` (distructiv) cere în plus `&confirm=YES`.
+4. Fiecare invocare e logată în `storage/logs/commands.log` (IP, comandă, timestamp).
+5. **După ce termini: rotește/șterge `SECRET`.**
 
-Whitelist: `migrate`, `fresh` (confirm=YES), `seed`, `storage-link`, `optimize(-clear)`,
-`config-cache/clear`, `route-cache/clear`, `view-cache/clear`, `cache-clear`,
-`migrate-status`, `catalog-summary`, `sitemap`, `about`. Nimic din afara hărții nu rulează.
+Comenzi: `clear-cache`, `optimize-clear`, `optimize`, `create-storage-link`, `create-sitemap`,
+`migrate`, `migrate-fresh-seed` (confirm=YES), `migrate-status`, `about`, `catalog-summary`,
+`queue-restart`, `trigger-queue` (util doar dacă emailurile trec pe coadă — acum `sync`).
 
-> Ops e o plasă pentru hosting fără SSH — **nu** înlocuiește un deploy real.
+> Helper pentru hosting fără SSH — **nu** înlocuiește un deploy real.
 
 ### Secvență deploy (hosting fără SSH)
 
-1. urci codul (git pull / FTP) + `.env` (cu `OPS_TOKEN`, `OPS_ENABLED=true` temporar);
-2. `/ops/migrate?token=...` apoi `/ops/seed` (sau `/ops/fresh?...&confirm=YES` la prima instalare);
+1. urci codul (git pull / FTP) + `.env` (cu `SECRET` setat);
+2. `/commands/migrate?secret=...` (sau `/commands/migrate-fresh-seed?secret=...&confirm=YES` la prima instalare);
 3. urci fișierele imagine în `storage/app/public/products/...` (FTP);
-4. `/ops/storage-link?token=...`, `/ops/optimize?token=...`, `/ops/sitemap?token=...`;
-5. `OPS_ENABLED=false` după ce ai terminat.
+4. `/commands/create-storage-link?secret=...`, `/commands/optimize?secret=...`, `/commands/create-sitemap?secret=...`;
+5. rotește/șterge `SECRET` după ce ai terminat.
 
 ## Coș & comandă (Faza 4c)
 
