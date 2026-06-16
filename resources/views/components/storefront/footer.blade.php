@@ -81,13 +81,6 @@
             </div>
         </div>
 
-        {{-- Reminder de completare — DOAR în dev (local). Vizitatorii nu văd niciodată un „TODO".
-             Câmpurile opționale (CPV, SEAP, proiecte, referințe, standarde) se afișează doar unde
-             sunt randate și doar dacă sunt setate (vezi homepage); goale → lipsesc curat. --}}
-        @if ($companyPlaceholder && app()->environment('local'))
-            <p class="mt-8 text-xs text-ink-soft">⚠️ [dev] De completat: cod CPV, prezență SEAP, proiecte livrate, referințe, standarde (ex. EN 1176) — în <code>config/company.php</code>.</p>
-        @endif
-
         <div class="mt-12 flex flex-col gap-3 border-t border-shell-line pt-6 sm:flex-row sm:items-center sm:justify-between">
             <p class="text-sm text-ink-soft">© {{ date('Y') }} Decor Urban. Toate drepturile rezervate.</p>
             <p class="text-sm text-ink-soft">Producător direct · Livrare în toată țara</p>

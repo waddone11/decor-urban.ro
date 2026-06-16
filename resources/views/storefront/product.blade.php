@@ -132,11 +132,61 @@
                     <x-button :href="route('contact')" variant="outline" size="lg">Cere ofertă</x-button>
                 </div>
 
-                {{-- Descriere --}}
-                <div class="mt-8 border-t border-line pt-6">
-                    <h2 class="text-lg font-semibold text-ink">Descriere</h2>
-                    <div class="prose-sm mt-2 max-w-none text-ink-soft">
-                        {!! $product->description ? nl2br(e($product->description)) : '—' !!}
+                {{-- Trust-row: diferențiatori de producător --}}
+                <ul class="mt-6 grid grid-cols-2 gap-3 border-t border-line pt-6 text-sm sm:grid-cols-4">
+                    @foreach ([
+                        ['t' => 'Producător direct', 'd' => 'M2.25 21h19.5M4.5 21V7l8-4 8 4v14M9 21v-4h6v4'],
+                        ['t' => 'Culori RAL la cerere', 'd' => 'M12 21a9 9 0 1 1 0-18 9 9 0 0 1 9 9 3 3 0 0 1-3 3h-1.5a1.5 1.5 0 0 0 0 3H12M7.5 10.5h.008v.008H7.5zM12 7.5h.008v.008H12zm4.5 3h.008v.008H16.5z'],
+                        ['t' => 'Dimensiuni custom', 'd' => 'M21.75 6.75 17.25 2.25m0 0L13.5 6m3.75-3.75v13.5m-11.25 0L2.25 12m0 0L6 8.25M2.25 12h13.5'],
+                        ['t' => 'Livrare națională', 'd' => 'M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 0 0-3.213-9.193 2.056 2.056 0 0 0-1.58-.86H14.25M16.5 18.75h-2.25'],
+                    ] as $t)
+                        <li class="flex flex-col items-start gap-1.5 text-ink-soft">
+                            <svg class="h-5 w-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="{{ $t['d'] }}" /></svg>
+                            <span class="text-xs font-medium leading-tight text-ink">{{ $t['t'] }}</span>
+                        </li>
+                    @endforeach
+                </ul>
+
+                {{-- Notă custom — diferențiatorul de producător --}}
+                <div class="mt-6 flex flex-col gap-3 rounded-card border border-line bg-tint-sky p-4 sm:flex-row sm:items-center sm:justify-between">
+                    <p class="text-sm text-ink-soft"><span class="font-semibold text-ink">Solicită dimensiuni sau culoare custom.</span> Producem la comandă — culori RAL și dimensiuni adaptate proiectului tău.</p>
+                    <x-button :href="$whatsappUrl" variant="outline" size="sm" target="_blank" rel="noopener" class="shrink-0">Solicită custom</x-button>
+                </div>
+
+                {{-- Tab-uri: Descriere / Specificații / Livrare (accesibile, reduced-motion safe) --}}
+                @php $specs = $product->displaySpecs(); @endphp
+                <div class="mt-8 border-t border-line pt-6" x-data="{ tab: 'descriere' }">
+                    <div class="flex flex-wrap gap-1 border-b border-line" role="tablist" aria-label="Detalii produs">
+                        @foreach (['descriere' => 'Descriere', 'specificatii' => 'Specificații', 'livrare' => 'Livrare & montaj'] as $key => $label)
+                            <button type="button" role="tab" :aria-selected="tab === '{{ $key }}' ? 'true' : 'false'"
+                                    @click="tab = '{{ $key }}'"
+                                    :class="tab === '{{ $key }}' ? 'border-accent text-accent' : 'border-transparent text-ink-soft hover:text-ink'"
+                                    class="-mb-px border-b-2 px-4 py-2.5 text-sm font-medium transition-colors">{{ $label }}</button>
+                        @endforeach
+                    </div>
+
+                    <div role="tabpanel" x-show="tab === 'descriere'" class="pt-4 text-ink-soft leading-relaxed">
+                        {!! $product->description ? nl2br(e($product->description)) : 'Descriere disponibilă la cerere.' !!}
+                    </div>
+
+                    <div role="tabpanel" x-show="tab === 'specificatii'" x-cloak class="pt-4">
+                        @if (! empty($specs))
+                            <dl class="divide-y divide-line rounded-card border border-line">
+                                @foreach ($specs as $label => $value)
+                                    <div class="flex gap-4 px-4 py-3 text-sm">
+                                        <dt class="w-32 shrink-0 font-medium text-ink-muted">{{ $label }}</dt>
+                                        <dd class="text-ink">{{ $value }}</dd>
+                                    </div>
+                                @endforeach
+                            </dl>
+                        @else
+                            <p class="text-sm text-ink-soft">Specificațiile tehnice detaliate sunt disponibile la cerere.</p>
+                        @endif
+                    </div>
+
+                    <div role="tabpanel" x-show="tab === 'livrare'" x-cloak class="pt-4 text-sm text-ink-soft leading-relaxed">
+                        <p>Livrăm în toată țara, cu factură. Termenul de livrare se confirmă în ofertă, în funcție de produs și cantitate.</p>
+                        <p class="mt-2">Montajul și instalarea se pot discuta la cerere. Pentru proiecte de amploare (primării, școli, instituții) oferim consultanță tehnică.</p>
                     </div>
                 </div>
             </div>

@@ -76,6 +76,11 @@ class Category extends Model
 
     public function seoDescription(): string
     {
+        // Preferă intro-ul îmbogățit (conținut SEO), apoi descrierea, apoi fallback.
+        if ($this->intro) {
+            return (string) \Illuminate\Support\Str::of($this->intro)->stripTags()->squish()->limit(155);
+        }
+
         if ($this->description) {
             return (string) \Illuminate\Support\Str::of($this->description)->stripTags()->squish()->limit(155);
         }
