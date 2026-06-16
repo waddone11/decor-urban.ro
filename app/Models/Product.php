@@ -145,6 +145,45 @@ class Product extends Model
         return $this->primaryImage()?->url();
     }
 
+    // ── Specs (afișare; doar ce există — fără fabricare) ─────────────────────
+
+    /** Etichetă material pentru chip/card, ex. „Lemn + metal". Null dacă lipsește. */
+    public function materialLabel(): ?string
+    {
+        $materials = $this->specs['material'] ?? null;
+        if (empty($materials)) {
+            return null;
+        }
+
+        return ucfirst(implode(' + ', (array) $materials));
+    }
+
+    /**
+     * Specs pentru tabelul de pe pagina produs — DOAR câmpurile prezente, în ordine.
+     *
+     * @return array<string, string> label → value
+     */
+    public function displaySpecs(): array
+    {
+        $specs = (array) $this->specs;
+        $out = [];
+
+        if (! empty($specs['material'])) {
+            $out['Material'] = ucfirst(implode(', ', (array) $specs['material']));
+        }
+        if (! empty($specs['dimensiuni'])) {
+            $out['Dimensiuni'] = implode(' · ', (array) $specs['dimensiuni']);
+        }
+        if (! empty($specs['montaj'])) {
+            $out['Montaj'] = is_array($specs['montaj']) ? implode(', ', $specs['montaj']) : $specs['montaj'];
+        }
+        if (! empty($specs['finisaj'])) {
+            $out['Finisaj'] = implode(', ', array_map('ucfirst', (array) $specs['finisaj']));
+        }
+
+        return $out;
+    }
+
     /**
      * Calea imaginii primary (is_primary, fallback prima după sort_order),
      * relativă la disk-ul public. Pentru ImageColumn în tabelul Filament.
