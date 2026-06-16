@@ -87,6 +87,8 @@
 
     <x-storefront.footer />
 
+    <x-storefront.cookie-consent />
+
     @livewireScripts
 </body>
 </html>
