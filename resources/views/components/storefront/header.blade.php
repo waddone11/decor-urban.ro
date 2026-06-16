@@ -85,7 +85,7 @@
             </div>
 
             {{-- Hamburger mobil --}}
-            <button @click="mobileOpen = !mobileOpen" :aria-expanded="mobileOpen ? 'true' : 'false'" class="lg:hidden rounded-lg p-2 text-ink hover:bg-tint-stone transition-colors" aria-label="Meniu">
+            <button @click="mobileOpen = !mobileOpen" :aria-expanded="mobileOpen ? 'true' : 'false'" aria-controls="mobile-menu" class="lg:hidden rounded-lg p-2 text-ink hover:bg-tint-stone transition-colors" aria-label="Meniu">
                 <svg x-show="!mobileOpen" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                 </svg>
@@ -96,24 +96,51 @@
         </div>
     </div>
 
-    {{-- Meniu mobil --}}
-    <div x-show="mobileOpen" x-cloak x-transition class="lg:hidden border-t border-shell-line bg-shell">
-        <div class="space-y-1 px-4 py-4">
-            <a href="{{ url('/') }}" class="block rounded-lg px-3 py-2.5 text-base font-medium text-ink hover:bg-tint-stone">Acasă</a>
-            <p class="px-3 pt-3 pb-1 text-xs font-semibold uppercase tracking-wider text-ink-muted">Categorii</p>
-            @foreach ($categories as $category)
-                <a href="{{ route('category', $category->slug) }}" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-base text-ink hover:bg-tint-stone">
-                    <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-tint-sky text-accent">
-                        <x-category-icon :slug="$category->slug" class="h-5 w-5" />
-                    </span>
-                    <span class="flex-1">{{ $category->name }}</span>
-                    <span class="text-xs text-ink-muted">{{ $category->products_count }}</span>
-                </a>
-            @endforeach
-            <a href="{{ route('despre') }}" class="block rounded-lg px-3 py-2.5 text-base font-medium text-ink hover:bg-tint-stone mt-2">Despre</a>
-            <a href="{{ route('institutii') }}" class="block rounded-lg px-3 py-2.5 text-base font-medium text-ink hover:bg-tint-stone">Instituții</a>
-            <a href="{{ route('contact') }}" class="block rounded-lg px-3 py-2.5 text-base font-medium text-ink hover:bg-tint-stone">Contact</a>
-            <x-button :href="'https://wa.me/'.$whatsapp" variant="accent" size="md" class="mt-3 w-full">Cere ofertă pe WhatsApp</x-button>
+    {{-- Meniu mobil — grilă categorii + scroll + CTA sticky jos --}}
+    <div id="mobile-menu"
+         x-show="mobileOpen"
+         x-cloak
+         x-transition.opacity
+         @keydown.escape.window="mobileOpen = false"
+         x-effect="mobileOpen && $nextTick(() => $el.querySelector('a[href], button')?.focus())"
+         @keydown.tab="
+            let f = [...$el.querySelectorAll('a[href], button:not([disabled])')];
+            if (! f.length) return;
+            let i = f.indexOf(document.activeElement);
+            if ($event.shiftKey && i <= 0) { $event.preventDefault(); f[f.length - 1].focus(); }
+            else if (! $event.shiftKey && i === f.length - 1) { $event.preventDefault(); f[0].focus(); }
+         "
+         class="lg:hidden flex flex-col border-t border-shell-line bg-shell max-h-[calc(100dvh-4rem)]">
+        {{-- Conținut scrollabil --}}
+        <div class="flex-1 overflow-y-auto overscroll-contain px-4 py-4" style="-webkit-overflow-scrolling: touch;">
+            <nav class="space-y-1" aria-label="Meniu mobil">
+                <a href="{{ url('/') }}" class="block rounded-lg px-3 py-2.5 text-base font-medium text-ink hover:bg-tint-stone">Acasă</a>
+                <a href="{{ route('despre') }}" class="block rounded-lg px-3 py-2.5 text-base font-medium text-ink hover:bg-tint-stone">Despre</a>
+                <a href="{{ route('institutii') }}" class="block rounded-lg px-3 py-2.5 text-base font-medium text-ink hover:bg-tint-stone">Instituții</a>
+                <a href="{{ route('contact') }}" class="block rounded-lg px-3 py-2.5 text-base font-medium text-ink hover:bg-tint-stone">Contact</a>
+            </nav>
+
+            {{-- Cele 11 categorii — grilă 2 coloane (descoperibile dintr-o privire) --}}
+            <p class="px-1 pt-4 pb-2 text-xs font-semibold uppercase tracking-wider text-ink-muted">Categorii</p>
+            <div class="grid grid-cols-2 gap-2">
+                @foreach ($categories as $category)
+                    <a href="{{ route('category', $category->slug) }}"
+                       class="flex min-h-[44px] items-center gap-2.5 rounded-lg border border-shell-line bg-surface-card p-2.5 text-ink transition-colors hover:bg-tint-stone">
+                        <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-tint-sky text-accent">
+                            <x-category-icon :slug="$category->slug" class="h-5 w-5" />
+                        </span>
+                        <span class="min-w-0 flex-1">
+                            <span class="block truncate text-sm font-medium leading-tight">{{ $category->name }}</span>
+                            <span class="block text-xs text-ink-muted">{{ $category->products_count }}</span>
+                        </span>
+                    </a>
+                @endforeach
+            </div>
+        </div>
+
+        {{-- CTA sticky jos — mereu accesibil, conținutul scrollează deasupra --}}
+        <div class="shrink-0 border-t border-shell-line bg-shell px-4 py-3">
+            <x-button :href="'https://wa.me/'.$whatsapp" variant="accent" size="md" class="w-full">Cere ofertă pe WhatsApp</x-button>
         </div>
     </div>
 </header>

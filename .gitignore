@@ -78,3 +78,5 @@ scripts/scraper/node_modules
 
 # Screenshot-uri review pagini institutii/proiecte — nu în repo
 /pages-*.png
+
+/mnav-*.png
