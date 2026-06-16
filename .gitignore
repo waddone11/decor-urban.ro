@@ -70,3 +70,5 @@ scripts/scraper/node_modules
 
 # Artefacte enrichment generate (review + manifest) — nu în repo
 /storage/enrich/
+
+/enrich-*.png
