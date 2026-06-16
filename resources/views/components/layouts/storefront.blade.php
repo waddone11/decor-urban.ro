@@ -1,7 +1,15 @@
 @props([
     'title' => null,
     'description' => 'Mobilier stradal și urban — bănci, coșuri de gunoi, jardiniere, locuri de joacă. Producător direct, livrare în toată țara.',
+    'canonical' => null, // implicit url()->current() (fără query string)
+    'ogImage' => null,   // implicit logo; paginile produs/categorie trimit imaginea primary
+    'ogType' => 'website',
 ])
+
+@php
+    $canonicalUrl = $canonical ?? url()->current();
+    $ogImageUrl = $ogImage ?? asset('images/logo.svg');
+@endphp
 
 <!DOCTYPE html>
 <html lang="ro" class="h-full scroll-smooth">
@@ -17,17 +25,17 @@
         $fullTitle = $title ? $title.' — '.config('contact.brand') : config('contact.brand').' — Mobilier stradal & urban';
     @endphp
     <title>{{ $fullTitle }}</title>
-    <link rel="canonical" href="{{ url()->current() }}">
+    <link rel="canonical" href="{{ $canonicalUrl }}">
     <meta name="robots" content="index, follow">
 
     {{-- OpenGraph / social --}}
-    <meta property="og:type" content="website">
+    <meta property="og:type" content="{{ $ogType }}">
     <meta property="og:site_name" content="{{ config('contact.brand') }}">
     <meta property="og:title" content="{{ $fullTitle }}">
     <meta property="og:description" content="{{ $description }}">
-    <meta property="og:url" content="{{ url()->current() }}">
-    <meta property="og:image" content="{{ asset('images/logo.svg') }}">
-    <meta name="twitter:card" content="summary">
+    <meta property="og:url" content="{{ $canonicalUrl }}">
+    <meta property="og:image" content="{{ $ogImageUrl }}">
+    <meta name="twitter:card" content="{{ $ogImage ? 'summary_large_image' : 'summary' }}">
 
     {{-- Date structurate: Organization (site-wide). --}}
     @php

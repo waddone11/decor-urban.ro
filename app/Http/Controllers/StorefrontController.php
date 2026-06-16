@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Support\JsonLd;
+use Illuminate\Support\Facades\Storage;
 
 class StorefrontController extends Controller
 {
@@ -24,7 +26,19 @@ class StorefrontController extends Controller
 
         $count = $category->products()->where('is_active', true)->count();
 
-        return view('storefront.category', compact('category', 'products', 'sort', 'count'));
+        $ogImagePath = $category->representativeImagePath();
+        $ogImage = $ogImagePath ? Storage::disk('public')->url($ogImagePath) : null;
+
+        $jsonLd = [
+            JsonLd::breadcrumb([
+                ['name' => 'Acasă', 'url' => url('/')],
+                ['name' => 'Catalog', 'url' => route('catalog')],
+                ['name' => $category->name, 'url' => route('category', $category->slug)],
+            ]),
+            JsonLd::itemList($products->getCollection(), $category->name),
+        ];
+
+        return view('storefront.category', compact('category', 'products', 'sort', 'count', 'ogImage', 'jsonLd'));
     }
 
     /**
@@ -54,7 +68,17 @@ class StorefrontController extends Controller
             .' — '.route('product', $product->slug);
         $whatsappUrl = 'https://wa.me/'.config('contact.whatsapp').'?text='.rawurlencode($waText);
 
-        return view('storefront.product', compact('product', 'primaryCategory', 'similar', 'whatsappUrl'));
+        $jsonLd = [
+            JsonLd::product($product),
+            JsonLd::breadcrumb(array_values(array_filter([
+                ['name' => 'Acasă', 'url' => url('/')],
+                ['name' => 'Catalog', 'url' => route('catalog')],
+                $primaryCategory ? ['name' => $primaryCategory->name, 'url' => route('category', $primaryCategory->slug)] : null,
+                ['name' => $product->name, 'url' => route('product', $product->slug)],
+            ]))),
+        ];
+
+        return view('storefront.product', compact('product', 'primaryCategory', 'similar', 'whatsappUrl', 'jsonLd'));
     }
 
     private function applySort($query, string $sort): void

@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Support\JsonLd;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -74,7 +75,14 @@ class CatalogBrowser extends Component
 
         $activeCategory = $this->cat ? $categories->firstWhere('slug', $this->cat) : null;
 
-        return view('livewire.catalog-browser', compact('categories', 'products', 'totalCount', 'activeCategory'))
-            ->layout('components.layouts.storefront', ['title' => 'Catalog produse']);
+        $title = $activeCategory ? $activeCategory->name : 'Catalog produse';
+        $description = $activeCategory
+            ? $activeCategory->seoDescription()
+            : 'Catalogul complet de mobilier urban și stradal: bănci, coșuri de gunoi, jardiniere, locuri de joacă și altele. '.config('contact.brand').'.';
+
+        $itemListLd = JsonLd::itemList($products->getCollection(), $title);
+
+        return view('livewire.catalog-browser', compact('categories', 'products', 'totalCount', 'activeCategory', 'itemListLd'))
+            ->layout('components.layouts.storefront', ['title' => $title, 'description' => $description]);
     }
 }

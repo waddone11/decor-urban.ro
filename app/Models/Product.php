@@ -111,6 +111,35 @@ class Product extends Model
         return $has ??= \Illuminate\Support\Facades\Schema::hasColumn('product_images', 'source');
     }
 
+    // ── SEO ────────────────────────────────────────────────────────────────
+
+    public function seoTitle(): string
+    {
+        return $this->meta_title ?: $this->name;
+    }
+
+    public function seoDescription(): string
+    {
+        if ($this->meta_description) {
+            return $this->meta_description;
+        }
+
+        if ($this->description) {
+            return (string) \Illuminate\Support\Str::of($this->description)->stripTags()->squish()->limit(155);
+        }
+
+        $cat = $this->primaryCategory() ?? $this->categories->first();
+
+        return trim($this->name
+            .($cat ? ' — '.$cat->name : '')
+            .'. '.ucfirst(config('company.supplier_label')).' · '.config('contact.brand').'. Cere ofertă.');
+    }
+
+    public function ogImageUrl(): ?string
+    {
+        return $this->primaryImage()?->url();
+    }
+
     /**
      * Calea imaginii primary (is_primary, fallback prima după sort_order),
      * relativă la disk-ul public. Pentru ImageColumn în tabelul Filament.

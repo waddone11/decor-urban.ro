@@ -1,4 +1,8 @@
-<x-layouts.storefront :title="$product->name">
+<x-layouts.storefront :title="$product->seoTitle()" :description="$product->seoDescription()" :og-image="$product->ogImageUrl()" og-type="product">
+    @foreach ($jsonLd as $ld)
+        <x-seo.jsonld :data="$ld" />
+    @endforeach
+
     @php
         $images = $product->galleryImages();
         $hasPrice = ! $product->price_on_request && $product->price;

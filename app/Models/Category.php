@@ -66,6 +66,23 @@ class Category extends Model
         return $query->orderBy('sort_order')->orderBy('name');
     }
 
+    // ── SEO ────────────────────────────────────────────────────────────────
+
+    public function seoTitle(): string
+    {
+        return $this->name;
+    }
+
+    public function seoDescription(): string
+    {
+        if ($this->description) {
+            return (string) \Illuminate\Support\Str::of($this->description)->stripTags()->squish()->limit(155);
+        }
+
+        return $this->name.' — '.ucfirst(config('company.supplier_label')).' de mobilier urban și stradal. '
+            .config('contact.brand').'. Cere ofertă pentru proiectul tău.';
+    }
+
     /**
      * Calea unei imagini reprezentative (prima imagine a primului produs activ
      * din categorie), relativă la disk-ul public. Pentru cardurile de categorie.

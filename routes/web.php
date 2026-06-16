@@ -66,3 +66,23 @@ Route::get('/catalog', CatalogBrowser::class)->name('catalog');
 
 Route::get('/categorie/{category:slug}', [StorefrontController::class, 'category'])->name('category');
 Route::get('/produs/{product:slug}', [StorefrontController::class, 'product'])->name('product');
+
+// ── SEO: sitemap + robots ───────────────────────────────────────────────────
+// /sitemap.xml: dinamic (dev/test); pe prod `sitemap:generate` scrie un fișier
+// static în public/ care e servit direct de webserver (mai rapid).
+Route::get('/sitemap.xml', function () {
+    return response(\App\Support\Sitemap::xml(), 200, ['Content-Type' => 'application/xml']);
+})->name('sitemap');
+
+Route::get('/robots.txt', function () {
+    $lines = [
+        'User-agent: *',
+        'Disallow: /admin',
+        'Disallow: /ops',
+        '',
+        'Sitemap: '.url('/sitemap.xml'),
+        '',
+    ];
+
+    return response(implode("\n", $lines), 200, ['Content-Type' => 'text/plain']);
+})->name('robots');
