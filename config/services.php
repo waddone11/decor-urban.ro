@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    // Gemini (text) — îmbogățire descrieri/intro categorii. Model verificat via ListModels.
+    'gemini' => [
+        'key' => env('GEMINI_API_KEY'),
+        'text_model' => env('GEMINI_TEXT_MODEL', 'gemini-3.5-flash'),
+    ],
+
 ];
