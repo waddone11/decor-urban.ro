@@ -9,10 +9,9 @@ class OrderSuccess extends Component
 {
     public Order $order;
 
-    // Implementat complet în Partea 3 (rezumat + email + wa.me).
     public function mount(string $number): void
     {
-        $this->order = Order::where('number', $number)->firstOrFail();
+        $this->order = Order::with('items')->where('number', $number)->firstOrFail();
     }
 
     public function render()

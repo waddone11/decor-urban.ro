@@ -2,9 +2,13 @@
 
 namespace App\Livewire;
 
+use App\Mail\OrderPlacedAdmin;
+use App\Mail\OrderPlacedCustomer;
 use App\Models\Order;
 use App\Support\Cart;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 
 class Checkout extends Component
@@ -102,6 +106,16 @@ class Checkout extends Component
 
         Cart::clear();
         $this->dispatch('cart-updated');
+
+        // Emailuri client + admin. Comanda e deja salvată — dacă SMTP pică pe prod,
+        // logăm și mergem mai departe (nu pierdem comanda; admin o vede în panel).
+        $order->load('items');
+        try {
+            Mail::to($order->email)->send(new OrderPlacedCustomer($order));
+            Mail::to(config('contact.email'))->send(new OrderPlacedAdmin($order));
+        } catch (\Throwable $e) {
+            Log::error('Eroare trimitere email comandă '.$order->number.': '.$e->getMessage());
+        }
 
         return redirect()->route('order.success', $order->number);
     }
