@@ -37,6 +37,7 @@ class CatalogSeeder extends Seeder
         }
 
         $hasSource = Schema::hasColumn('product_images', 'source');
+        $hasThumbs = Schema::hasColumn('product_images', 'thumb_sm_path');
 
         // 1) Categorii (fără parent întâi, ca să existe înainte de legare).
         foreach ($data['categories'] ?? [] as $c) {
@@ -104,6 +105,10 @@ class CatalogSeeder extends Seeder
                 ];
                 if ($hasSource && array_key_exists('source', $img)) {
                     $attrs['source'] = $img['source'];
+                }
+                if ($hasThumbs) {
+                    $attrs['thumb_sm_path'] = $img['thumb_sm_path'] ?? null;
+                    $attrs['thumb_md_path'] = $img['thumb_md_path'] ?? null;
                 }
 
                 ProductImage::updateOrCreate(

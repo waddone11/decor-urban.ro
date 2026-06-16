@@ -40,7 +40,8 @@
                         @foreach ($images as $i => $image)
                             <button type="button" x-show="active === {{ $i }}" @click="lightbox = true"
                                     class="block w-full cursor-zoom-in" aria-label="Mărește imaginea">
-                                <img src="{{ $image->url() }}" alt="{{ $image->alt ?: $product->name }}"
+                                <img src="{{ $image->thumbUrl(800) }}" alt="{{ $image->alt ?: $product->name }}"
+                                     width="800" height="800"
                                      @if($i === 0) fetchpriority="high" @else loading="lazy" @endif
                                      class="aspect-square w-full object-cover">
                             </button>
@@ -54,7 +55,7 @@
                                 <button type="button" @click="active = {{ $i }}"
                                         :class="active === {{ $i }} ? 'ring-2 ring-accent' : 'ring-1 ring-line hover:ring-ink-muted'"
                                         class="overflow-hidden rounded-lg motion-safe:transition" aria-label="Imaginea {{ $i + 1 }}">
-                                    <img src="{{ $image->url() }}" alt="" loading="lazy" class="aspect-square w-full object-cover">
+                                    <img src="{{ $image->thumbUrl(400) }}" alt="" loading="lazy" width="400" height="400" class="aspect-square w-full object-cover">
                                 </button>
                             @endforeach
                         </div>

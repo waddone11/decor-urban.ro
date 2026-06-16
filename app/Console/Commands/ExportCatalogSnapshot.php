@@ -16,6 +16,7 @@ class ExportCatalogSnapshot extends Command
     public function handle(): int
     {
         $hasSource = Schema::hasColumn('product_images', 'source');
+        $hasThumbs = Schema::hasColumn('product_images', 'thumb_sm_path');
 
         $categories = Category::query()->orderBy('sort_order')->orderBy('id')->get()
             ->map(fn (Category $c) => [
@@ -29,7 +30,7 @@ class ExportCatalogSnapshot extends Command
             ])->values();
 
         $products = Product::query()->with(['categories', 'images'])->orderBy('id')->get()
-            ->map(function (Product $p) use ($hasSource) {
+            ->map(function (Product $p) use ($hasSource, $hasThumbs) {
                 return [
                     'slug' => $p->slug,
                     'name' => $p->name,
@@ -53,7 +54,7 @@ class ExportCatalogSnapshot extends Command
                         'slug' => $c->slug,
                         'is_primary' => (bool) $c->pivot->is_primary,
                     ])->values(),
-                    'images' => $p->images->map(function ($img) use ($hasSource) {
+                    'images' => $p->images->map(function ($img) use ($hasSource, $hasThumbs) {
                         $row = [
                             'path' => $img->path,
                             'alt' => $img->alt,
@@ -62,6 +63,10 @@ class ExportCatalogSnapshot extends Command
                         ];
                         if ($hasSource) {
                             $row['source'] = $img->source;
+                        }
+                        if ($hasThumbs) {
+                            $row['thumb_sm_path'] = $img->thumb_sm_path;
+                            $row['thumb_md_path'] = $img->thumb_md_path;
                         }
 
                         return $row;

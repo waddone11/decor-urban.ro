@@ -11,12 +11,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libpng-dev \
         libjpeg62-turbo-dev \
         libfreetype6-dev \
+        libwebp-dev \
         libicu-dev \
         libonig-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Core PHP extensions
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+# Core PHP extensions (gd cu WebP — pt comanda images:thumbnails)
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
     && docker-php-ext-install -j"$(nproc)" \
         pdo_mysql \
         mbstring \

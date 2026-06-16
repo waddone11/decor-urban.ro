@@ -7,7 +7,7 @@ importat, comenzile prin **`/commands/...?secret=`** (runner securizat cu cheia 
 | Artefact | Cum îl generezi |
 |---|---|
 | `decor-urban-{ts}.sql(.gz)` — dump DB | `docker compose exec app php artisan db:dump-prod` |
-| `decor-urban-deploy-{ts}.zip` — cod + vendor(no-dev) + assets + poze live | `./scripts/build-deploy-zip.sh` |
+| `decor-urban-deploy-{ts}.zip` — cod + vendor(no-dev) + assets + poze live (cu variante 400/800) | `./scripts/build-deploy-zip.sh` |
 | `.env.prod` — config (secrete de completat) | generat de scriptul de mai sus (din `.env.prod.example`) |
 
 > Înainte de zip rulează **`php artisan optimize:clear`** — altfel un config cache cu `.env`-ul

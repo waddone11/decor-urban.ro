@@ -171,6 +171,25 @@ php artisan migrate:fresh --seed --force   # CategorySeeder + CatalogSeeder
 doar rândurile `product_images`. Pozele se urcă separat (FTP/cPanel) în
 `storage/app/public/products/<slug>/`, apoi `php artisan storage:link`.
 
+### Thumbnails (variante 400/800 WebP)
+
+Pentru încărcare rapidă, listările/galeriile folosesc variante mici WebP, nu originalul full.
+**Generare LOCALĂ** (shared hosting poate n-are GD/Imagick) — fișierele se urcă apoi pe prod.
+
+```bash
+# generează <base>-400.webp + <base>-800.webp lângă fiecare imagine (produse + proiecte)
+php artisan images:thumbnails            # idempotent (sare peste cele existente)
+php artisan images:thumbnails --force    # regenerează tot
+php artisan images:thumbnails --only <slug>
+```
+
+- Necesită GD cu suport WebP (deja în imaginea Docker: `--with-webp`).
+- Afișarea e **defensivă**: `thumbUrl()` cade pe original dacă varianta lipsește — site-ul nu
+  se strică până urci variantele.
+- `images:promote-ai` cheamă automat `images:thumbnails` la final, deci pozele AI noi capătă variante.
+- **Deploy**: variantele stau lângă originale în `storage/app/public/...`, deci intră în
+  `build-deploy-zip.sh` ca orice fișier; sau urci doar folderele `products`/`projects` prin FTP.
+
 ### `/commands` — helper artisan din URL (hosting fără SSH)
 
 Rulează comenzi artisan din URL, securizat cu **o singură cheie `secret`** din `.env`.
@@ -193,7 +212,8 @@ Comenzi: `clear-cache`, `optimize-clear`, `optimize`, `create-storage-link`, `cr
 
 1. urci codul (git pull / FTP) + `.env` (cu `SECRET` setat);
 2. `/commands/migrate?secret=...` (sau `/commands/migrate-fresh-seed?secret=...&confirm=YES` la prima instalare);
-3. urci fișierele imagine în `storage/app/public/products/...` (FTP);
+3. urci fișierele imagine **+ variantele 400/800** în `storage/app/public/products|projects/...` (FTP);
+   generează variantele local înainte (`php artisan images:thumbnails`);
 4. `/commands/create-storage-link?secret=...`, `/commands/optimize?secret=...`, `/commands/create-sitemap?secret=...`;
 5. rotește/șterge `SECRET` după ce ai terminat.
 

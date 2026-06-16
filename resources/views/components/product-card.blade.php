@@ -4,8 +4,9 @@
 ])
 
 @php
-    $path = $product->primary_image_path;
-    $img = $path ? \Illuminate\Support\Facades\Storage::disk('public')->url($path) : null;
+    $image = $product->primaryImage();
+    $thumb400 = $image?->thumbUrl(400);
+    $thumb800 = $image?->thumbUrl(800);
     $code = $product->code ? ltrim($product->code, '#') : null;
     $material = $product->materialLabel();
 @endphp
@@ -15,8 +16,10 @@
 <div {{ $attributes->merge(['class' => 'group relative flex flex-col overflow-hidden rounded-card bg-surface-card border border-line shadow-card transition-all duration-300 hover:shadow-card-hover hover:-translate-y-1']) }}>
     <a href="{{ $href }}" class="flex flex-1 flex-col">
         <div class="relative aspect-square overflow-hidden bg-tint-stone">
-            @if ($img)
-                <img src="{{ $img }}" alt="{{ $product->name }}" loading="lazy"
+            @if ($image)
+                <img src="{{ $thumb400 }}" srcset="{{ $thumb400 }} 400w, {{ $thumb800 }} 800w"
+                     sizes="(max-width:640px) 50vw, 280px" alt="{{ $product->name }}"
+                     loading="lazy" width="400" height="400"
                      class="h-full w-full object-cover transition-transform duration-500 motion-safe:group-hover:scale-105">
             @else
                 <div class="flex h-full w-full items-center justify-center text-ink-muted">

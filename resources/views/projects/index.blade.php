@@ -41,7 +41,9 @@
                        class="group flex flex-col overflow-hidden rounded-card border border-line bg-surface-card shadow-card transition-all duration-300 hover:shadow-card-hover hover:-translate-y-1">
                         <div class="relative aspect-[4/3] overflow-hidden bg-tint-stone">
                             @if ($img)
-                                <img src="{{ $img->url() }}" alt="{{ $img->alt ?: $project->title }}" loading="lazy"
+                                <img src="{{ $img->thumbUrl(400) }}" srcset="{{ $img->thumbUrl(400) }} 400w, {{ $img->thumbUrl(800) }} 800w"
+                                     sizes="(max-width:640px) 100vw, 380px" alt="{{ $img->alt ?: $project->title }}"
+                                     loading="lazy" width="400" height="400"
                                      class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105">
                             @endif
                         </div>

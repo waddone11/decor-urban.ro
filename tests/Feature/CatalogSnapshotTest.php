@@ -83,6 +83,34 @@ class CatalogSnapshotTest extends TestCase
         $this->assertSame(2, $p->categories()->count());
     }
 
+    public function test_snapshot_round_trips_thumb_paths(): void
+    {
+        $this->seedSource();
+        // Setează căile thumb pe imagini (ca după images:thumbnails).
+        ProductImage::where('path', 'products/cos-c120/1.jpg')->update([
+            'thumb_sm_path' => 'products/cos-c120/1-400.webp',
+            'thumb_md_path' => 'products/cos-c120/1-800.webp',
+        ]);
+
+        Artisan::call('catalog:export-snapshot');
+
+        $data = json_decode(file_get_contents($this->tmp), true);
+        $img = collect($data['products'][0]['images'])->firstWhere('path', 'products/cos-c120/1.jpg');
+        $this->assertSame('products/cos-c120/1-400.webp', $img['thumb_sm_path']);
+        $this->assertSame('products/cos-c120/1-800.webp', $img['thumb_md_path']);
+
+        // Wipe + reseed → căile thumb supraviețuiesc.
+        ProductImage::query()->delete();
+        \DB::table('category_product')->delete();
+        Product::query()->delete();
+        Category::query()->delete();
+        $this->seed(CatalogSeeder::class);
+
+        $restored = ProductImage::where('path', 'products/cos-c120/1.jpg')->first();
+        $this->assertSame('products/cos-c120/1-400.webp', $restored->thumb_sm_path);
+        $this->assertSame('products/cos-c120/1-800.webp', $restored->thumb_md_path);
+    }
+
     public function test_seeder_is_idempotent(): void
     {
         $this->seedSource();
