@@ -1,7 +1,10 @@
 <?php
 
 use App\Http\Controllers\StorefrontController;
+use App\Livewire\CartPage;
 use App\Livewire\CatalogBrowser;
+use App\Livewire\Checkout;
+use App\Livewire\OrderSuccess;
 use App\Models\Category;
 use App\Models\Product;
 use App\Support\LegacyRedirects;
@@ -68,6 +71,11 @@ Route::get('/catalog', CatalogBrowser::class)->name('catalog');
 
 Route::get('/categorie/{category:slug}', [StorefrontController::class, 'category'])->name('category');
 Route::get('/produs/{product:slug}', [StorefrontController::class, 'product'])->name('product');
+
+// ── Coș & comandă (guest) ───────────────────────────────────────────────────
+Route::get('/cos', CartPage::class)->name('cart');
+Route::get('/checkout', Checkout::class)->name('checkout');
+Route::get('/comanda/{number}', OrderSuccess::class)->name('order.success');
 
 // ── Pagini statice / legale ─────────────────────────────────────────────────
 Route::view('/despre', 'static.despre')->name('despre');
