@@ -54,6 +54,11 @@ class ThumbnailsTest extends TestCase
 
         // Nu atinge originalul.
         Storage::disk('public')->assertExists('products/banca-x/1.png');
+
+        // Căile sunt salvate în DB.
+        $img = ProductImage::where('path', 'products/banca-x/1.png')->first();
+        $this->assertSame('products/banca-x/1-400.webp', $img->thumb_sm_path);
+        $this->assertSame('products/banca-x/1-800.webp', $img->thumb_md_path);
     }
 
     public function test_is_idempotent_skips_existing_without_force(): void
@@ -69,6 +74,30 @@ class ThumbnailsTest extends TestCase
 
         $this->assertStringContainsString('Variante generate: 0', $second);
         $this->assertStringContainsString('Sărite (existau):  2', $second);
+    }
+
+    public function test_thumb_url_prefers_db_path_then_convention_then_original(): void
+    {
+        Storage::fake('public');
+        $product = Product::create(['slug' => 'banca-x', 'name' => 'Bancă X']);
+        $image = ProductImage::create([
+            'product_id' => $product->id,
+            'path' => 'products/banca-x/1.png',
+            'sort_order' => 0,
+            'is_primary' => true,
+            'thumb_sm_path' => 'products/banca-x/custom-thumb.webp',
+        ]);
+
+        // 1. Calea din DB are prioritate (chiar dacă fișierul convenție nu există).
+        $this->assertStringContainsString('custom-thumb.webp', $image->thumbUrl(400));
+
+        // 2. Fără DB, dar cu fișier convenție pe disk → convenția.
+        $image->update(['thumb_sm_path' => null]);
+        Storage::disk('public')->put('products/banca-x/1-400.webp', 'x');
+        $this->assertStringContainsString('1-400.webp', $image->fresh()->thumbUrl(400));
+
+        // 3. Fără DB și fără fișier → originalul.
+        $this->assertStringContainsString('1.png', $image->fresh()->thumbUrl(800));
     }
 
     public function test_thumb_url_falls_back_to_original_when_variant_missing(): void

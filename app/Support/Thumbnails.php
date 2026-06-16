@@ -12,6 +12,15 @@ class Thumbnails
     /** Dimensiunile generate (px, pătrat). */
     public const SIZES = [400, 800];
 
+    /** Coloana DB care reține calea variantei, per dimensiune. */
+    public const COLUMNS = [400 => 'thumb_sm_path', 800 => 'thumb_md_path'];
+
+    /** Coloana pentru o dimensiune cerută (≥800 → md, altfel sm). */
+    public static function column(int $size): string
+    {
+        return $size >= 800 ? 'thumb_md_path' : 'thumb_sm_path';
+    }
+
     /**
      * Calea variantei pentru o cale-sursă relativă (la disk-ul public).
      * `products/foo.jpg` + 400 → `products/foo-400.webp`. Null dacă n-are extensie.
