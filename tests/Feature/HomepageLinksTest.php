@@ -38,6 +38,7 @@ class HomepageLinksTest extends TestCase
         $res->assertSee(route('category', 'banci-sezut'), false);
         $res->assertSee(route('product', 'banca-b201'), false);
         $res->assertSee(route('despre'), false);
+        $res->assertSee(route('institutii'), false);
         $res->assertSee(route('contact'), false);
         $res->assertSee(route('proiecte'), false);
     }

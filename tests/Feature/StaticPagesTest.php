@@ -14,6 +14,7 @@ class StaticPagesTest extends TestCase
     {
         return [
             'despre' => ['/despre', 'Despre noi'],
+            'institutii' => ['/institutii', 'primării, școli și instituții'],
             'contact' => ['/contact', 'Contact'],
             'confidentialitate' => ['/confidentialitate', 'Politică de confidențialitate'],
             'termeni' => ['/termeni', 'Termeni și condiții'],

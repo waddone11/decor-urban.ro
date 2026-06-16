@@ -79,6 +79,7 @@ Route::get('/comanda/{number}', OrderSuccess::class)->name('order.success');
 
 // ── Pagini statice / legale ─────────────────────────────────────────────────
 Route::view('/despre', 'static.despre')->name('despre');
+Route::view('/institutii', 'static.institutii')->name('institutii');
 Route::view('/contact', 'static.contact')->name('contact');
 Route::view('/confidentialitate', 'static.confidentialitate')->name('confidentialitate');
 Route::view('/termeni', 'static.termeni')->name('termeni');
