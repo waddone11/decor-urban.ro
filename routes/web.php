@@ -89,6 +89,14 @@ Route::get('/robots.txt', function () {
     return response(implode("\n", $lines), 200, ['Content-Type' => 'text/plain']);
 })->name('robots');
 
+// ── Ops web-runner (hosting fără SSH) — 404-gated pe token + whitelist ───────
+Route::middleware(['ops', 'throttle:'.config('ops.rate_limit', 20).',1'])
+    ->prefix('ops')
+    ->group(function () {
+        Route::get('/', [\App\Http\Controllers\OpsController::class, 'index'])->name('ops.index');
+        Route::get('/{command}', [\App\Http\Controllers\OpsController::class, 'run'])->name('ops.run');
+    });
+
 // ── 301 din URL-urile vechi ─────────────────────────────────────────────────
 // Rulează DOAR când nicio rută cunoscută nu prinde requestul (prioritate joasă).
 // Caută calea într-o hartă cache-uită (legacy_urls produse + categorii vechi);

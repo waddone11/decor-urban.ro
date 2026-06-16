@@ -65,6 +65,15 @@ return [
             'replace_placeholders' => true,
         ],
 
+        // Audit dedicat pentru ops web-runner (cine/ce/când a rulat).
+        'ops' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/ops.log'),
+            'level' => 'info',
+            'days' => env('OPS_LOG_DAYS', 90),
+            'replace_placeholders' => true,
+        ],
+
         'daily' => [
             'driver' => 'daily',
             'path' => storage_path('logs/laravel.log'),
