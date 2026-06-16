@@ -61,9 +61,11 @@
 
     @stack('head')
 
-    {{-- Fonturi via Bunny Fonts (GDPR-friendly). Display: Plus Jakarta Sans, Body: Inter. --}}
+    {{-- Fonturi via Bunny Fonts (GDPR-friendly). Body: Inter · Display: Plus Jakarta Sans · Logo: Space Grotesk.
+         Comutare font logo: schimbă --font-logo în app.css ȘI familia de mai jos,
+         ex. „bricolage-grotesque:800" sau „archivo:700". --}}
     <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700|plus-jakarta-sans:600,700,800" rel="stylesheet">
+    <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700|plus-jakarta-sans:600,700,800|space-grotesk:700" rel="stylesheet">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles

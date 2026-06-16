@@ -86,10 +86,12 @@
                         {{ ucfirst($supplierLabel) }} de mobilier urban
                     </p>
                     <h1 class="mt-5 text-4xl font-extrabold leading-[1.08] text-ink sm:text-5xl lg:text-6xl">
-                        <span data-word class="hero-reveal inline-block">Mobilier</span>
-                        <span data-word class="hero-reveal inline-block">urban</span>
-                        <span data-word class="hero-reveal inline-block">care</span>
-                        <span data-word class="hero-reveal inline-block text-accent">durează.</span>
+                        {{-- Linia 1: vizibilă instant la load (fără hero-reveal / opacity:0). --}}
+                        <span class="block">Mobilier urban</span>
+                        {{-- Linia 2: revelată separat pe scroll (ScrollTrigger), cu underline pe accent. --}}
+                        <span data-hero-line2 class="hero-reveal block">
+                            care <span class="relative inline-block text-accent">durează.<span data-hero-underline class="absolute -bottom-1 left-0 h-[3px] w-full origin-left rounded-full bg-accent"></span></span>
+                        </span>
                     </h1>
                     <p data-lead class="hero-reveal mt-5 text-lg leading-relaxed text-ink-soft">
                         Bănci, coșuri, jardiniere, stații și locuri de joacă — proiectate și fabricate
@@ -197,9 +199,30 @@
                     </div>
                 </div>
 
-                <div class="relative hidden items-center justify-center bg-accent p-12 text-white lg:col-span-2 lg:flex">
-                    <svg class="h-40 w-40 opacity-90" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.1">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21" />
+                {{-- Clădire instituțională: ferestrele (amber) se aprind secvențial la scroll. --}}
+                <div data-seap class="relative hidden items-center justify-center bg-accent p-12 text-white lg:col-span-2 lg:flex">
+                    <svg class="h-44 w-44" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        {{-- Steag în vârf --}}
+                        <path d="M32 8 V3" />
+                        <path class="seap-window" d="M32 3.5 H39 L36.5 5.5 L39 7.5 H32 Z" />
+                        {{-- Fronton + emblemă --}}
+                        <path d="M5 22 L32 8 L59 22 Z" />
+                        <circle class="seap-window" cx="32" cy="17.5" r="2.4" />
+                        {{-- Antablament --}}
+                        <path d="M6 22 H58" />
+                        <path d="M9 27 H55" />
+                        {{-- Ferestre/travee (amber) între coloane --}}
+                        <rect class="seap-window" x="12" y="29" width="6" height="19" rx="0.6" />
+                        <rect class="seap-window" x="21" y="29" width="6" height="19" rx="0.6" />
+                        <rect class="seap-window" x="29" y="29" width="6" height="19" rx="0.6" />
+                        <rect class="seap-window" x="37.5" y="29" width="6" height="19" rx="0.6" />
+                        <rect class="seap-window" x="46" y="29" width="6" height="19" rx="0.6" />
+                        {{-- Coloane peste travee --}}
+                        <path stroke-width="2.4" d="M11 27 V48 M19.5 27 V48 M28 27 V48 M36.5 27 V48 M45 27 V48 M53 27 V48" />
+                        {{-- Bază + trepte --}}
+                        <path d="M9 48 H55" />
+                        <path d="M7 52 H57" />
+                        <path d="M4 56 H60" />
                     </svg>
                 </div>
             </div>
@@ -218,7 +241,7 @@
                 <a href="#categorii" data-draw-on data-cat-card
                    class="group flex flex-col items-start gap-4 rounded-card border border-line bg-tint-sky p-6 transition-all duration-300 hover:-translate-y-1 hover:border-accent hover:shadow-card-hover">
                     <span class="flex h-14 w-14 items-center justify-center rounded-2xl bg-surface-card text-accent shadow-sm transition-colors group-hover:bg-accent group-hover:text-white">
-                        <x-category-icon :slug="$category->slug" class="h-8 w-8" />
+                        <x-category-icon :slug="$category->slug" class="h-9 w-9" />
                     </span>
                     <div>
                         <h3 class="text-base font-bold leading-tight text-ink">{{ $category->name }}</h3>
@@ -368,33 +391,38 @@
         </div>
     </section>
 
-    {{-- 9. SOCIAL PROOF — contoare count-up --}}
-    <section id="cifre" data-scroll-reveal class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20">
-        <div class="grid grid-cols-2 gap-4 lg:grid-cols-4">
+    {{-- 9. SOCIAL PROOF — 4 carduri (count-up + iconițe line-art) + CTA proiecte --}}
+    <section id="cifre" data-scroll-reveal data-stats class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20">
+        <div data-stats-grid class="grid grid-cols-2 gap-4 lg:grid-cols-4">
             @php
-                $counters = array_values(array_filter([
-                    ['v' => $stats['products'], 'suffix' => '+', 'l' => 'produse în catalog'],
-                    ['v' => $stats['categories'], 'suffix' => '', 'l' => 'categorii'],
-                    $years > 0 ? ['v' => $years, 'suffix' => '+', 'l' => 'ani de experiență'] : null,
-                    $projects > 0 ? ['v' => $projects, 'suffix' => '+', 'l' => 'proiecte livrate'] : null,
-                ]));
+                $statCards = [
+                    ['type' => 'count', 'v' => $stats['products'], 'suffix' => '+', 'l' => 'produse în catalog'],
+                    ['type' => 'count', 'v' => $stats['categories'], 'suffix' => '', 'l' => 'categorii de mobilier urban'],
+                    ['type' => 'icon', 'icon' => 'national', 'big' => 'Național', 'l' => 'livrare în toată țara'],
+                    ['type' => 'icon', 'icon' => 'institutii', 'big' => 'Instituții', 'l' => 'primării, școli și firme'],
+                ];
             @endphp
-            @foreach ($counters as $c)
-                <div class="rounded-card border border-line bg-surface-card p-6 text-center shadow-card">
-                    <p class="text-4xl font-extrabold text-accent sm:text-5xl">
-                        <span data-countup data-count-to="{{ $c['v'] }}">{{ $c['v'] }}</span>{{ $c['suffix'] }}
-                    </p>
-                    <p class="mt-2 text-sm text-ink-soft">{{ $c['l'] }}</p>
+            @foreach ($statCards as $card)
+                <div data-stat-card class="flex flex-col items-center justify-center rounded-card border border-line bg-surface-card p-6 text-center shadow-card">
+                    @if ($card['type'] === 'count')
+                        <p class="text-4xl font-extrabold text-accent sm:text-5xl">
+                            <span data-countup data-count-to="{{ $card['v'] }}">{{ $card['v'] }}</span>{{ $card['suffix'] }}
+                        </p>
+                    @else
+                        <span class="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-accent-soft text-accent">
+                            <x-dynamic-component :component="'icons.stat.'.$card['icon']" class="h-7 w-7" />
+                        </span>
+                        <p class="text-2xl font-extrabold text-accent sm:text-3xl">{{ $card['big'] }}</p>
+                    @endif
+                    <p class="mt-2 text-sm text-ink-soft">{{ $card['l'] }}</p>
                 </div>
             @endforeach
         </div>
 
-        <p class="mt-8 text-center text-base text-ink-soft">
-            Clienți: primării, școli și firme din toată țara.
-            @if (! empty($references))
-                <span class="mt-3 block text-sm text-ink-muted">{{ implode(' · ', $references) }}</span>
-            @endif
-        </p>
+        {{-- CTA către pagina de proiecte (rută reală /proiecte). --}}
+        <div class="mt-10 text-center">
+            <x-button :href="route('proiecte')" variant="ghost" size="lg">Vezi proiectele noastre →</x-button>
+        </div>
     </section>
 
     {{-- 10. FAQ — acordeon (schema FAQPage în <head>) --}}

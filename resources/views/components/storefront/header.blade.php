@@ -3,12 +3,12 @@
     $whatsapp = config('contact.whatsapp');
 @endphp
 
-<header x-data="{ mobileOpen: false }" class="sticky top-0 z-40 border-b border-line bg-surface/90 backdrop-blur">
+<header x-data="{ mobileOpen: false }" class="sticky top-0 z-40 border-b border-shell-line bg-shell/95 backdrop-blur">
     <div class="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-        {{-- Logo: marca „AR" (image.svg) + wordmark rafinat (Plus Jakarta Sans 700). --}}
+        {{-- Logo: marca (image.svg) + wordmark cu font dedicat (token --font-logo). --}}
         <a href="{{ url('/') }}" class="flex items-center gap-2.5 shrink-0">
             <img src="{{ asset('images/logo.svg') }}" alt="Decor Urban" class="h-9 w-9 text-ink" width="36" height="36">
-            <span class="font-display text-xl font-bold tracking-[-0.02em] text-ink">Decor <span class="text-accent">Urban</span></span>
+            <x-wordmark class="text-xl" />
         </a>
 
         {{-- Nav desktop --}}
@@ -104,7 +104,7 @@
     </div>
 
     {{-- Meniu mobil --}}
-    <div x-show="mobileOpen" x-cloak x-transition class="lg:hidden border-t border-line bg-surface-card">
+    <div x-show="mobileOpen" x-cloak x-transition class="lg:hidden border-t border-shell-line bg-shell">
         <div class="space-y-1 px-4 py-4">
             <a href="{{ url('/') }}" class="block rounded-lg px-3 py-2.5 text-base font-medium text-ink hover:bg-tint-stone">Acasă</a>
             <p class="px-3 pt-3 pb-1 text-xs font-semibold uppercase tracking-wider text-ink-muted">Categorii</p>

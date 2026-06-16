@@ -107,6 +107,32 @@ class HomepageTest extends TestCase
         $res->assertSee('"@type":"Product"', false);
     }
 
+    public function test_homepage_social_proof_has_four_cards_and_projects_cta(): void
+    {
+        $this->seedCatalog();
+
+        $res = $this->get('/');
+
+        // Cele 4 carduri: 2 numerice (count-up) + 2 cu iconiță line-art.
+        $res->assertSee('data-stats-grid', false);
+        $res->assertSee('data-stat-card', false);
+        $res->assertSee('stat-icon', false);
+        $res->assertSee('Național');
+        $res->assertSee('Instituții');
+        // CTA către ruta reală /proiecte.
+        $res->assertSee('Vezi proiectele noastre');
+        $res->assertSee(route('proiecte'), false);
+    }
+
+    public function test_proiecte_page_renders_ok(): void
+    {
+        $res = $this->get('/proiecte');
+
+        $res->assertOk();
+        $res->assertSee('Proiectele noastre — mobilier urban livrat în toată țara');
+        $res->assertSee('Cere ofertă pe WhatsApp');
+    }
+
     public function test_content_is_complete_without_js_for_reduced_motion(): void
     {
         $this->seedCatalog();
