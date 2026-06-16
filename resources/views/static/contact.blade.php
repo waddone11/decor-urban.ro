@@ -18,7 +18,7 @@
         ['name' => 'Contact', 'url' => route('contact')],
     ])" />
 
-    <div class="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         <x-storefront.breadcrumb :items="[
             ['label' => 'Acasă', 'url' => url('/')],
             ['label' => 'Contact'],

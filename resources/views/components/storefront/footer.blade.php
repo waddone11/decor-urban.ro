@@ -74,15 +74,18 @@
                             WhatsApp
                         </a>
                     </li>
-                    @if ($isPlaceholder)
-                        <li class="mt-1 text-xs text-ink-soft">⚠️ Date de contact provizorii — de confirmat.</li>
+                    @if ($isPlaceholder && app()->environment('local'))
+                        <li class="mt-1 text-xs text-ink-soft">⚠️ [dev] Date de contact provizorii — de confirmat.</li>
                     @endif
                 </ul>
             </div>
         </div>
 
-        @if ($companyPlaceholder)
-            <p class="mt-8 text-xs text-ink-soft">⚠️ TODO de confirmat: cod CPV, prezență SEAP, proiecte livrate, referințe, standarde (ex. EN 1176) — de completat în <code>config/company.php</code>.</p>
+        {{-- Reminder de completare — DOAR în dev (local). Vizitatorii nu văd niciodată un „TODO".
+             Câmpurile opționale (CPV, SEAP, proiecte, referințe, standarde) se afișează doar unde
+             sunt randate și doar dacă sunt setate (vezi homepage); goale → lipsesc curat. --}}
+        @if ($companyPlaceholder && app()->environment('local'))
+            <p class="mt-8 text-xs text-ink-soft">⚠️ [dev] De completat: cod CPV, prezență SEAP, proiecte livrate, referințe, standarde (ex. EN 1176) — în <code>config/company.php</code>.</p>
         @endif
 
         <div class="mt-12 flex flex-col gap-3 border-t border-shell-line pt-6 sm:flex-row sm:items-center sm:justify-between">

@@ -72,3 +72,9 @@ scripts/scraper/node_modules
 /storage/enrich/
 
 /enrich-*.png
+
+# Screenshot-uri review polish — nu în repo
+/polish-*.png
+
+# Screenshot-uri review pagini institutii/proiecte — nu în repo
+/pages-*.png
