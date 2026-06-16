@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasImageThumbnails;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Storage;
 
 class ProjectImage extends Model
 {
+    use HasImageThumbnails;
+
     protected $fillable = [
         'project_id', 'path', 'alt', 'sort_order', 'is_primary',
     ];

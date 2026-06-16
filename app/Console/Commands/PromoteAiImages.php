@@ -110,6 +110,13 @@ class PromoteAiImages extends Command
         }
         $this->line('  Originalele rămân backup în storage/scrape/images/.');
 
+        // Pozele noi capătă automat variante 400/800 (idempotent — le sare pe cele existente).
+        if (! $dryRun && $stats['copied'] > 0) {
+            $this->newLine();
+            $this->info('Generez thumbnails pentru pozele noi…');
+            $this->call('images:thumbnails', $only ? ['--only' => $only] : []);
+        }
+
         return self::SUCCESS;
     }
 }

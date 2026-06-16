@@ -23,6 +23,9 @@ npm run build
 echo "==> 3. Dump DB (.sql + .sql.gz)"
 $DC app php artisan db:dump-prod
 
+echo "==> 3b. Thumbnails 400/800 WebP (idempotent — doar pozele noi)"
+$DC app php artisan images:thumbnails
+
 echo "==> 4. Copie staging (exclud git/vendor/node_modules/.env/scrape/teste/scripturi dev)"
 rm -rf "$STAGE"
 mkdir -p "$STAGE"

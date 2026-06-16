@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Str;
 
 class Category extends Model
 {
@@ -78,11 +79,11 @@ class Category extends Model
     {
         // Preferă intro-ul îmbogățit (conținut SEO), apoi descrierea, apoi fallback.
         if ($this->intro) {
-            return (string) \Illuminate\Support\Str::of($this->intro)->stripTags()->squish()->limit(155);
+            return (string) Str::of($this->intro)->stripTags()->squish()->limit(155);
         }
 
         if ($this->description) {
-            return (string) \Illuminate\Support\Str::of($this->description)->stripTags()->squish()->limit(155);
+            return (string) Str::of($this->description)->stripTags()->squish()->limit(155);
         }
 
         return $this->name.' — '.ucfirst(config('company.supplier_label')).' de mobilier urban și stradal. '
@@ -90,10 +91,10 @@ class Category extends Model
     }
 
     /**
-     * Calea unei imagini reprezentative (prima imagine a primului produs activ
-     * din categorie), relativă la disk-ul public. Pentru cardurile de categorie.
+     * Imaginea reprezentativă (prima imagine a primului produs activ din categorie).
+     * Pentru cardurile de categorie — întoarce modelul ca să se poată folosi thumbUrl().
      */
-    public function representativeImagePath(): ?string
+    public function representativeImage(): ?ProductImage
     {
         $product = $this->products()
             ->where('is_active', true)
@@ -101,6 +102,12 @@ class Category extends Model
             ->with('images')
             ->first();
 
-        return $product?->primaryImage()?->path;
+        return $product?->primaryImage();
+    }
+
+    /** Calea imaginii reprezentative, relativă la disk-ul public (back-compat / Filament). */
+    public function representativeImagePath(): ?string
+    {
+        return $this->representativeImage()?->path;
     }
 }
