@@ -58,6 +58,32 @@ class Order extends Model
     }
 
     /**
+     * Mesaj precompletat pentru WhatsApp: nr. comandă + produse + client + telefon + metodă.
+     * Clientul îl trimite către numărul firmei (tu ai primit deja și emailul).
+     */
+    public function whatsappMessage(): string
+    {
+        $lines = ['Comandă '.$this->number];
+
+        foreach ($this->items as $item) {
+            $code = $item->product_code ? ' ('.ltrim($item->product_code, '#').')' : '';
+            $lines[] = '• '.$item->product_name.$code.' × '.$item->quantity;
+        }
+
+        $lines[] = '';
+        $lines[] = 'Client: '.$this->customer_name.($this->company ? ' / '.$this->company : '');
+        $lines[] = 'Telefon: '.$this->phone;
+        $lines[] = 'Metodă: '.$this->paymentMethodLabel();
+
+        return implode("\n", $lines);
+    }
+
+    public function whatsappUrl(): string
+    {
+        return 'https://wa.me/'.config('contact.whatsapp').'?text='.rawurlencode($this->whatsappMessage());
+    }
+
+    /**
      * Următorul număr de comandă lizibil: DU-{an}-{secvență 4 cifre}.
      * Secvențial pe an, sub lock pentru a evita coliziunile.
      */
