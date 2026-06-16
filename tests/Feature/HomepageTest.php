@@ -129,7 +129,9 @@ class HomepageTest extends TestCase
         $res = $this->get('/proiecte');
 
         $res->assertOk();
-        $res->assertSee('Proiectele noastre — mobilier urban livrat în toată țara');
+        $res->assertSee('Proiectele noastre');
+        // Fără proiecte publicate → empty state onest + CTA.
+        $res->assertSee('Adăugăm în curând');
         $res->assertSee('Cere ofertă pe WhatsApp');
     }
 

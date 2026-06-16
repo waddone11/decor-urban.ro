@@ -57,13 +57,9 @@ Route::get('/', function () {
     return view('home', compact('categories', 'featured', 'stats', 'faqs'));
 })->name('home');
 
-// Proiectele noastre — stub onest până avem lucrări reale (poze/nume) de afișat.
-// Citește o listă opțională din config/company.php (gol acum → mesaj „în curând”).
-Route::get('/proiecte', function () {
-    $projects = config('company.projects_list', []);
-
-    return view('proiecte', compact('projects'));
-})->name('proiecte');
+// Proiectele noastre — gestionate din Filament (doar cele publicate sunt vizibile).
+Route::get('/proiecte', [StorefrontController::class, 'projects'])->name('proiecte');
+Route::get('/proiecte/{project:slug}', [StorefrontController::class, 'projectShow'])->name('project.show');
 
 // ── Storefront ────────────────────────────────────────────────────────────
 // /catalog = componentă Livewire full-page (filtre + search + sort + paginare).
