@@ -59,6 +59,25 @@
                     @endforeach
                 </ul>
             </nav>
+
+            {{-- Material (facete derivate din specs) --}}
+            @if (! empty($materialFacets))
+                <fieldset class="mt-6">
+                    <legend class="mb-2 text-xs font-semibold uppercase tracking-wider text-ink-muted">Material</legend>
+                    <ul class="space-y-0.5">
+                        @foreach ($materialFacets as $mat => $cnt)
+                            <li>
+                                <label class="flex cursor-pointer items-center gap-2.5 rounded-lg px-3 py-1.5 text-sm text-ink-soft transition-colors hover:bg-tint-stone hover:text-ink has-[:checked]:font-semibold has-[:checked]:text-accent">
+                                    <input type="checkbox" wire:model.live="materials" value="{{ $mat }}"
+                                           class="rounded border-line text-accent focus:ring-accent">
+                                    <span class="flex-1">{{ ucfirst($mat) }}</span>
+                                    <span class="text-xs text-ink-muted">{{ $cnt }}</span>
+                                </label>
+                            </li>
+                        @endforeach
+                    </ul>
+                </fieldset>
+            @endif
         </aside>
 
         {{-- Rezultate --}}
@@ -66,7 +85,7 @@
             <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
                 <p class="text-sm text-ink-muted">
                     {{ $products->total() }} {{ $products->total() === 1 ? 'produs' : 'produse' }}
-                    @if ($cat || trim($q) !== '')
+                    @if ($cat || trim($q) !== '' || ! empty($materials))
                         · <button type="button" wire:click="clearFilters" class="text-accent hover:underline">resetează filtrele</button>
                     @endif
                 </p>

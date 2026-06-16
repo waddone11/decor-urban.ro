@@ -25,6 +25,18 @@ class CatalogBrowser extends Component
     #[Url(as: 'sort')]
     public string $sort = 'recomandate';
 
+    /** Facete material selectate (lemn/metal/inox/...). Sincronizat în URL. */
+    #[Url(as: 'mat')]
+    public array $materials = [];
+
+    /** Ordinea facetelor de material (canonice, ca în SpecsExtractor). */
+    public const MATERIAL_FACETS = ['lemn', 'metal', 'inox', 'beton', 'alucobond', 'policarbonat'];
+
+    public function updatedMaterials(): void
+    {
+        $this->resetPage();
+    }
+
     public function updatedCat(): void
     {
         $this->resetPage();
@@ -42,7 +54,7 @@ class CatalogBrowser extends Component
 
     public function clearFilters(): void
     {
-        $this->reset(['cat', 'q', 'sort']);
+        $this->reset(['cat', 'q', 'sort', 'materials']);
         $this->resetPage();
     }
 
@@ -54,15 +66,39 @@ class CatalogBrowser extends Component
 
         $totalCount = Product::query()->active()->count();
 
-        $query = Product::query()->active()->with(['images', 'categories']);
+        // Filtrele de bază (categorie + search) — aplicate și la facete, și la rezultate.
+        $applyBase = function ($q) {
+            if ($this->cat) {
+                $q->whereHas('categories', fn ($c) => $c->where('slug', $this->cat));
+            }
+            if (trim($this->q) !== '') {
+                $term = '%'.trim($this->q).'%';
+                $q->where(fn ($w) => $w->where('name', 'like', $term)->orWhere('code', 'like', $term));
+            }
+        };
 
-        if ($this->cat) {
-            $query->whereHas('categories', fn ($q) => $q->where('slug', $this->cat));
+        // Facete material: din specs (cat+search aplicat, FĂRĂ filtrul de material), cu count.
+        $facetQuery = Product::query()->active();
+        $applyBase($facetQuery);
+        $facetRows = $facetQuery->get(['id', 'specs']);
+
+        $materialFacets = [];
+        foreach (self::MATERIAL_FACETS as $m) {
+            $c = $facetRows->filter(fn ($p) => in_array($m, (array) ($p->specs['material'] ?? []), true))->count();
+            if ($c > 0) {
+                $materialFacets[$m] = $c;
+            }
         }
 
-        if (trim($this->q) !== '') {
-            $term = '%'.trim($this->q).'%';
-            $query->where(fn ($q) => $q->where('name', 'like', $term)->orWhere('code', 'like', $term));
+        $query = Product::query()->active()->with(['images', 'categories']);
+        $applyBase($query);
+
+        // Filtru material (DB-agnostic: derivăm ID-urile din specs, apoi whereIn).
+        if (! empty($this->materials)) {
+            $ids = $facetRows
+                ->filter(fn ($p) => array_intersect($this->materials, (array) ($p->specs['material'] ?? [])))
+                ->pluck('id');
+            $query->whereIn('id', $ids);
         }
 
         match ($this->sort) {
@@ -82,7 +118,7 @@ class CatalogBrowser extends Component
 
         $itemListLd = JsonLd::itemList($products->getCollection(), $title);
 
-        return view('livewire.catalog-browser', compact('categories', 'products', 'totalCount', 'activeCategory', 'itemListLd'))
+        return view('livewire.catalog-browser', compact('categories', 'products', 'totalCount', 'activeCategory', 'itemListLd', 'materialFacets'))
             ->layout('components.layouts.storefront', ['title' => $title, 'description' => $description]);
     }
 }
