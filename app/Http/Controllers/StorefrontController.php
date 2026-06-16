@@ -4,11 +4,38 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Project;
 use App\Support\JsonLd;
 use Illuminate\Support\Facades\Storage;
 
 class StorefrontController extends Controller
 {
+    /** Grilă proiecte publicate (+ empty state în view). */
+    public function projects()
+    {
+        $projects = Project::query()->published()->ordered()->with('images')->get();
+
+        return view('projects.index', compact('projects'));
+    }
+
+    /** Pagină proiect (doar publicat — binding scopat → 404 altfel). */
+    public function projectShow(Project $project)
+    {
+        $project->load('images');
+
+        $similar = Project::query()->published()->ordered()
+            ->where('id', '!=', $project->id)
+            ->take(3)->with('images')->get();
+
+        $jsonLd = JsonLd::breadcrumb([
+            ['name' => 'Acasă', 'url' => url('/')],
+            ['name' => 'Proiecte', 'url' => route('proiecte')],
+            ['name' => $project->title, 'url' => route('project.show', $project->slug)],
+        ]);
+
+        return view('projects.show', compact('project', 'similar', 'jsonLd'));
+    }
+
     /**
      * Pagina categorie: produsele active din categorie, sortabil + paginat.
      */

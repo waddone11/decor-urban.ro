@@ -68,7 +68,7 @@
             </div>
 
             <a href="{{ route('despre') }}" class="px-3 py-2 text-sm font-medium text-ink-soft hover:text-ink transition-colors">Despre</a>
-            <a href="{{ url('/') }}#institutii" class="px-3 py-2 text-sm font-medium text-ink-soft hover:text-ink transition-colors">Instituții</a>
+            <a href="{{ route('institutii') }}" class="px-3 py-2 text-sm font-medium text-ink-soft hover:text-ink transition-colors">Instituții</a>
             <a href="{{ route('contact') }}" class="px-3 py-2 text-sm font-medium text-ink-soft hover:text-ink transition-colors">Contact</a>
         </nav>
 
@@ -111,7 +111,7 @@
                 </a>
             @endforeach
             <a href="{{ route('despre') }}" class="block rounded-lg px-3 py-2.5 text-base font-medium text-ink hover:bg-tint-stone mt-2">Despre</a>
-            <a href="{{ url('/') }}#institutii" class="block rounded-lg px-3 py-2.5 text-base font-medium text-ink hover:bg-tint-stone">Instituții</a>
+            <a href="{{ route('institutii') }}" class="block rounded-lg px-3 py-2.5 text-base font-medium text-ink hover:bg-tint-stone">Instituții</a>
             <a href="{{ route('contact') }}" class="block rounded-lg px-3 py-2.5 text-base font-medium text-ink hover:bg-tint-stone">Contact</a>
             <x-button :href="'https://wa.me/'.$whatsapp" variant="accent" size="md" class="mt-3 w-full">Cere ofertă pe WhatsApp</x-button>
         </div>
