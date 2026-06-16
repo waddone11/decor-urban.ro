@@ -198,6 +198,32 @@ Whitelist: `migrate`, `fresh` (confirm=YES), `seed`, `storage-link`, `optimize(-
 4. `/ops/storage-link?token=...`, `/ops/optimize?token=...`, `/ops/sitemap?token=...`;
 5. `OPS_ENABLED=false` după ce ai terminat.
 
+## Coș & comandă (Faza 4c)
+
+Prețurile sunt „la cerere", deci coșul e o **cerere de ofertă**, fără plată online.
+
+| Rută                 | Ce face                                                            |
+|----------------------|--------------------------------------------------------------------|
+| `/cos`               | Coș guest (pe sesiune): cantități editabile, elimină, stare goală  |
+| `/checkout`          | Formular guest (date + B2B firmă/CUI + metodă) → creează comanda   |
+| `/comanda/{number}`  | Pagină succes: rezumat, „ți-am trimis email", buton WhatsApp       |
+
+Fluxul: adaugi produse → `/checkout` → se creează `Order` + `OrderItem` (snapshot nume/cod/cantitate),
+status `noua` → emailuri (client + admin) → pagina de succes cu deep-link `wa.me` (mesaj precompletat).
+Comenzile se gestionează în Filament (`/admin` → grup **Comenzi**): status editabil, filtre, search,
+„retrimite email"; produsele comenzii sunt read-only (snapshot).
+
+### Mail (comenzi)
+
+- **Local:** Mailpit (`MAIL_HOST=mailpit`, UI pe `:8025`).
+- **Prod:** trebuie un **SMTP real** (al tău sau un serviciu tranzacțional). Setează
+  `MAIL_HOST/PORT/USERNAME/PASSWORD/MAIL_SCHEME` + `MAIL_FROM_ADDRESS` în `.env`.
+  **Fără SMTP real, emailurile de comandă NU pleacă** (comanda se salvează oricum și apare în panel —
+  trimiterea e prinsă în try/catch și logată).
+- Adresa care primește comenzile noi = `CONTACT_EMAIL` (`config/contact.php`).
+- Trimitere **sincronă** (volum mic). Pe hosting fără worker de coadă, lasă așa; dacă pui worker,
+  poți face Mailable-urile `ShouldQueue` și seta `QUEUE_CONNECTION`.
+
 ## În afara scope-ului (Faza 0)
 
 Design final, import produse din site-ul vechi (OpenCart), rute storefront, coș,

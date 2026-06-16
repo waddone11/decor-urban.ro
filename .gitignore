@@ -62,3 +62,5 @@ scripts/scraper/node_modules
 /.playwright-mcp/
 
 /faza4b-final-*.png
+
+/faza4c-*.png
