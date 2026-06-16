@@ -1,0 +1,12 @@
+Scrie un PARAGRAF scurt de intro pentru pagina unei categorii dintr-un magazin de mobilier urban
+și stradal (producător direct, vinde către primării, școli, firme, clienți privați).
+
+Limba română, ton profesionist B2B, SEO-natural și keyword-rich, fără exagerări. Într-un singur
+paragraf (3-5 propoziții) spune: ce conține categoria, unde se folosește (parcuri, primării, școli,
+spații publice și private), materiale tipice DOAR dacă sunt evidente din tipul produsului, și că
+oferim dimensiuni și culori (RAL) la cerere.
+
+Nu inventa cifre, dimensiuni sau specificații. Întoarce DOAR paragraful (fără titlu, fără markdown).
+
+=== CATEGORIE ===
+{{FACTS}}

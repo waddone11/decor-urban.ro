@@ -67,3 +67,6 @@ scripts/scraper/node_modules
 
 # Screenshot-uri verificare finala (merge poze AI)
 /final-*.png
+
+# Artefacte enrichment generate (review + manifest) — nu în repo
+/storage/enrich/
