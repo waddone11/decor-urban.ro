@@ -24,9 +24,8 @@ class EnrichDescriptions extends Command
 
     public function handle(): int
     {
-        $dir = storage_path('enrich');
-        @mkdir($dir, 0775, true);
-        $this->manifestPath = $dir.'/manifest.json';
+        $this->manifestPath = config('catalog.enrich_manifest_path');
+        @mkdir(dirname($this->manifestPath), 0775, true);
         $this->manifest = is_file($this->manifestPath)
             ? (json_decode((string) file_get_contents($this->manifestPath), true) ?: [])
             : [];

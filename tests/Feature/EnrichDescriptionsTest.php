@@ -13,6 +13,18 @@ class EnrichDescriptionsTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        // Manifest izolat în temp — NU atinge storage/enrich/manifest.json (mount partajat).
+        config(['catalog.enrich_manifest_path' => sys_get_temp_dir().'/enrich-test-'.getmypid().'.json']);
+    }
+
+    private function manifest(): array
+    {
+        return json_decode((string) file_get_contents(config('catalog.enrich_manifest_path')), true);
+    }
+
     private function fakeGemini(string $text): void
     {
         Http::fake([
@@ -45,8 +57,7 @@ class EnrichDescriptionsTest extends TestCase
         $this->assertSame('Descriere veche.', $p->description, 'description live NU se atinge');
         $this->assertSame('legacy', $p->description_source);
 
-        $manifest = json_decode((string) file_get_contents(storage_path('enrich/manifest.json')), true);
-        $this->assertSame('ok', $manifest['items']['banca-b202']['status']);
+        $this->assertSame('ok', $this->manifest()['items']['banca-b202']['status']);
     }
 
     public function test_generic_marker_is_stripped_and_flagged(): void
@@ -64,14 +75,13 @@ class EnrichDescriptionsTest extends TestCase
         $p->refresh();
         $this->assertSame('Descriere generică de categorie.', $p->description_draft, 'marcajul [GENERIC] e curățat');
 
-        $manifest = json_decode((string) file_get_contents(storage_path('enrich/manifest.json')), true);
-        $this->assertTrue($manifest['items']['produs-vag']['generic']);
-        $this->assertTrue($manifest['items']['produs-vag']['thin']);
+        $this->assertTrue($this->manifest()['items']['produs-vag']['generic']);
+        $this->assertTrue($this->manifest()['items']['produs-vag']['thin']);
     }
 
     protected function tearDown(): void
     {
-        @unlink(storage_path('enrich/manifest.json'));
+        @unlink(config('catalog.enrich_manifest_path'));
         parent::tearDown();
     }
 }
