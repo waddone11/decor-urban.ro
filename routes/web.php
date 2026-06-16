@@ -69,6 +69,13 @@ Route::get('/catalog', CatalogBrowser::class)->name('catalog');
 Route::get('/categorie/{category:slug}', [StorefrontController::class, 'category'])->name('category');
 Route::get('/produs/{product:slug}', [StorefrontController::class, 'product'])->name('product');
 
+// ── Pagini statice / legale ─────────────────────────────────────────────────
+Route::view('/despre', 'static.despre')->name('despre');
+Route::view('/contact', 'static.contact')->name('contact');
+Route::view('/confidentialitate', 'static.confidentialitate')->name('confidentialitate');
+Route::view('/termeni', 'static.termeni')->name('termeni');
+Route::view('/politica-cookies', 'static.politica-cookies')->name('politica-cookies');
+
 // ── SEO: sitemap + robots ───────────────────────────────────────────────────
 // /sitemap.xml: dinamic (dev/test); pe prod `sitemap:generate` scrie un fișier
 // static în public/ care e servit direct de webserver (mai rapid).

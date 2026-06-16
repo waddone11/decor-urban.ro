@@ -33,6 +33,34 @@ return [
         // '/cosuri-de-gunoi'   => 'cosuri-de-gunoi',
     ],
 
+    /*
+    | 301 categorii vechi → slug nou, MATCH PE ULTIMUL SEGMENT al căii (prinde și
+    | formele nested, ex. /mobilier-stradal-...-pergole/banci-stradale-si-mobilier-urban,
+    | și pe cele flat, ex. /banci-stradale-si-mobilier-urban). cheia = ultimul segment vechi.
+    */
+    'category_redirects' => [
+        'banci-stradale-si-mobilier-urban'                      => 'banci-sezut',
+        'cosuri-de-gunoi-stradale-si-mobilier-stradal'          => 'cosuri-de-gunoi',
+        'jardiniere-parc-jardiniere-stradale-si-mobilier-urban' => 'jardiniere',
+        'pergole-si-mobilier-stradal'                           => 'pergole-foisoare',
+        'placute-denumiri-strazi'                               => 'placute-totemuri',
+        'placute-numere-casa'                                   => 'placute-totemuri',
+        'statii-de-autobuz-si-mobilier-stradal'                 => 'statii-autobuz',
+        'suporturi-rastele-pentru-parcare-biciclete'            => 'suporturi-biciclete',
+        'echipamente-de-joaca-si-mobilier-urban'                => 'locuri-de-joaca',
+        'totemuri-panouri-cu-mesaje-permanente'                 => 'placute-totemuri',
+        'diverse-produse'                                       => 'diverse-custom',
+    ],
+
+    /*
+    | 301 pagini-părinte vechi → cale nouă (exact, normalizat). sport-stadion /
+    | tarabe-piata n-au URL vechi (skip).
+    */
+    'page_redirects' => [
+        'mobilier-stradal-si-mobilier-urban' => '/catalog',
+        'producator-mobilier-stradal'        => '/despre',
+    ],
+
     'source_map' => [
         'Banci stradale'          => ['banci-sezut'],
         'Cosuri de gunoi'         => ['cosuri-de-gunoi'],

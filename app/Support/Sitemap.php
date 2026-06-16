@@ -17,7 +17,12 @@ class Sitemap
         // Pagini statice.
         $urls[] = ['loc' => url('/'), 'changefreq' => 'weekly', 'priority' => '1.0'];
         $urls[] = ['loc' => route('catalog'), 'changefreq' => 'weekly', 'priority' => '0.9'];
+        $urls[] = ['loc' => route('despre'), 'changefreq' => 'monthly', 'priority' => '0.5'];
+        $urls[] = ['loc' => route('contact'), 'changefreq' => 'monthly', 'priority' => '0.5'];
         $urls[] = ['loc' => route('proiecte'), 'changefreq' => 'monthly', 'priority' => '0.4'];
+        $urls[] = ['loc' => route('confidentialitate'), 'changefreq' => 'yearly', 'priority' => '0.2'];
+        $urls[] = ['loc' => route('termeni'), 'changefreq' => 'yearly', 'priority' => '0.2'];
+        $urls[] = ['loc' => route('politica-cookies'), 'changefreq' => 'yearly', 'priority' => '0.2'];
 
         // Categorii active.
         Category::query()->where('is_active', true)->orderBy('sort_order')->get()

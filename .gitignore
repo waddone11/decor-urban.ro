@@ -60,3 +60,5 @@ scripts/scraper/node_modules
 # Screenshot-uri de review (Faza 4b) — nu în repo
 /faza4b-*.png
 /.playwright-mcp/
+
+/faza4b-final-*.png

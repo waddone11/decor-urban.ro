@@ -47,7 +47,7 @@
                     <div class="rounded-card border border-line bg-surface-card p-4 shadow-card-hover">
                         <div class="grid grid-cols-2 gap-1 sm:grid-cols-3">
                             @foreach ($categories as $category)
-                                <a href="{{ url('/') }}#categorii"
+                                <a href="{{ route('category', $category->slug) }}"
                                    class="group flex items-center gap-3 rounded-lg px-3 py-2.5 transition-colors hover:bg-accent-soft">
                                     <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-tint-sky text-accent transition-colors group-hover:bg-white">
                                         <x-category-icon :slug="$category->slug" class="h-5 w-5" />
@@ -61,15 +61,15 @@
                         </div>
                         <div class="mt-3 flex items-center justify-between border-t border-line pt-3">
                             <p class="text-xs text-ink-muted">{{ ucfirst(config('company.supplier_label')) }} · {{ $categories->count() }} categorii de mobilier urban</p>
-                            <a href="{{ url('/') }}#categorii" class="text-sm font-semibold text-accent hover:text-accent-hover transition-colors">Vezi toate categoriile →</a>
+                            <a href="{{ route('catalog') }}" class="text-sm font-semibold text-accent hover:text-accent-hover transition-colors">Vezi toate categoriile →</a>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <a href="{{ url('/') }}#calitate" class="px-3 py-2 text-sm font-medium text-ink-soft hover:text-ink transition-colors">Despre</a>
+            <a href="{{ route('despre') }}" class="px-3 py-2 text-sm font-medium text-ink-soft hover:text-ink transition-colors">Despre</a>
             <a href="{{ url('/') }}#institutii" class="px-3 py-2 text-sm font-medium text-ink-soft hover:text-ink transition-colors">Instituții</a>
-            <a href="{{ url('/') }}#contact" class="px-3 py-2 text-sm font-medium text-ink-soft hover:text-ink transition-colors">Contact</a>
+            <a href="{{ route('contact') }}" class="px-3 py-2 text-sm font-medium text-ink-soft hover:text-ink transition-colors">Contact</a>
         </nav>
 
         {{-- Acțiuni dreapta --}}
@@ -109,7 +109,7 @@
             <a href="{{ url('/') }}" class="block rounded-lg px-3 py-2.5 text-base font-medium text-ink hover:bg-tint-stone">Acasă</a>
             <p class="px-3 pt-3 pb-1 text-xs font-semibold uppercase tracking-wider text-ink-muted">Categorii</p>
             @foreach ($categories as $category)
-                <a href="{{ url('/') }}#categorii" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-base text-ink hover:bg-tint-stone">
+                <a href="{{ route('category', $category->slug) }}" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-base text-ink hover:bg-tint-stone">
                     <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-tint-sky text-accent">
                         <x-category-icon :slug="$category->slug" class="h-5 w-5" />
                     </span>
@@ -117,9 +117,9 @@
                     <span class="text-xs text-ink-muted">{{ $category->products_count }}</span>
                 </a>
             @endforeach
-            <a href="{{ url('/') }}#calitate" class="block rounded-lg px-3 py-2.5 text-base font-medium text-ink hover:bg-tint-stone mt-2">Despre</a>
+            <a href="{{ route('despre') }}" class="block rounded-lg px-3 py-2.5 text-base font-medium text-ink hover:bg-tint-stone mt-2">Despre</a>
             <a href="{{ url('/') }}#institutii" class="block rounded-lg px-3 py-2.5 text-base font-medium text-ink hover:bg-tint-stone">Instituții</a>
-            <a href="{{ url('/') }}#contact" class="block rounded-lg px-3 py-2.5 text-base font-medium text-ink hover:bg-tint-stone">Contact</a>
+            <a href="{{ route('contact') }}" class="block rounded-lg px-3 py-2.5 text-base font-medium text-ink hover:bg-tint-stone">Contact</a>
             <x-button :href="'https://wa.me/'.$whatsapp" variant="accent" size="md" class="mt-3 w-full">Cere ofertă pe WhatsApp</x-button>
         </div>
     </div>
