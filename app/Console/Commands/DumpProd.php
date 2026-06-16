@@ -34,7 +34,23 @@ class DumpProd extends Command
             fn ($r) => $r->{'Tables_in_'.$database} ?? array_values((array) $r)[0],
             DB::select('SHOW TABLES')
         );
-        sort($tables);
+
+        // Ordine dependență: tabelele-părinte ÎNAINTEA copiilor cu FK (altfel CREATE TABLE
+        // pe pivot/child eșuează cu errno 150 la import — referința încă nu există).
+        $order = [
+            'migrations', 'users', 'password_reset_tokens', 'sessions',
+            'cache', 'cache_locks', 'jobs', 'job_batches', 'failed_jobs',
+            'categories', 'products', 'category_product', 'product_images',
+            'projects', 'project_images', 'orders', 'order_items',
+        ];
+        usort($tables, function ($a, $b) use ($order) {
+            $ia = array_search($a, $order, true);
+            $ib = array_search($b, $order, true);
+            $ia = $ia === false ? PHP_INT_MAX : $ia;
+            $ib = $ib === false ? PHP_INT_MAX : $ib;
+
+            return $ia === $ib ? strcmp($a, $b) : $ia <=> $ib;
+        });
 
         $out = [];
         $out[] = '-- Decor Urban — dump producție '.date('c');
