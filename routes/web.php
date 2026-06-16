@@ -4,6 +4,8 @@ use App\Http\Controllers\StorefrontController;
 use App\Livewire\CatalogBrowser;
 use App\Models\Category;
 use App\Models\Product;
+use App\Support\LegacyRedirects;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -86,3 +88,15 @@ Route::get('/robots.txt', function () {
 
     return response(implode("\n", $lines), 200, ['Content-Type' => 'text/plain']);
 })->name('robots');
+
+// ── 301 din URL-urile vechi ─────────────────────────────────────────────────
+// Rulează DOAR când nicio rută cunoscută nu prinde requestul (prioritate joasă).
+// Caută calea într-o hartă cache-uită (legacy_urls produse + categorii vechi);
+// 301 către canonical dacă există, altfel 404 frumos.
+Route::fallback(function (Request $request) {
+    if ($target = LegacyRedirects::lookup($request->path())) {
+        return redirect($target, 301);
+    }
+
+    abort(404);
+});
