@@ -15,11 +15,18 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        // Catalogul: cele 11 categorii canonice + produse/pivot/imagini din snapshot.
+        $this->call([
+            CategorySeeder::class,
+            CatalogSeeder::class,
         ]);
+
+        // User de test DOAR local/testing — niciodată pe prod (migrate:fresh --seed via ops).
+        if (app()->environment('local', 'testing')) {
+            User::factory()->create([
+                'name' => 'Test User',
+                'email' => 'test@example.com',
+            ]);
+        }
     }
 }

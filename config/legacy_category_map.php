@@ -18,6 +18,21 @@
 
 return [
 
+    /*
+    |--------------------------------------------------------------------------
+    | 301 redirects — URL-uri vechi de CATEGORIE → slug nou
+    |--------------------------------------------------------------------------
+    | cheia = calea veche (cu sau fără domeniu/slash-uri, se normalizează);
+    | valoarea = slug-ul categoriei noi. Folosit de App\Support\LegacyRedirects.
+    | Redirecturile de PRODUS se construiesc automat din `legacy_urls` (DB).
+    | TODO(owner): completează cu URL-urile reale de categorie de pe site-ul vechi
+    | când le confirmăm (ex. '/banci-stradale' => 'banci-sezut').
+    */
+    'redirect_url_map' => [
+        // '/banci-stradale'    => 'banci-sezut',
+        // '/cosuri-de-gunoi'   => 'cosuri-de-gunoi',
+    ],
+
     'source_map' => [
         'Banci stradale'          => ['banci-sezut'],
         'Cosuri de gunoi'         => ['cosuri-de-gunoi'],

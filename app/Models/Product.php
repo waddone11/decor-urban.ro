@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -35,6 +36,32 @@ class Product extends Model
         'legacy_categories' => 'array',
     ];
 
+    /**
+     * Binding scopat: în storefront `{product:slug}` rezolvă DOAR produse active
+     * (inactiv → 404). Filament leagă pe id (field null), deci nu e afectat.
+     */
+    public function resolveRouteBinding($value, $field = null)
+    {
+        $field ??= $this->getRouteKeyName();
+        $query = $this->where($field, $value);
+
+        if ($field === 'slug') {
+            $query->where('is_active', true);
+        }
+
+        return $query->first();
+    }
+
+    public function scopeActive(Builder $query): Builder
+    {
+        return $query->where('is_active', true);
+    }
+
+    public function scopeOrdered(Builder $query): Builder
+    {
+        return $query->orderBy('sort_order')->orderBy('name');
+    }
+
     public function categories(): BelongsToMany
     {
         return $this->belongsToMany(Category::class)
@@ -55,6 +82,62 @@ class Product extends Model
     {
         return $this->images->firstWhere('is_primary', true)
             ?? $this->images->sortBy('sort_order')->first();
+    }
+
+    /**
+     * Imaginile pentru galeria paginii produs: primary prima, apoi după sort_order.
+     * Dacă există coloana `source` (vine cu workstream-ul poze-ai) și produsul are
+     * imagini source='ai', folosește-le pe acelea. Altfel toate imaginile.
+     * Defensiv: merge și înainte ca migrația poze-ai să fie aplicată.
+     */
+    public function galleryImages(): \Illuminate\Support\Collection
+    {
+        $images = $this->images;
+
+        if ($this->productImagesHaveSourceColumn()) {
+            $ai = $images->where('source', 'ai');
+            if ($ai->isNotEmpty()) {
+                $images = $ai;
+            }
+        }
+
+        return $images->sortByDesc('is_primary')->values();
+    }
+
+    private function productImagesHaveSourceColumn(): bool
+    {
+        static $has = null;
+
+        return $has ??= \Illuminate\Support\Facades\Schema::hasColumn('product_images', 'source');
+    }
+
+    // ── SEO ────────────────────────────────────────────────────────────────
+
+    public function seoTitle(): string
+    {
+        return $this->meta_title ?: $this->name;
+    }
+
+    public function seoDescription(): string
+    {
+        if ($this->meta_description) {
+            return $this->meta_description;
+        }
+
+        if ($this->description) {
+            return (string) \Illuminate\Support\Str::of($this->description)->stripTags()->squish()->limit(155);
+        }
+
+        $cat = $this->primaryCategory() ?? $this->categories->first();
+
+        return trim($this->name
+            .($cat ? ' — '.$cat->name : '')
+            .'. '.ucfirst(config('company.supplier_label')).' · '.config('contact.brand').'. Cere ofertă.');
+    }
+
+    public function ogImageUrl(): ?string
+    {
+        return $this->primaryImage()?->url();
     }
 
     /**

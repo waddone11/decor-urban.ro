@@ -1,7 +1,11 @@
 <?php
 
+use App\Http\Controllers\StorefrontController;
+use App\Livewire\CatalogBrowser;
 use App\Models\Category;
 use App\Models\Product;
+use App\Support\LegacyRedirects;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -57,3 +61,50 @@ Route::get('/proiecte', function () {
 
     return view('proiecte', compact('projects'));
 })->name('proiecte');
+
+// ── Storefront ────────────────────────────────────────────────────────────
+// /catalog = componentă Livewire full-page (filtre + search + sort + paginare).
+Route::get('/catalog', CatalogBrowser::class)->name('catalog');
+
+Route::get('/categorie/{category:slug}', [StorefrontController::class, 'category'])->name('category');
+Route::get('/produs/{product:slug}', [StorefrontController::class, 'product'])->name('product');
+
+// ── SEO: sitemap + robots ───────────────────────────────────────────────────
+// /sitemap.xml: dinamic (dev/test); pe prod `sitemap:generate` scrie un fișier
+// static în public/ care e servit direct de webserver (mai rapid).
+Route::get('/sitemap.xml', function () {
+    return response(\App\Support\Sitemap::xml(), 200, ['Content-Type' => 'application/xml']);
+})->name('sitemap');
+
+Route::get('/robots.txt', function () {
+    $lines = [
+        'User-agent: *',
+        'Disallow: /admin',
+        'Disallow: /ops',
+        '',
+        'Sitemap: '.url('/sitemap.xml'),
+        '',
+    ];
+
+    return response(implode("\n", $lines), 200, ['Content-Type' => 'text/plain']);
+})->name('robots');
+
+// ── Ops web-runner (hosting fără SSH) — 404-gated pe token + whitelist ───────
+Route::middleware(['ops', 'throttle:'.config('ops.rate_limit', 20).',1'])
+    ->prefix('ops')
+    ->group(function () {
+        Route::get('/', [\App\Http\Controllers\OpsController::class, 'index'])->name('ops.index');
+        Route::get('/{command}', [\App\Http\Controllers\OpsController::class, 'run'])->name('ops.run');
+    });
+
+// ── 301 din URL-urile vechi ─────────────────────────────────────────────────
+// Rulează DOAR când nicio rută cunoscută nu prinde requestul (prioritate joasă).
+// Caută calea într-o hartă cache-uită (legacy_urls produse + categorii vechi);
+// 301 către canonical dacă există, altfel 404 frumos.
+Route::fallback(function (Request $request) {
+    if ($target = LegacyRedirects::lookup($request->path())) {
+        return redirect($target, 301);
+    }
+
+    abort(404);
+});
