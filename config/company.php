@@ -41,6 +41,14 @@ return [
         explode('|', (string) env('COMPANY_REFERENCES', ''))
     ))),
 
+    // Proiecte livrate (pagina /proiecte). Listă separată prin „|” în .env, ex.
+    // „Primăria X — 20 bănci|Școala Y — locuri de joacă”. Gol = pagina arată „în curând”.
+    // NU inventa proiecte — se completează cu lucrări reale când există.
+    'projects_list' => array_values(array_filter(array_map(
+        'trim',
+        explode('|', (string) env('COMPANY_PROJECTS_LIST', ''))
+    ))),
+
     // Standarde / certificări (ex. EN 1176 pentru echipamente de joacă).
     // NU le afirma ca fapt până nu sunt confirmate — gol = chip-ul nu apare.
     'standards' => array_values(array_filter(array_map(
