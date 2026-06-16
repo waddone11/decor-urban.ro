@@ -45,6 +45,7 @@ class CatalogSeeder extends Seeder
                 [
                     'name' => $c['name'],
                     'description' => $c['description'] ?? null,
+                    'intro' => $c['intro'] ?? null,
                     'sort_order' => $c['sort_order'] ?? 0,
                     'is_active' => $c['is_active'] ?? true,
                 ],
@@ -67,6 +68,10 @@ class CatalogSeeder extends Seeder
                     'name' => $p['name'],
                     'code' => $p['code'] ?? null,
                     'description' => $p['description'] ?? null,
+                    'specs' => $p['specs'] ?? null,
+                    'legacy_description' => $p['legacy_description'] ?? null,
+                    'description_draft' => $p['description_draft'] ?? null,
+                    'description_source' => $p['description_source'] ?? 'legacy',
                     'price' => $p['price'] ?? null,
                     'price_on_request' => $p['price_on_request'] ?? true,
                     'availability' => $p['availability'] ?? null,
