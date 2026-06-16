@@ -56,3 +56,7 @@ scripts/scraper/node_modules
 
 # Sitemap generat (Part 4) — scris de sitemap:generate pe prod, nu în repo
 /public/sitemap.xml
+
+# Screenshot-uri de review (Faza 4b) — nu în repo
+/faza4b-*.png
+/.playwright-mcp/
