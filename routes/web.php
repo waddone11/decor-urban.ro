@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\CommandController;
 use App\Http\Controllers\StorefrontController;
+use App\Http\Middleware\VerifySecretKey;
 use App\Livewire\CartPage;
 use App\Livewire\CatalogBrowser;
 use App\Livewire\Checkout;
@@ -8,8 +10,11 @@ use App\Livewire\OrderSuccess;
 use App\Models\Category;
 use App\Models\Product;
 use App\Support\LegacyRedirects;
+use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 use Illuminate\Http\Request;
+use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Route;
+use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 Route::get('/', function () {
     $categories = Category::query()->active()->ordered()->withCount('products')->get();
@@ -92,7 +97,7 @@ Route::get('/robots.txt', function () {
     $lines = [
         'User-agent: *',
         'Disallow: /admin',
-        'Disallow: /ops',
+        'Disallow: /commands',
         '',
         'Sitemap: '.url('/sitemap.xml'),
         '',
@@ -101,12 +106,26 @@ Route::get('/robots.txt', function () {
     return response(implode("\n", $lines), 200, ['Content-Type' => 'text/plain']);
 })->name('robots');
 
-// ── Ops web-runner (hosting fără SSH) — 404-gated pe token + whitelist ───────
-Route::middleware(['ops', 'throttle:'.config('ops.rate_limit', 20).',1'])
-    ->prefix('ops')
+// ── /commands: helper artisan din URL (o singură cheie `secret`) ─────────────
+// Fără sesiune/CSRF → merg și pe DB proaspătă/goală (SESSION_DRIVER=database ar crăpa
+// înainte de migrate). 404 la secret lipsă/greșit (VerifySecretKey).
+Route::middleware([VerifySecretKey::class, 'throttle:'.config('commands.rate_limit', 30).',1'])
+    ->withoutMiddleware([StartSession::class, ShareErrorsFromSession::class, PreventRequestForgery::class])
+    ->prefix('commands')
     ->group(function () {
-        Route::get('/', [\App\Http\Controllers\OpsController::class, 'index'])->name('ops.index');
-        Route::get('/{command}', [\App\Http\Controllers\OpsController::class, 'run'])->name('ops.run');
+        Route::get('/', [CommandController::class, 'index'])->name('commands.index');
+        Route::get('/clear-cache', [CommandController::class, 'clearCache'])->name('commands.clearCache');
+        Route::get('/optimize-clear', [CommandController::class, 'optimizeClear'])->name('commands.optimizeClear');
+        Route::get('/optimize', [CommandController::class, 'optimize'])->name('commands.optimize');
+        Route::get('/create-storage-link', [CommandController::class, 'createStorageLink'])->name('commands.createStorageLink');
+        Route::get('/create-sitemap', [CommandController::class, 'createSitemap'])->name('commands.createSitemap');
+        Route::get('/migrate', [CommandController::class, 'migrate'])->name('commands.migrate');
+        Route::get('/migrate-fresh-seed', [CommandController::class, 'migrateFreshSeed'])->name('commands.migrateFreshSeed');
+        Route::get('/migrate-status', [CommandController::class, 'migrateStatus'])->name('commands.migrateStatus');
+        Route::get('/about', [CommandController::class, 'about'])->name('commands.about');
+        Route::get('/catalog-summary', [CommandController::class, 'catalogSummary'])->name('commands.catalogSummary');
+        Route::get('/queue-restart', [CommandController::class, 'queueRestart'])->name('commands.queueRestart');
+        Route::get('/trigger-queue/{queue?}', [CommandController::class, 'triggerQueue'])->name('commands.triggerQueue');
     });
 
 // ── 301 din URL-urile vechi ─────────────────────────────────────────────────

@@ -65,12 +65,12 @@ return [
             'replace_placeholders' => true,
         ],
 
-        // Audit dedicat pentru ops web-runner (cine/ce/când a rulat).
-        'ops' => [
+        // Audit dedicat pentru /commands (cine/ce/când a rulat).
+        'commands' => [
             'driver' => 'daily',
-            'path' => storage_path('logs/ops.log'),
+            'path' => storage_path('logs/commands.log'),
             'level' => 'info',
-            'days' => env('OPS_LOG_DAYS', 90),
+            'days' => env('COMMAND_LOG_DAYS', 90),
             'replace_placeholders' => true,
         ],
 
