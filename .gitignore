@@ -80,3 +80,7 @@ scripts/scraper/node_modules
 /pages-*.png
 
 /mnav-*.png
+
+# Artefacte deploy prod (dump, zip, .env.prod) — NU în git
+/storage/app/prod/
+/dist/
