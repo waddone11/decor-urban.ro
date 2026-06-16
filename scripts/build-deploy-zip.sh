@@ -49,8 +49,11 @@ rsync -a \
   --exclude='scripts/enrich/' \
   --exclude='dist/' \
   --exclude='/.playwright-mcp/' \
+  --exclude='/playwright-report/' \
+  --exclude='/test-results/' \
   --exclude='/design/' \
   --exclude='/*.png' \
+  --exclude='/*.svg' \
   --exclude='.DS_Store' \
   --exclude='.phpunit.result.cache' \
   --exclude='/public/hot' \
@@ -76,13 +79,21 @@ cd "$ROOT"
 echo "==> 8. Verificări"
 ZIP="$PROD/decor-urban-deploy-$TS.zip"
 echo "    ZIP: $ZIP ($(du -h "$ZIP" | cut -f1))"
-L=$(unzip -l "$ZIP")
-echo -n "    vendor/ în zip:        "; echo "$L" | grep -q 'vendor/autoload.php' && echo OK || echo LIPSĂ
-echo -n "    public/build/ în zip:  "; echo "$L" | grep -q 'public/build/' && echo OK || echo LIPSĂ
-echo -n "    poze produse în zip:   "; echo "$L" | grep -q 'storage/app/public/products/' && echo OK || echo LIPSĂ
-echo -n "    storage/scrape ABSENT: "; echo "$L" | grep -q 'storage/scrape/' && echo "!! PREZENT (greșit)" || echo OK
-echo -n "    node_modules ABSENT:   "; echo "$L" | grep -q 'node_modules/' && echo "!! PREZENT (greșit)" || echo OK
-echo -n "    .env ABSENT:           "; echo "$L" | grep -qE 'decor-urban/\.env$' && echo "!! PREZENT (greșit)" || echo OK
+# Listă într-un fișier temporar (grep pe fișier, nu pe variabilă uriașă → fără false negative).
+L=$(mktemp)
+unzip -l "$ZIP" | awk '{print $4}' > "$L"
+chk()   { echo -n "    $1"; grep -qF -- "$2" "$L" && echo OK || echo LIPSĂ; }
+absent(){ echo -n "    $1"; grep -qF -- "$2" "$L" && echo "!! PREZENT (greșit)" || echo OK; }
+chk    "vendor/ în zip:        " 'vendor/autoload.php'
+chk    "public/build/ în zip:  " '/public/build/'
+chk    "poze produse în zip:   " '/storage/app/public/products/'
+chk    "thumbs 400 în zip:     " '-400.webp'
+absent "storage/scrape ABSENT: " '/storage/scrape/'
+absent "node_modules ABSENT:   " '/node_modules/'
+absent "playwright ABSENT:     " '/playwright-report/'
+absent "test-results ABSENT:   " '/test-results/'
+echo -n "    .env ABSENT:           "; grep -qE 'decor-urban/\.env$' "$L" && echo "!! PREZENT (greșit)" || echo OK
+rm -f "$L"
 
 rm -rf "$STAGE"
 echo "==> Gata. Urcă zip-ul + importă dump-ul (vezi DEPLOY-PROD.md)."
