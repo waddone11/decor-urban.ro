@@ -184,11 +184,11 @@
 
 /*
 | SEAP / instituții — clădire instituțională cu ferestre care se aprind secvențial.
-| Ferestrele = amber/auriu (token), conturul clădirii rămâne light. GSAP aprinde
-| ferestrele pe rând la scroll; fără JS / reduced-motion: toate aprinse.
+| Ferestrele = roșul de brand (--color-signal, ca inelul din hero), conturul rămâne
+| light. GSAP aprinde ferestrele pe rând la scroll; fără JS / reduced-motion: toate aprinse.
 */
 .seap-window {
-    fill: var(--color-accent-warm);
+    fill: var(--color-signal);
 }
 .js [data-seap] .seap-window {
     opacity: 0; /* stinse până le aprinde GSAP */
