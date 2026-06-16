@@ -15,6 +15,10 @@ class Product extends Model
         'name',
         'code',
         'description',
+        'specs',
+        'legacy_description',
+        'description_draft',
+        'description_source',
         'price',
         'price_on_request',
         'availability',
@@ -34,6 +38,7 @@ class Product extends Model
         'sort_order' => 'int',
         'legacy_urls' => 'array',
         'legacy_categories' => 'array',
+        'specs' => 'array',
     ];
 
     /**
