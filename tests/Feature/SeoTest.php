@@ -98,12 +98,12 @@ class SeoTest extends TestCase
         $res->assertDontSee(route('product', 'inactiv'), false);
     }
 
-    public function test_robots_blocks_admin_and_ops_and_points_to_sitemap(): void
+    public function test_robots_blocks_admin_and_commands_and_points_to_sitemap(): void
     {
         $this->get('/robots.txt')
             ->assertOk()
             ->assertSee('Disallow: /admin')
-            ->assertSee('Disallow: /ops')
+            ->assertSee('Disallow: /commands')
             ->assertSee('Sitemap: '.url('/sitemap.xml'));
     }
 }
