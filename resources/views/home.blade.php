@@ -60,9 +60,8 @@
                     'brand' => ['@type' => 'Brand', 'name' => config('contact.brand')],
                     'offers' => [
                         '@type' => 'Offer',
-                        'availability' => 'https://schema.org/InStock',
+                        'availability' => 'https://schema.org/PreOrder',
                         'priceCurrency' => 'RON',
-                        'price' => '0',
                     ],
                 ]),
             ])->all(),
@@ -98,7 +97,7 @@
                         de noi, pentru primării, școli și spații private.
                     </p>
                     <div class="mt-8 flex flex-wrap gap-3">
-                        <x-button href="#categorii" variant="primary" size="lg" class="hero-reveal" data-cta>Vezi catalogul</x-button>
+                        <x-button :href="route('catalog')" variant="primary" size="lg" class="hero-reveal" data-cta>Vezi catalogul</x-button>
                         <x-button :href="$waOferta" variant="accent" size="lg" class="hero-reveal" data-cta>
                             <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163a11.867 11.867 0 0 1-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.82 11.82 0 0 1 8.413 3.488 11.82 11.82 0 0 1 3.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 0 1-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 0 0 1.51 5.26l-.999 3.648 3.488-1.607z"/></svg>
                             Cere ofertă pe WhatsApp
@@ -238,7 +237,7 @@
 
         <div data-cat-grid class="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
             @foreach ($categories as $category)
-                <a href="#categorii" data-draw-on data-cat-card
+                <a href="{{ route('category', $category->slug) }}" data-draw-on data-cat-card
                    class="group flex flex-col items-start gap-4 rounded-card border border-line bg-tint-sky p-6 transition-all duration-300 hover:-translate-y-1 hover:border-accent hover:shadow-card-hover">
                     <span class="flex h-14 w-14 items-center justify-center rounded-2xl bg-surface-card text-accent shadow-sm transition-colors group-hover:bg-accent group-hover:text-white">
                         <x-category-icon :slug="$category->slug" class="h-9 w-9" />
@@ -380,12 +379,12 @@
                     eyebrow="Recomandate"
                     title="Produse din catalog"
                     subtitle="O selecție din gama noastră. Toate disponibile la comandă, cu ofertă personalizată." />
-                <x-button href="#categorii" variant="ghost" size="sm" class="hidden shrink-0 sm:inline-flex">Vezi tot catalogul →</x-button>
+                <x-button :href="route('catalog')" variant="ghost" size="sm" class="hidden shrink-0 sm:inline-flex">Vezi tot catalogul →</x-button>
             </div>
 
             <div class="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
                 @foreach ($featured as $product)
-                    <x-product-card :product="$product" />
+                    <x-product-card :product="$product" :href="route('product', $product->slug)" />
                 @endforeach
             </div>
         </div>
@@ -470,7 +469,7 @@
                     <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163a11.867 11.867 0 0 1-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.82 11.82 0 0 1 8.413 3.488 11.82 11.82 0 0 1 3.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 0 1-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 0 0 1.51 5.26l-.999 3.648 3.488-1.607z"/></svg>
                     Cere ofertă pe WhatsApp
                 </x-button>
-                <x-button href="#categorii" variant="outline" size="lg">Răsfoiește catalogul</x-button>
+                <x-button :href="route('catalog')" variant="outline" size="lg">Răsfoiește catalogul</x-button>
             </div>
         </div>
     </section>

@@ -40,7 +40,7 @@
                 <ul class="mt-4 space-y-2">
                     @foreach ($categories as $category)
                         <li>
-                            <a href="#" class="text-sm text-ink-soft hover:text-accent transition-colors">{{ $category->name }}</a>
+                            <a href="{{ route('category', $category->slug) }}" class="text-sm text-ink-soft hover:text-accent transition-colors">{{ $category->name }}</a>
                         </li>
                     @endforeach
                 </ul>
@@ -50,10 +50,11 @@
             <div>
                 <h3 class="text-sm font-semibold uppercase tracking-wider text-ink">Informații</h3>
                 <ul class="mt-4 space-y-2">
-                    <li><a href="#" class="text-sm text-ink-soft hover:text-accent transition-colors">Despre noi</a></li>
-                    <li><a href="#" class="text-sm text-ink-soft hover:text-accent transition-colors">Contact</a></li>
-                    <li><a href="#" class="text-sm text-ink-soft hover:text-accent transition-colors">Politică de confidențialitate</a></li>
-                    <li><a href="#" class="text-sm text-ink-soft hover:text-accent transition-colors">Termeni și condiții</a></li>
+                    <li><a href="{{ route('despre') }}" class="text-sm text-ink-soft hover:text-accent transition-colors">Despre noi</a></li>
+                    <li><a href="{{ route('contact') }}" class="text-sm text-ink-soft hover:text-accent transition-colors">Contact</a></li>
+                    <li><a href="{{ route('confidentialitate') }}" class="text-sm text-ink-soft hover:text-accent transition-colors">Politică de confidențialitate</a></li>
+                    <li><a href="{{ route('termeni') }}" class="text-sm text-ink-soft hover:text-accent transition-colors">Termeni și condiții</a></li>
+                    <li><a href="{{ route('politica-cookies') }}" class="text-sm text-ink-soft hover:text-accent transition-colors">Politică de cookie-uri</a></li>
                 </ul>
             </div>
 
