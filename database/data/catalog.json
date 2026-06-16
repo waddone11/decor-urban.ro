@@ -1,5 +1,5 @@
 {
-    "exported_at": "2026-06-16T00:50:27+00:00",
+    "exported_at": "2026-06-16T02:05:48+00:00",
     "counts": {
         "categories": 11,
         "products": 127,
@@ -126,13 +126,15 @@
                     "path": "products/banca-stradala-b202-si-mobilier-stradal/1.jpg",
                     "alt": "Banca stradala #B202",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/banca-stradala-b202-si-mobilier-stradal/2.jpg",
                     "alt": "Banca stradala #B202",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         },
@@ -166,19 +168,22 @@
                     "path": "products/banca-stradala-b203-si-mobilier-stradal/1.jpg",
                     "alt": "Banca stradala #B203",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/banca-stradala-b203-si-mobilier-stradal/2.jpg",
                     "alt": "Banca stradala #B203",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 },
                 {
                     "path": "products/banca-stradala-b203-si-mobilier-stradal/3.jpg",
                     "alt": "Banca stradala #B203",
                     "sort_order": 2,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         },
@@ -212,13 +217,15 @@
                     "path": "products/banca-stradala-parc-b204-si-mobilier-stradal/1.jpg",
                     "alt": "Banca stradala #B204",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/banca-stradala-parc-b204-si-mobilier-stradal/2.jpg",
                     "alt": "Banca stradala #B204",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         },
@@ -252,13 +259,15 @@
                     "path": "products/banca-stradala-parc-b205-si-mobilier-stradal/1.jpg",
                     "alt": "Banca stradala #B205",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/banca-stradala-parc-b205-si-mobilier-stradal/2.jpg",
                     "alt": "Banca stradala #B205",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         },
@@ -292,13 +301,15 @@
                     "path": "products/banca-stradala-parc-b206-si-mobilier-stradal/1.jpg",
                     "alt": "Banca stradala #B206",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/banca-stradala-parc-b206-si-mobilier-stradal/2.jpg",
                     "alt": "Banca stradala #B206",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         },
@@ -332,19 +343,22 @@
                     "path": "products/bancuta-stradala-b207-si-bancute-parc/1.jpg",
                     "alt": "Banca stradala #B207",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/bancuta-stradala-b207-si-bancute-parc/2.jpg",
                     "alt": "Banca stradala #B207",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 },
                 {
                     "path": "products/bancuta-stradala-b207-si-bancute-parc/3.jpg",
                     "alt": "Banca stradala #B207",
                     "sort_order": 2,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         },
@@ -378,13 +392,15 @@
                     "path": "products/banca-stradala-parc-b208-si-mobilier-stradal/1.jpg",
                     "alt": "Banca stradala #B208",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/banca-stradala-parc-b208-si-mobilier-stradal/2.jpg",
                     "alt": "Banca stradala #B208",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         },
@@ -418,13 +434,15 @@
                     "path": "products/banca-stradala-parc-b209-si-mobilier-stradal/1.jpg",
                     "alt": "Banca stradala #B209",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/banca-stradala-parc-b209-si-mobilier-stradal/2.jpg",
                     "alt": "Banca stradala #B209",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         },
@@ -458,13 +476,15 @@
                     "path": "products/banca-stradala-parc-b209/1.jpg",
                     "alt": "Banca stradala #B210",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/banca-stradala-parc-b209/2.jpg",
                     "alt": "Banca stradala #B210",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         },
@@ -498,13 +518,15 @@
                     "path": "products/banca-stradala-parc-b211/1.jpg",
                     "alt": "Banca stradala #B211",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/banca-stradala-parc-b211/2.jpg",
                     "alt": "Banca stradala #B211",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         },
@@ -538,13 +560,15 @@
                     "path": "products/banca-stradala-parc-cu-cadru-metalic-din-teava-rotunda-b213/1.jpg",
                     "alt": "Banca stradala #B213",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/banca-stradala-parc-cu-cadru-metalic-din-teava-rotunda-b213/2.jpg",
                     "alt": "Banca stradala #B213",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         },
@@ -578,13 +602,15 @@
                     "path": "products/banca-stradala-parc-b214/1.jpg",
                     "alt": "Banca stradala #B214",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/banca-stradala-parc-b214/2.jpg",
                     "alt": "Banca stradala #B214",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         },
@@ -618,13 +644,15 @@
                     "path": "products/banca-stradala-parc-cu-cadru-metalic-din-teava-rotunda-b215/1.jpg",
                     "alt": "Banca stradala #B215",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/banca-stradala-parc-cu-cadru-metalic-din-teava-rotunda-b215/2.jpg",
                     "alt": "Banca stradala #B215",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         },
@@ -658,13 +686,15 @@
                     "path": "products/banca-stradala-parc-cu-picioare-din-teava-rotunda-b216-si-mobilier-stradal/1.jpg",
                     "alt": "Banca stradala #B216",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/banca-stradala-parc-cu-picioare-din-teava-rotunda-b216-si-mobilier-stradal/2.jpg",
                     "alt": "Banca stradala #B216",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         },
@@ -698,13 +728,15 @@
                     "path": "products/banca-stradala-parc-cu-picioare-din-teava-rotunda-b217-si-mobilier-stradal/1.jpg",
                     "alt": "Banca stradala #B217",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/banca-stradala-parc-cu-picioare-din-teava-rotunda-b217-si-mobilier-stradal/2.jpg",
                     "alt": "Banca stradala #B217",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         },
@@ -738,13 +770,15 @@
                     "path": "products/banca-stradala-parc-b218-si-mobilier-stradal/1.jpg",
                     "alt": "Banca stradala #B218",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/banca-stradala-parc-b218-si-mobilier-stradal/2.jpg",
                     "alt": "Banca stradala #B218",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         },
@@ -778,13 +812,15 @@
                     "path": "products/banca-stradala-parc-cu-picioare-din-teava-rotunda-b219-si-mobilier-stradal/1.jpg",
                     "alt": "Banca stradala #B219",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/banca-stradala-parc-cu-picioare-din-teava-rotunda-b219-si-mobilier-stradal/2.jpg",
                     "alt": "Banca stradala #B219",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         },
@@ -818,13 +854,15 @@
                     "path": "products/banca-stradala-b220-mobilier-stradal/1.jpg",
                     "alt": "Banca stradala #B220",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/banca-stradala-b220-mobilier-stradal/2.jpg",
                     "alt": "Banca stradala #B220",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         },
@@ -858,13 +896,15 @@
                     "path": "products/banca-stradala-b221-mobilier-stradal/1.jpg",
                     "alt": "Banca stradala #B221",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/banca-stradala-b221-mobilier-stradal/2.jpg",
                     "alt": "Banca stradala #B221",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         },
@@ -898,13 +938,15 @@
                     "path": "products/banca-stradala-b222-mobilier-stradal/1.jpg",
                     "alt": "Banca stradala #B222",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/banca-stradala-b222-mobilier-stradal/2.jpg",
                     "alt": "Banca stradala #B222",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         },
@@ -938,13 +980,15 @@
                     "path": "products/banca-stradala-b223-mobilier-stradal/1.jpg",
                     "alt": "Banca stradala #B223",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/banca-stradala-b223-mobilier-stradal/2.jpg",
                     "alt": "Banca stradala #B223",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         },
@@ -978,13 +1022,15 @@
                     "path": "products/banca-stradala-b224-mobilier-stradal/1.jpg",
                     "alt": "Banca stradala #B224",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/banca-stradala-b224-mobilier-stradal/2.jpg",
                     "alt": "Banca stradala #B224",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         },
@@ -1018,7 +1064,8 @@
                     "path": "products/banca-stradala-b225-mobilier-stradal/1.jpg",
                     "alt": "Banca stradala #B225",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -1052,7 +1099,8 @@
                     "path": "products/banca-stradala-b226-mobilier-stradal/1.jpg",
                     "alt": "Banca stradala #B226",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -1086,13 +1134,15 @@
                     "path": "products/banca-stradala-b227-mobilier-stradal/1.jpg",
                     "alt": "Banca stradala #B227",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/banca-stradala-b227-mobilier-stradal/2.jpg",
                     "alt": "Banca stradala #B227",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         },
@@ -1126,7 +1176,8 @@
                     "path": "products/banca-stradala-b228-mobilier-stradal/1.jpg",
                     "alt": "Banca stradala #B228",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -1160,13 +1211,15 @@
                     "path": "products/banca-stradala-b230-mobilier-stradal/1.jpg",
                     "alt": "Banca stradala #B230",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/banca-stradala-b230-mobilier-stradal/2.jpg",
                     "alt": "Banca stradala #B230",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         },
@@ -1200,7 +1253,8 @@
                     "path": "products/banca-stradala-b231-mobilier-stradal/1.jpg",
                     "alt": "Banca stradala #B231",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -1234,7 +1288,8 @@
                     "path": "products/banca-stradala-b232-mobilier-stradal/1.jpg",
                     "alt": "Banca stradala #B232",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -1268,13 +1323,15 @@
                     "path": "products/banca-stradala-b233-mobilier-stradal/1.jpg",
                     "alt": "Banca stradala #B233",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/banca-stradala-b233-mobilier-stradal/2.jpg",
                     "alt": "Banca stradala #B233",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         },
@@ -1308,7 +1365,8 @@
                     "path": "products/banca-stradala-b234/1.jpg",
                     "alt": "Banca stradala #B234",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -1342,7 +1400,8 @@
                     "path": "products/banca-stradala-b235/1.jpg",
                     "alt": "Banca stradala #B235",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -1376,7 +1435,8 @@
                     "path": "products/banca-stradala-b236/1.jpg",
                     "alt": "Banca stradala #B236",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -1410,7 +1470,8 @@
                     "path": "products/banca-stradala-b237/1.jpg",
                     "alt": "Banca stradala #B237",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -1444,7 +1505,8 @@
                     "path": "products/banca-stradala-b238/1.jpg",
                     "alt": "Banca stradala #B238",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -1478,7 +1540,8 @@
                     "path": "products/banca-stradala-b239/1.jpg",
                     "alt": "Banca stradala #B239",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -1512,7 +1575,8 @@
                     "path": "products/banca-stradala-b240/1.jpg",
                     "alt": "Banca stradala #B240",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -1546,13 +1610,15 @@
                     "path": "products/banca-stradala-fara-spatar-b201-si-mobilier-stradal/1.jpg",
                     "alt": "Banca stradala fara spatar #B201",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/banca-stradala-fara-spatar-b201-si-mobilier-stradal/2.jpg",
                     "alt": "Banca stradala fara spatar #B201",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         },
@@ -1586,13 +1652,15 @@
                     "path": "products/banca-stradala-fara-spatar-b212-si-mobilier-stradal/1.jpg",
                     "alt": "Banca stradala fara spatar #B212",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/banca-stradala-fara-spatar-b212-si-mobilier-stradal/2.jpg",
                     "alt": "Banca stradala fara spatar #B212",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         },
@@ -1626,13 +1694,15 @@
                     "path": "products/banca-stradala-fara-spatar-b220-si-mobilier-stradal/1.jpg",
                     "alt": "Banca stradala fara spatar #B220",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/banca-stradala-fara-spatar-b220-si-mobilier-stradal/2.jpg",
                     "alt": "Banca stradala fara spatar #B220",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         },
@@ -1666,7 +1736,8 @@
                     "path": "products/banca-stradala-fara-spatar-b229/1.jpg",
                     "alt": "Banca stradala fara spatar #B229",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -1706,7 +1777,8 @@
                     "path": "products/set-mobilier-stradal-banca-si-cos-gunoi/1.jpg",
                     "alt": "Set mobilier stradal #SM200",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -1740,13 +1812,15 @@
                     "path": "products/set-mobilier-stradal-s201/1.jpg",
                     "alt": "Set mobilier stradal #SM201",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/set-mobilier-stradal-s201/2.jpg",
                     "alt": "Set mobilier stradal #SM201",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         },
@@ -1786,7 +1860,8 @@
                     "path": "products/set-mobilier-stradal-sm202-banca-si-cos-gunoi/1.jpg",
                     "alt": "Set mobilier stradal #SM202",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -1820,7 +1895,8 @@
                     "path": "products/set-mobilier-stradal-s203/1.jpg",
                     "alt": "Set mobilier stradal #SM203",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -1854,7 +1930,8 @@
                     "path": "products/set-mobilier-stradal-s205/1.jpg",
                     "alt": "Set mobilier stradal #SM205",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -1888,7 +1965,8 @@
                     "path": "products/set-mobilier-stradal-cu-masa-de-sah-si-banci-lemn-sm204/1.jpg",
                     "alt": "Set mobilier stradal cu masa de sah si banci lemn #SM204",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -1922,7 +2000,8 @@
                     "path": "products/cos-de-gunoi-colectare-selectiva-c114-si-mobilier-urban/1.jpg",
                     "alt": "Cos de gunoi colectare selectiva #C114",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -1956,7 +2035,8 @@
                     "path": "products/cos-de-gunoi-colectare-selectiva-c115-si-mobilier-urban/1.jpg",
                     "alt": "Cos de gunoi colectare selectiva #C115",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -1990,25 +2070,29 @@
                     "path": "products/cos-de-gunoi-stradal-si-mobilier-urban-c101/1.jpg",
                     "alt": "Cos de gunoi stradal #C101",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/cos-de-gunoi-stradal-si-mobilier-urban-c101/2.jpg",
                     "alt": "Cos de gunoi stradal #C101",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 },
                 {
                     "path": "products/cos-de-gunoi-stradal-si-mobilier-urban-c101/3.jpg",
                     "alt": "Cos de gunoi stradal #C101",
                     "sort_order": 2,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 },
                 {
                     "path": "products/cos-de-gunoi-stradal-si-mobilier-urban-c101/4.jpg",
                     "alt": "Cos de gunoi stradal #C101",
                     "sort_order": 3,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         },
@@ -2042,19 +2126,22 @@
                     "path": "products/cos-de-gunoi-stradal-c102-si-mobilier-urban/1.jpg",
                     "alt": "Cos de gunoi stradal #C102",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/cos-de-gunoi-stradal-c102-si-mobilier-urban/2.jpg",
                     "alt": "Cos de gunoi stradal #C102",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 },
                 {
                     "path": "products/cos-de-gunoi-stradal-c102-si-mobilier-urban/3.jpg",
                     "alt": "Cos de gunoi stradal #C102",
                     "sort_order": 2,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         },
@@ -2088,25 +2175,29 @@
                     "path": "products/cos-de-gunoi-stradal-c103-si-mobilier-urban/1.jpg",
                     "alt": "Cos de gunoi stradal #C103",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/cos-de-gunoi-stradal-c103-si-mobilier-urban/2.jpg",
                     "alt": "Cos de gunoi stradal #C103",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 },
                 {
                     "path": "products/cos-de-gunoi-stradal-c103-si-mobilier-urban/3.jpg",
                     "alt": "Cos de gunoi stradal #C103",
                     "sort_order": 2,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 },
                 {
                     "path": "products/cos-de-gunoi-stradal-c103-si-mobilier-urban/4.jpg",
                     "alt": "Cos de gunoi stradal #C103",
                     "sort_order": 3,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         },
@@ -2140,13 +2231,15 @@
                     "path": "products/cos-de-gunoi-stradal-c104-si-mobilier-urban/1.jpg",
                     "alt": "Cos de gunoi stradal #C104",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/cos-de-gunoi-stradal-c104-si-mobilier-urban/2.jpg",
                     "alt": "Cos de gunoi stradal #C104",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         },
@@ -2180,13 +2273,15 @@
                     "path": "products/cos-de-gunoi-stradal-din-tabla-perforata-c105-si-mobilier-urban/1.jpg",
                     "alt": "Cos de gunoi stradal #C105",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/cos-de-gunoi-stradal-din-tabla-perforata-c105-si-mobilier-urban/2.jpg",
                     "alt": "Cos de gunoi stradal #C105",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         },
@@ -2220,13 +2315,15 @@
                     "path": "products/cos-de-gunoi-stradal-din-tabla-perforata-c106-si-mobilier-urban/1.jpg",
                     "alt": "Cos de gunoi stradal #C106",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/cos-de-gunoi-stradal-din-tabla-perforata-c106-si-mobilier-urban/2.jpg",
                     "alt": "Cos de gunoi stradal #C106",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         },
@@ -2260,31 +2357,36 @@
                     "path": "products/cos-de-gunoi-stradal-c107-cu-capac-si-mobilier-urban/1.jpg",
                     "alt": "Cos de gunoi stradal #C107",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/cos-de-gunoi-stradal-c107-cu-capac-si-mobilier-urban/2.jpg",
                     "alt": "Cos de gunoi stradal #C107",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 },
                 {
                     "path": "products/cos-de-gunoi-stradal-c107-cu-capac-si-mobilier-urban/3.jpg",
                     "alt": "Cos de gunoi stradal #C107",
                     "sort_order": 2,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 },
                 {
                     "path": "products/cos-de-gunoi-stradal-c107-cu-capac-si-mobilier-urban/4.jpg",
                     "alt": "Cos de gunoi stradal #C107",
                     "sort_order": 3,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 },
                 {
                     "path": "products/cos-de-gunoi-stradal-c107-cu-capac-si-mobilier-urban/5.jpg",
                     "alt": "Cos de gunoi stradal #C107",
                     "sort_order": 4,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         },
@@ -2318,13 +2420,15 @@
                     "path": "products/cos-de-gunoi-stradal-metalic-c108/1.jpg",
                     "alt": "Cos de gunoi stradal #C108",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/cos-de-gunoi-stradal-metalic-c108/2.jpg",
                     "alt": "Cos de gunoi stradal #C108",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         },
@@ -2358,13 +2462,15 @@
                     "path": "products/cos-de-gunoi-stradal-din-tabla-perforata-c109-si-mobilier-urban/1.jpg",
                     "alt": "Cos de gunoi stradal #C109",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/cos-de-gunoi-stradal-din-tabla-perforata-c109-si-mobilier-urban/2.jpg",
                     "alt": "Cos de gunoi stradal #C109",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         },
@@ -2398,7 +2504,8 @@
                     "path": "products/cos-de-gunoi-stradal-c110-si-mobilier-urban/1.jpg",
                     "alt": "Cos de gunoi stradal #C110",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -2432,7 +2539,8 @@
                     "path": "products/cos-de-gunoi-stradal-c111-si-mobilier-urban/1.jpg",
                     "alt": "Cos de gunoi stradal #C111",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -2466,7 +2574,8 @@
                     "path": "products/cos-de-gunoi-stradal-c112-si-mobilier-urban/1.jpg",
                     "alt": "Cos de gunoi stradal #C112",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -2500,7 +2609,8 @@
                     "path": "products/cos-de-gunoi-stradal-c113-si-mobilier-urban/1.jpg",
                     "alt": "Cos de gunoi stradal #C113",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -2534,7 +2644,8 @@
                     "path": "products/cos-de-gunoi-stradal-c117-si-mobilier-urban/1.jpg",
                     "alt": "Cos de gunoi stradal #C117",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -2568,7 +2679,8 @@
                     "path": "products/cos-de-gunoi-stradal-c118/1.jpg",
                     "alt": "Cos de gunoi stradal #C118",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -2602,7 +2714,8 @@
                     "path": "products/cos-de-gunoi-stradal-c119/1.jpg",
                     "alt": "Cos de gunoi stradal #C119",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -2636,7 +2749,8 @@
                     "path": "products/cos-de-gunoi-stradal-c120/1.jpg",
                     "alt": "Cos de gunoi stradal #C120",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -2670,7 +2784,8 @@
                     "path": "products/cos-de-gunoi-stradal-cu-scrumiera-c116/1.jpg",
                     "alt": "Cos de gunoi stradal cu scrumiera #C116",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -2704,13 +2819,15 @@
                     "path": "products/jardiniera-J061/1.jpg",
                     "alt": "Jardiniera din lemn #J061",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/jardiniera-J061/2.jpg",
                     "alt": "Jardiniera din lemn #J061",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         },
@@ -2744,19 +2861,22 @@
                     "path": "products/jardiniera-J062/1.jpg",
                     "alt": "Jardiniera din lemn #J062",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/jardiniera-J062/2.jpg",
                     "alt": "Jardiniera din lemn #J062",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 },
                 {
                     "path": "products/jardiniera-J062/3.jpg",
                     "alt": "Jardiniera din lemn #J062",
                     "sort_order": 2,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         },
@@ -2790,7 +2910,8 @@
                     "path": "products/jardiniera-din-lemn-j063/1.jpg",
                     "alt": "Jardiniera din lemn #J063",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -2824,7 +2945,8 @@
                     "path": "products/pergola-p050-si-mobilier-stradal/1.jpg",
                     "alt": "Pergola #P051",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -2858,7 +2980,8 @@
                     "path": "products/pergola-din-lemn-p052-si-mobilier-stradal/1.jpg",
                     "alt": "Pergola din lemn #P052",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -2892,7 +3015,8 @@
                     "path": "products/pergola-din-lemn-p053-si-mobilier-stradal/1.jpg",
                     "alt": "Pergola din lemn #P053",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -2926,7 +3050,8 @@
                     "path": "products/placuta-denumire-strada-din-alucobond-printat-cu-stalp-de-sustinere-si-placuta-indicatoare-pn073/1.jpg",
                     "alt": "Placuta denumire strada #PN073",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -2960,7 +3085,8 @@
                     "path": "products/placuta-denumire-strada-din-alucobond-printat-cu-stalp-de-sustinere-si-placuta-indicatoare-pn074/1.jpg",
                     "alt": "Placuta denumire strada #PN074",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -2996,7 +3122,8 @@
                     "path": "products/placuta-numar-casa-pc-100/1.jpg",
                     "alt": "Placuta numar casa #PC100",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -3030,7 +3157,8 @@
                     "path": "products/statie-de-autobuz-st250-si-mobilier-stradal/1.jpg",
                     "alt": "Statie de autobuz #ST250",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -3064,7 +3192,8 @@
                     "path": "products/statie-de-autobuz-st251-si-mobilier-stradal/1.jpg",
                     "alt": "Statie de autobuz #ST251",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -3098,7 +3227,8 @@
                     "path": "products/statie-de-autobuz-st252-si-mobilier-stradal/1.jpg",
                     "alt": "Statie de autobuz #ST252",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -3132,7 +3262,8 @@
                     "path": "products/statie-de-autobuz-st253-si-mobilier-stradal/1.jpg",
                     "alt": "Statie de autobuz #ST253",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -3166,19 +3297,22 @@
                     "path": "products/statie-de-autobuz-st254-si-mobilier-stradal/1.jpg",
                     "alt": "Statie de autobuz #ST254",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/statie-de-autobuz-st254-si-mobilier-stradal/2.jpg",
                     "alt": "Statie de autobuz #ST254",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 },
                 {
                     "path": "products/statie-de-autobuz-st254-si-mobilier-stradal/3.jpg",
                     "alt": "Statie de autobuz #ST254",
                     "sort_order": 2,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         },
@@ -3212,7 +3346,8 @@
                     "path": "products/statie-de-autobuz-st255-si-mobilier-stradal/1.jpg",
                     "alt": "Statie de autobuz #ST255",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -3246,7 +3381,8 @@
                     "path": "products/statie-de-autobuz-st256-si-mobilier-stradal/1.jpg",
                     "alt": "Statie de autobuz #ST256",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -3280,7 +3416,8 @@
                     "path": "products/suport-rastel-pentru-parcare-3-biciclete/1.jpg",
                     "alt": "Suport bicicleta #SB001",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -3314,7 +3451,8 @@
                     "path": "products/suport-rastel-pentru-parcare-5-biciclete/1.jpg",
                     "alt": "Suport bicicleta #SB002",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -3348,7 +3486,8 @@
                     "path": "products/suport-rastel-pentru-9-biciclete/1.jpg",
                     "alt": "Suport bicicleta #SB003",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -3388,7 +3527,8 @@
                     "path": "products/casuta-din-lemn-pentru-copii-cl401/1.jpg",
                     "alt": "Casuta din lemn pentru copii #CL401",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -3428,13 +3568,15 @@
                     "path": "products/dulap-vestiar-gradinita-pentru-interior-d100/1.jpg",
                     "alt": "Dulap vestiar gradinita pentru interior #D100",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/dulap-vestiar-gradinita-pentru-interior-d100/2.jpg",
                     "alt": "Dulap vestiar gradinita pentru interior #D100",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         },
@@ -3474,7 +3616,8 @@
                     "path": "products/gardulet-din-lemn-pentru-spatii-de-joaca-g100/1.jpg",
                     "alt": "Gardulet din lemn pentru spatii de joaca #G100",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -3514,7 +3657,8 @@
                     "path": "products/gardulet-din-lemn-pentru-spatii-de-joaca-g101/1.jpg",
                     "alt": "Gardulet din lemn pentru spatii de joaca #G101",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -3548,7 +3692,8 @@
                     "path": "products/set-complex-de-joaca-pentru-exterior-ej101/1.jpg",
                     "alt": "Set complex de joaca pentru exterior #EJ101",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -3582,7 +3727,8 @@
                     "path": "products/set-tobogan-cu-leagan-pentru-exterior-ej100/1.jpg",
                     "alt": "Set tobogan cu leagan pentru exterior #EJ100",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -3622,7 +3768,8 @@
                     "path": "products/tobogan-pentru-copii-metalic-t100/1.jpg",
                     "alt": "Tobogan pentru copii metalic #T100",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -3656,13 +3803,15 @@
                     "path": "products/indicator-intrare-sat-t333/1.jpg",
                     "alt": "Indicator intrare sat #T333",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/indicator-intrare-sat-t333/2.jpg",
                     "alt": "Indicator intrare sat #T333",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         },
@@ -3696,7 +3845,8 @@
                     "path": "products/indicator-intrare-iesire-sat-t331/1.jpg",
                     "alt": "Indicator intrare-iesire sat #T331",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -3730,7 +3880,8 @@
                     "path": "products/indicator-intrare-iesire-sat-t332/1.jpg",
                     "alt": "Indicator intrare-iesire sat #T332",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -3770,7 +3921,8 @@
                     "path": "products/panou-stradal-personalizat-ps101/1.jpg",
                     "alt": "Panou stradal personalizat #PS101",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -3804,7 +3956,8 @@
                     "path": "products/totem-intrare-iesire-localitate-t301/1.jpg",
                     "alt": "Totem intrare-iesire localitate #T301",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -3838,7 +3991,8 @@
                     "path": "products/totem-intrare-iesire-localitate-t302/1.jpg",
                     "alt": "Totem intrare-iesire localitate #T302",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -3872,7 +4026,8 @@
                     "path": "products/totem-intrare-iesire-localitate-t303/1.jpg",
                     "alt": "Totem intrare-iesire localitate #T303",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -3906,7 +4061,8 @@
                     "path": "products/totem-intrare-iesire-localitate-t304/1.jpg",
                     "alt": "Totem intrare-iesire localitate #T304",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -3940,13 +4096,15 @@
                     "path": "products/totem-intrare-iesire-localitate-t309/1.jpg",
                     "alt": "Totem intrare-iesire localitate #T309",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/totem-intrare-iesire-localitate-t309/2.jpg",
                     "alt": "Totem intrare-iesire localitate #T309",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         },
@@ -3980,13 +4138,15 @@
                     "path": "products/totem-intrare-iesire-localitate-t310/1.jpg",
                     "alt": "Totem intrare-iesire localitate #T310",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/totem-intrare-iesire-localitate-t310/2.jpg",
                     "alt": "Totem intrare-iesire localitate #T310",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         },
@@ -4020,7 +4180,8 @@
                     "path": "products/totem-intrare-iesire-localitate-t311/1.jpg",
                     "alt": "Totem intrare-iesire localitate #T311",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -4054,13 +4215,15 @@
                     "path": "products/totem-intrare-iesire-localitate-t312/1.jpg",
                     "alt": "Totem intrare-iesire localitate #T312",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/totem-intrare-iesire-localitate-t312/2.jpg",
                     "alt": "Totem intrare-iesire localitate #T312",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         },
@@ -4094,7 +4257,8 @@
                     "path": "products/totem-intrare-iesire-localitate-din-inox-t305/1.jpg",
                     "alt": "Totem intrare-iesire localitate din inox #T305",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -4128,7 +4292,8 @@
                     "path": "products/totem-intrare-iesire-localitate-din-inox-t306/1.jpg",
                     "alt": "Totem intrare-iesire localitate din inox #T306",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -4162,7 +4327,8 @@
                     "path": "products/totem-intrare-iesire-localitate-din-inox-t307/1.jpg",
                     "alt": "Totem intrare-iesire localitate din inox #T307",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -4196,13 +4362,15 @@
                     "path": "products/totem-intrare-iesire-localitate-din-inox-t308/1.jpg",
                     "alt": "Totem intrare-iesire localitate din inox #T308",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/totem-intrare-iesire-localitate-din-inox-t308/2.jpg",
                     "alt": "Totem intrare-iesire localitate din inox #T308",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         },
@@ -4236,13 +4404,15 @@
                     "path": "products/foisor-din-lemn-f201/1.jpg",
                     "alt": "Foisor din lemn #F201",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/foisor-din-lemn-f201/2.jpg",
                     "alt": "Foisor din lemn #F201",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         },
@@ -4276,7 +4446,8 @@
                     "path": "products/foisor-din-lemn-si-teava-rotunda-f203/1.jpg",
                     "alt": "Foisor din lemn si teava #F203",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -4310,25 +4481,29 @@
                     "path": "products/foisor-din-lemn-si-teava-rotunda-f200-si-mobilier-stradal/1.jpg",
                     "alt": "Foisor din lemn si teava rotunda #F200",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/foisor-din-lemn-si-teava-rotunda-f200-si-mobilier-stradal/2.jpg",
                     "alt": "Foisor din lemn si teava rotunda #F200",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 },
                 {
                     "path": "products/foisor-din-lemn-si-teava-rotunda-f200-si-mobilier-stradal/3.jpg",
                     "alt": "Foisor din lemn si teava rotunda #F200",
                     "sort_order": 2,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 },
                 {
                     "path": "products/foisor-din-lemn-si-teava-rotunda-f200-si-mobilier-stradal/4.jpg",
                     "alt": "Foisor din lemn si teava rotunda #F200",
                     "sort_order": 3,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         },
@@ -4362,7 +4537,8 @@
                     "path": "products/foisor-metalic-pentru-exterior-f202/1.jpg",
                     "alt": "Foisor metalic pentru exterior #F202",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -4396,7 +4572,8 @@
                     "path": "products/lampadar-stradal-electric-cu-doua-brate-ls100/1.jpg",
                     "alt": "Lampadar stradal electric cu doua brate #LS100",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -4430,7 +4607,8 @@
                     "path": "products/numere-pentru-utilaje-agricole-n100/1.jpg",
                     "alt": "Numere pentru utilaje agricole #N100",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -4464,13 +4642,15 @@
                     "path": "products/panou-stradal-din-alcobond-ps-100/1.jpg",
                     "alt": "Panou stradal din alcobond #PS100",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/panou-stradal-din-alcobond-ps-100/2.jpg",
                     "alt": "Panou stradal din alcobond #PS100",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         },
@@ -4504,7 +4684,8 @@
                     "path": "products/peluza-stadion-ps100/1.jpg",
                     "alt": "Peluza stadion #PS100",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -4538,7 +4719,8 @@
                     "path": "products/placuta-numar-inmatriculare-utilaj-agricol-moped-caruta/1.jpg",
                     "alt": "Placuta numar inmatriculare #PN071",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -4572,7 +4754,8 @@
                     "path": "products/stalp-metalic-din-teava-s200-mobilier-stradal/1.jpg",
                     "alt": "Stalp metalic din teava #S200",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -4606,7 +4789,8 @@
                     "path": "products/taraba-piata-tp391/1.jpg",
                     "alt": "Taraba piata #TP391",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -4640,13 +4824,15 @@
                     "path": "products/taraba-piata-tp392/1.jpg",
                     "alt": "Taraba piata #TP392",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/taraba-piata-tp392/2.jpg",
                     "alt": "Taraba piata #TP392",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         },
@@ -4680,7 +4866,8 @@
                     "path": "products/taraba-piata-tp393/1.jpg",
                     "alt": "Taraba piata #TP393",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -4714,7 +4901,8 @@
                     "path": "products/taraba-piata-tp394/1.jpg",
                     "alt": "Taraba piata #TP394",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -4748,7 +4936,8 @@
                     "path": "products/tribuna-stadion-tr381/1.jpg",
                     "alt": "Tribuna stadion #TR381",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 }
             ]
         },
@@ -4782,13 +4971,15 @@
                     "path": "products/tribuna-stadion-tr382/1.jpg",
                     "alt": "Tribuna stadion #TR382",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/tribuna-stadion-tr382/2.jpg",
                     "alt": "Tribuna stadion #TR382",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         },
@@ -4822,13 +5013,15 @@
                     "path": "products/tribuna-stadion-tr383/1.jpg",
                     "alt": "Tribuna stadion #TR383",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/tribuna-stadion-tr383/2.jpg",
                     "alt": "Tribuna stadion #TR383",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         },
@@ -4862,13 +5055,15 @@
                     "path": "products/tribuna-stadion-tr384/1.jpg",
                     "alt": "Tribuna stadion #TR384",
                     "sort_order": 0,
-                    "is_primary": true
+                    "is_primary": true,
+                    "source": "ai"
                 },
                 {
                     "path": "products/tribuna-stadion-tr384/2.jpg",
                     "alt": "Tribuna stadion #TR384",
                     "sort_order": 1,
-                    "is_primary": false
+                    "is_primary": false,
+                    "source": "ai"
                 }
             ]
         }
