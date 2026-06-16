@@ -64,3 +64,6 @@ scripts/scraper/node_modules
 /faza4b-final-*.png
 
 /faza4c-*.png
+
+# Screenshot-uri verificare finala (merge poze AI)
+/final-*.png
