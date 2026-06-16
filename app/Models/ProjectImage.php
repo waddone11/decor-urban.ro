@@ -12,7 +12,7 @@ class ProjectImage extends Model
     use HasImageThumbnails;
 
     protected $fillable = [
-        'project_id', 'path', 'alt', 'sort_order', 'is_primary',
+        'project_id', 'path', 'thumb_sm_path', 'thumb_md_path', 'alt', 'sort_order', 'is_primary',
     ];
 
     protected $casts = [
