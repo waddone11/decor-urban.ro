@@ -12,19 +12,22 @@
     $supplierLabel = config('company.supplier_label');
 @endphp
 
-<footer id="contact" class="mt-24 border-t border-line bg-surface-card">
+<footer id="contact" class="mt-24 border-t border-shell-line bg-shell text-ink">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14">
         <div class="grid grid-cols-2 gap-10 md:grid-cols-4">
-            {{-- Brand + identitate legală --}}
+            {{-- Brand: logo (marcă + wordmark) + identitate legală --}}
             <div class="col-span-2 md:col-span-1">
-                <span class="font-display text-xl font-bold tracking-[-0.02em] text-ink">Decor <span class="text-accent">Urban</span></span>
-                <p class="mt-3 text-sm leading-relaxed text-ink-soft">
+                <a href="{{ url('/') }}" class="flex items-center gap-2.5">
+                    <img src="{{ asset('images/logo.svg') }}" alt="Decor Urban" class="h-9 w-9 text-ink" width="36" height="36">
+                    <x-wordmark class="text-xl" />
+                </a>
+                <p class="mt-4 text-sm leading-relaxed text-ink-soft">
                     Mobilier stradal &amp; urban — {{ $supplierLabel }}. Bănci, coșuri, jardiniere,
                     locuri de joacă și soluții custom pentru spații publice.
                 </p>
                 @if ($legalName || $cui || $regCom || $address)
-                    <dl class="mt-4 space-y-0.5 text-xs leading-relaxed text-ink-muted">
-                        @if ($legalName)<div class="font-semibold text-ink-soft">{{ $legalName }}</div>@endif
+                    <dl class="mt-4 space-y-0.5 text-xs leading-relaxed text-ink-soft">
+                        @if ($legalName)<div class="font-semibold text-ink">{{ $legalName }}</div>@endif
                         @if ($cui)<div>CUI {{ $cui }}@if ($regCom) · Reg. Com. {{ $regCom }}@endif</div>@endif
                         @if ($address)<div>{{ $address }}</div>@endif
                     </dl>
@@ -71,19 +74,19 @@
                         </a>
                     </li>
                     @if ($isPlaceholder)
-                        <li class="mt-1 text-xs text-ink-muted">⚠️ Date de contact provizorii — de confirmat.</li>
+                        <li class="mt-1 text-xs text-ink-soft">⚠️ Date de contact provizorii — de confirmat.</li>
                     @endif
                 </ul>
             </div>
         </div>
 
         @if ($companyPlaceholder)
-            <p class="mt-8 text-xs text-ink-muted">⚠️ TODO de confirmat: cod CPV, prezență SEAP, proiecte livrate, referințe, standarde (ex. EN 1176) — de completat în <code>config/company.php</code>.</p>
+            <p class="mt-8 text-xs text-ink-soft">⚠️ TODO de confirmat: cod CPV, prezență SEAP, proiecte livrate, referințe, standarde (ex. EN 1176) — de completat în <code>config/company.php</code>.</p>
         @endif
 
-        <div class="mt-12 flex flex-col gap-3 border-t border-line pt-6 sm:flex-row sm:items-center sm:justify-between">
-            <p class="text-sm text-ink-muted">© {{ date('Y') }} Decor Urban. Toate drepturile rezervate.</p>
-            <p class="text-sm text-ink-muted">Producător direct · Livrare în toată țara</p>
+        <div class="mt-12 flex flex-col gap-3 border-t border-shell-line pt-6 sm:flex-row sm:items-center sm:justify-between">
+            <p class="text-sm text-ink-soft">© {{ date('Y') }} Decor Urban. Toate drepturile rezervate.</p>
+            <p class="text-sm text-ink-soft">Producător direct · Livrare în toată țara</p>
         </div>
     </div>
 </footer>

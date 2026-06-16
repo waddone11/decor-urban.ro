@@ -15,6 +15,12 @@
     /* Tipografie */
     --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
     --font-display: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+    /*
+    | Font logo (wordmark „Decor Urban.ro") — comutabil de owner DOAR de aici.
+    | Default: Space Grotesk 700. Alternative (schimbă valoarea + încarcă fontul în
+    | layouts/storefront.blade.php): 'Bricolage Grotesque' 800 sau 'Archivo' 700.
+    */
+    --font-logo: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
 
     /* Suprafețe & text */
     --color-surface: #fafaf9;        /* fundal pagină — off-white cald */
@@ -30,7 +36,12 @@
     --color-accent: #1f6f78;         /* linkuri / highlight — teal sobru (placeholder) */
     --color-accent-hover: #195a61;
     --color-accent-soft: #e7f0f1;
+    --color-accent-warm: #f5b301;    /* amber/auriu — accent „instituțional" (ferestre SEAP) */
     --color-signal: #e23a2e;         /* roșu de accent — inelul „ceas" din hero */
+
+    /* Chrome site (nav + footer) pe gri — recalibrat pentru text închis lizibil. */
+    --color-shell: #e5e7eb;          /* gray-200 */
+    --color-shell-line: #d1d5db;     /* gray-300 — borduri pe gri */
 
     /* Tinte foarte deschise pentru carduri categorii */
     --color-tint-sky: #eef4f5;
@@ -78,6 +89,11 @@
     opacity: 0;
 }
 
+/* Hero — linia 2 a titlului („care durează.") cu underline trasat sub accent. */
+.js [data-hero-underline] {
+    transform: scaleX(0);
+}
+
 /* Reduced motion: starea finală, fără mișcare (și ca fallback CSS). */
 @media (prefers-reduced-motion: reduce) {
     .js .hero-draw {
@@ -85,6 +101,9 @@
     }
     .js .hero-reveal {
         opacity: 1;
+    }
+    .js [data-hero-underline] {
+        transform: scaleX(1);
     }
 }
 
@@ -107,6 +126,10 @@
 }
 .js [data-draw-on] .cat-draw {
     stroke-dashoffset: 1; /* ascuns până îl desenează GSAP la scroll */
+}
+/* Reveal secvențial „pop": iconițele grilei pornesc invizibile; GSAP face pop scalat. */
+.js [data-cat-grid] .cat-icon {
+    opacity: 0;
 }
 /* Hover pe card → iconiță mai groasă (bold). */
 .group:hover .cat-icon {
@@ -159,7 +182,46 @@
     transform: scaleX(0);
 }
 
+/*
+| SEAP / instituții — clădire instituțională cu ferestre care se aprind secvențial.
+| Ferestrele = amber/auriu (token), conturul clădirii rămâne light. GSAP aprinde
+| ferestrele pe rând la scroll; fără JS / reduced-motion: toate aprinse.
+*/
+.seap-window {
+    fill: var(--color-accent-warm);
+}
+.js [data-seap] .seap-window {
+    opacity: 0; /* stinse până le aprinde GSAP */
+}
+
+/* Social proof — iconițe line-art (camion / clădire) cu draw-on subtil la scroll. */
+.stat-icon {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+.stat-draw {
+    stroke-dasharray: 1;
+}
+.js [data-stats] .stat-draw {
+    stroke-dashoffset: 1;
+}
+
 @media (prefers-reduced-motion: reduce) {
+    /* Iconițe categorii: vizibile la mărimea finală, fără pop. */
+    .js [data-cat-grid] .cat-icon {
+        opacity: 1;
+    }
+    /* SEAP: ferestre aprinse static. */
+    .js [data-seap] .seap-window {
+        opacity: 1;
+    }
+    /* Social proof: iconițe desenate complet. */
+    .js [data-stats] .stat-draw {
+        stroke-dashoffset: 0;
+    }
     .js [data-draw-on] .cat-draw {
         stroke-dashoffset: 0;
     }

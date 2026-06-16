@@ -19,7 +19,9 @@ function initStorefront() {
 
     ctx = gsap.context(() => {
         initCategories(reduced);
+        initInstitutii(reduced);
         initQuality(reduced);
+        initStats(reduced);
         initCounters(reduced);
     });
 
@@ -33,37 +35,35 @@ function initStorefront() {
 }
 
 /* ------------------------------------------------------------------ *
- * Iconițe categorii: scroll-in în „val" + idle subtil + hover micro.
+ * Iconițe categorii: reveal secvențial „pop" la scroll + idle + hover.
+ * Cascadă vie pe toată grila — fiecare iconiță face pop scalat (overshoot)
+ * cu opacity, una câte una. Draw-on-ul rulează în timpul pop-ului.
  * ------------------------------------------------------------------ */
+const CAT_STAGGER = 0.3; // s între iconițe — cerut explicit; ușor de tunat (ex. 0.2).
+
 function initCategories(reduced) {
     const grid = document.querySelector('[data-cat-grid]');
     if (!grid) return;
 
     const cards = gsap.utils.toArray('[data-cat-card]', grid);
 
-    if (reduced) return; // strokes deja desenate via CSS; fără idle/hover-motion.
+    if (reduced) return; // CSS: strokes desenate + iconițe vizibile; fără pop/idle/hover-motion.
 
-    // Scroll-in în val: cardurile se desenează pe rând (stagger pe grilă).
+    const icons = cards.map((c) => c.querySelector('.cat-icon')).filter(Boolean);
+    gsap.set(icons, { scale: 0.5, opacity: 0, transformOrigin: '50% 50%' });
+
+    // Reveal secvențial: pop scalat (back.out, overshoot) + opacity, stagger CAT_STAGGER.
+    // Draw-on-ul rulează simultan cu pop-ul. La final pornește idle-ul.
     const tl = gsap.timeline({
         scrollTrigger: { trigger: grid, start: 'top 85%', once: true },
+        onComplete: () => startCatIdle(cards),
     });
     cards.forEach((card, i) => {
         const strokes = card.querySelectorAll('.cat-draw');
-        tl.to(strokes, { strokeDashoffset: 0, duration: 0.6, ease: 'power1.inOut', stagger: 0.04 }, i * 0.08);
-    });
-
-    // Idle subtil, staggered (NU în unison — altfel pare „AI”/zgomotos).
-    cards.forEach((card, i) => {
         const icon = card.querySelector('.cat-icon');
-        if (!icon) return;
-        gsap.to(icon, {
-            y: -3,
-            duration: 2.4 + (i % 4) * 0.35,
-            ease: 'sine.inOut',
-            yoyo: true,
-            repeat: -1,
-            delay: (i % 5) * 0.4,
-        });
+        const at = i * CAT_STAGGER;
+        if (icon) tl.to(icon, { scale: 1, opacity: 1, duration: 0.55, ease: 'back.out(2.2)' }, at);
+        tl.to(strokes, { strokeDashoffset: 0, duration: 0.55, ease: 'power1.inOut', stagger: 0.04 }, at);
     });
 
     // Hover: re-joacă draw-on + un mic „hop” pe iconiță (micro-interacțiune).
@@ -74,6 +74,42 @@ function initCategories(reduced) {
             gsap.fromTo(strokes, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.5, ease: 'power1.inOut', stagger: 0.03 });
             if (icon) gsap.fromTo(icon, { scale: 0.9 }, { scale: 1, duration: 0.5, ease: 'back.out(3)', transformOrigin: '50% 50%' });
         });
+    });
+}
+
+// Idle subtil, staggered (NU în unison) — pornit după ce s-a terminat cascada.
+function startCatIdle(cards) {
+    cards.forEach((card, i) => {
+        const icon = card.querySelector('.cat-icon');
+        if (!icon) return;
+        gsap.killTweensOf(icon); // evită idle dublat la o eventuală re-inițializare
+        gsap.to(icon, {
+            y: -3,
+            duration: 2.4 + (i % 4) * 0.35,
+            ease: 'sine.inOut',
+            yoyo: true,
+            repeat: -1,
+            delay: (i % 5) * 0.4,
+        });
+    });
+}
+
+/* ------------------------------------------------------------------ *
+ * SEAP / instituții — ferestrele clădirii se aprind secvențial la scroll.
+ * Reduced-motion: CSS le ține aprinse; nu animăm.
+ * ------------------------------------------------------------------ */
+function initInstitutii(reduced) {
+    const panel = document.querySelector('[data-seap]');
+    if (!panel) return;
+
+    const windows = panel.querySelectorAll('.seap-window');
+    if (!windows.length || reduced) return;
+
+    ScrollTrigger.create({
+        trigger: panel,
+        start: 'top 80%',
+        once: true,
+        onEnter: () => gsap.to(windows, { opacity: 1, duration: 0.4, ease: 'power1.out', stagger: 0.16 }),
     });
 }
 
@@ -154,6 +190,25 @@ function initQuality(reduced) {
 }
 
 /* ------------------------------------------------------------------ *
+ * Social proof — cele 4 carduri intră cu reveal staggered + draw-on pe
+ * iconițele line-art (camion/clădire). Count-up-ul e gestionat separat.
+ * Reduced-motion: CSS desenează iconițele; cardurile rămân vizibile.
+ * ------------------------------------------------------------------ */
+function initStats(reduced) {
+    const grid = document.querySelector('[data-stats-grid]');
+    if (!grid) return;
+
+    const cards = gsap.utils.toArray('[data-stat-card]', grid);
+    if (!cards.length || reduced) return;
+
+    gsap.set(cards, { opacity: 0, y: 20 });
+
+    const tl = gsap.timeline({ scrollTrigger: { trigger: grid, start: 'top 85%', once: true } });
+    tl.to(cards, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out', stagger: 0.12 })
+        .to(grid.querySelectorAll('.stat-draw'), { strokeDashoffset: 0, duration: 0.7, ease: 'power1.inOut', stagger: 0.05 }, 0.2);
+}
+
+/* ------------------------------------------------------------------ *
  * Contoare social proof — count-up la scroll.
  * ------------------------------------------------------------------ */
 function initCounters(reduced) {
@@ -178,9 +233,21 @@ function initCounters(reduced) {
     });
 }
 
-if (document.readyState !== 'loading') {
+// Bootstrap cu dedup: Livewire emite `livewire:navigated` și la încărcarea inițială
+// (~1s după DOMContentLoaded), ceea ce ar rula init-ul a doua oară și ar DUBLA
+// animațiile (ex. cascada categoriilor). Ignorăm exact prima emisie de după load;
+// navigările SPA ulterioare re-inițializează normal.
+let booted = false;
+function bootStorefront() {
+    booted = true;
     initStorefront();
-} else {
-    document.addEventListener('DOMContentLoaded', initStorefront);
 }
-document.addEventListener('livewire:navigated', initStorefront);
+if (document.readyState !== 'loading') {
+    bootStorefront();
+} else {
+    document.addEventListener('DOMContentLoaded', bootStorefront);
+}
+document.addEventListener('livewire:navigated', () => {
+    if (booted) { booted = false; return; }
+    initStorefront();
+});
