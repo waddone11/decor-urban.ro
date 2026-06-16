@@ -23,6 +23,11 @@
             </div>
         </header>
 
+        @if ($category->intro)
+            {{-- Intro SEO (conținut îmbogățit, crawlabil) --}}
+            <p class="mt-6 max-w-7xl text-sm text-ink-soft leading-relaxed">{{ $category->intro }}</p>
+        @endif
+
         @if ($products->isEmpty())
             <p class="py-16 text-center text-ink-muted">Nu există produse în această categorie momentan.</p>
         @else
