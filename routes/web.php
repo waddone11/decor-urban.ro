@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\StorefrontController;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
@@ -57,3 +58,17 @@ Route::get('/proiecte', function () {
 
     return view('proiecte', compact('projects'));
 })->name('proiecte');
+
+// ── Storefront ────────────────────────────────────────────────────────────
+// /catalog devine componentă Livewire full-page în Partea 2; aici e listarea simplă.
+Route::get('/catalog', function () {
+    $products = Product::query()->active()->ordered()
+        ->with(['images', 'categories'])
+        ->paginate(24);
+    $categories = Category::query()->active()->ordered()->withCount('products')->get();
+
+    return view('storefront.catalog-simple', compact('products', 'categories'));
+})->name('catalog');
+
+Route::get('/categorie/{category:slug}', [StorefrontController::class, 'category'])->name('category');
+Route::get('/produs/{product:slug}', [StorefrontController::class, 'product'])->name('product');

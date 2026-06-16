@@ -24,6 +24,22 @@ class Category extends Model
         'sort_order' => 'int',
     ];
 
+    /**
+     * Binding scopat: în storefront `{category:slug}` rezolvă DOAR categorii active
+     * (inactivă → 404). Filament leagă pe id (field null), deci nu e afectat.
+     */
+    public function resolveRouteBinding($value, $field = null)
+    {
+        $field ??= $this->getRouteKeyName();
+        $query = $this->where($field, $value);
+
+        if ($field === 'slug') {
+            $query->where('is_active', true);
+        }
+
+        return $query->first();
+    }
+
     public function parent(): BelongsTo
     {
         return $this->belongsTo(self::class, 'parent_id');

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -34,6 +35,32 @@ class Product extends Model
         'legacy_urls' => 'array',
         'legacy_categories' => 'array',
     ];
+
+    /**
+     * Binding scopat: în storefront `{product:slug}` rezolvă DOAR produse active
+     * (inactiv → 404). Filament leagă pe id (field null), deci nu e afectat.
+     */
+    public function resolveRouteBinding($value, $field = null)
+    {
+        $field ??= $this->getRouteKeyName();
+        $query = $this->where($field, $value);
+
+        if ($field === 'slug') {
+            $query->where('is_active', true);
+        }
+
+        return $query->first();
+    }
+
+    public function scopeActive(Builder $query): Builder
+    {
+        return $query->where('is_active', true);
+    }
+
+    public function scopeOrdered(Builder $query): Builder
+    {
+        return $query->orderBy('sort_order')->orderBy('name');
+    }
 
     public function categories(): BelongsToMany
     {
