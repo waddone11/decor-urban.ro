@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             CategorySeeder::class,
             CatalogSeeder::class,
+            UserSeeder::class,
         ]);
 
         // User de test DOAR local/testing — niciodată pe prod (migrate:fresh --seed via ops).
