@@ -2,6 +2,8 @@ Edit the attached photo of a real manufactured piece of street/urban furniture i
 
 CRITICAL — preserve product identity exactly: same geometry, same number of slats/bars, same proportions, dimensions, materials, colours and construction. Do NOT redesign, reshape, stylise, add or remove any part. The image must match the physical product a customer will receive.
 
+CRITICAL — remove ALL overlaid watermarks, logos, brand lettering and diagonal text printed ON TOP of the source photo (for example "MOBILIER STRADAL", "Producție MobUrban Lux" and any circular logo/monogram), including large or faint diagonal text crossing the product. Fully reconstruct the product surface and the background underneath them so the output contains ZERO overlaid watermark, logo or branding text. (Preserve ONLY text that is physically part of the product itself — e.g. a street-name plate or sign — never keep or invent overlay branding.)
+
 Do:
 - Cleanly isolate the product and replace the background with a seamless professional studio sweep in a flat, very light neutral tone (near-white, approx #F4F5F4), with a barely-there falloff for depth. No environment, no floor line, no room, no props.
 - Studio softbox lighting from the upper-left, even fill, realistic specular highlights on metal and painted surfaces; faithful, crisp wood grain and metal finish (enhance clarity only, do not change colours).

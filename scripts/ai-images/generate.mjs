@@ -132,13 +132,17 @@ function listSources(onlySlug) {
     console.error('Ruleaza scriptul din checkout-ul care are storage/scrape/ (pozele scrape-uite).');
     process.exit(1);
   }
+  // --only acceptă unul sau mai multe slug-uri separate prin virgulă.
+  const onlySet = onlySlug
+    ? new Set(String(onlySlug).split(',').map((s) => s.trim()).filter(Boolean))
+    : null;
   const out = [];
   const slugs = fs.readdirSync(SRC_DIR, { withFileTypes: true })
     .filter((d) => d.isDirectory())
     .map((d) => d.name)
     .sort();
   for (const slug of slugs) {
-    if (onlySlug && slug !== onlySlug) continue;
+    if (onlySet && !onlySet.has(slug)) continue;
     const dir = path.join(SRC_DIR, slug);
     const files = fs.readdirSync(dir)
       .filter((f) => IMAGE_EXTS.has(path.extname(f).toLowerCase()))
