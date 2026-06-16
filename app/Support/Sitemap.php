@@ -4,6 +4,7 @@ namespace App\Support;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Project;
 
 class Sitemap
 {
@@ -18,6 +19,7 @@ class Sitemap
         $urls[] = ['loc' => url('/'), 'changefreq' => 'weekly', 'priority' => '1.0'];
         $urls[] = ['loc' => route('catalog'), 'changefreq' => 'weekly', 'priority' => '0.9'];
         $urls[] = ['loc' => route('despre'), 'changefreq' => 'monthly', 'priority' => '0.5'];
+        $urls[] = ['loc' => route('institutii'), 'changefreq' => 'monthly', 'priority' => '0.6'];
         $urls[] = ['loc' => route('contact'), 'changefreq' => 'monthly', 'priority' => '0.5'];
         $urls[] = ['loc' => route('proiecte'), 'changefreq' => 'monthly', 'priority' => '0.4'];
         $urls[] = ['loc' => route('confidentialitate'), 'changefreq' => 'yearly', 'priority' => '0.2'];
@@ -43,6 +45,17 @@ class Sitemap
                     'lastmod' => $p->updated_at?->toAtomString(),
                     'changefreq' => 'monthly',
                     'priority' => '0.7',
+                ];
+            });
+
+        // Proiecte publicate.
+        Project::query()->where('is_published', true)->orderBy('id')->get()
+            ->each(function (Project $p) use (&$urls) {
+                $urls[] = [
+                    'loc' => route('project.show', $p->slug),
+                    'lastmod' => $p->updated_at?->toAtomString(),
+                    'changefreq' => 'monthly',
+                    'priority' => '0.5',
                 ];
             });
 
