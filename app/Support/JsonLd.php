@@ -4,6 +4,7 @@ namespace App\Support;
 
 use App\Models\Product;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 /**
  * Constructori JSON-LD (schema.org) pentru storefront.
@@ -143,6 +144,37 @@ class JsonLd
             'url' => route('product', $product->slug),
             'mpn' => $product->mpn ?: ($product->code ? ltrim($product->code, '#') : null),
             'additionalProperty' => $additional ?: null,
+            'offers' => self::offer($product),
         ]);
+    }
+
+    /** Offer DOAR pentru produse cu preț real (vezi nota „fără preț fals" de sus). */
+    private static function offer(Product $product): ?array
+    {
+        if ($product->isPriceOnRequest()) {
+            return null;
+        }
+
+        return array_filter([
+            '@type' => 'Offer',
+            'url' => route('product', $product->slug),
+            'price' => number_format((float) $product->currentPrice(), 2, '.', ''),
+            'priceCurrency' => $product->currency ?: 'RON',
+            'availability' => self::schemaAvailability($product->availability),
+        ]);
+    }
+
+    /** Disponibilitatea liberă din DB → valoare schema.org; null dacă nu putem mapa. */
+    private static function schemaAvailability(?string $availability): ?string
+    {
+        $a = Str::lower(Str::ascii((string) $availability));
+
+        return match (true) {
+            str_contains($a, 'out of stock') || str_contains($a, 'fara stoc') => 'https://schema.org/OutOfStock',
+            str_contains($a, 'preorder') || str_contains($a, 'precomanda') => 'https://schema.org/PreOrder',
+            str_contains($a, 'la comanda') || str_contains($a, 'backorder') => 'https://schema.org/BackOrder',
+            str_contains($a, 'stoc') || str_contains($a, 'in stock') => 'https://schema.org/InStock',
+            default => null,
+        };
     }
 }

@@ -146,6 +146,48 @@ class Product extends Model
         return $has ??= Schema::hasColumn('product_images', 'source');
     }
 
+    // ── Preț (afișare front) ─────────────────────────────────────────────────
+
+    /** Fără preț public: flag „la cerere" activ SAU preț lipsă/invalid. */
+    public function isPriceOnRequest(): bool
+    {
+        return $this->price_on_request || $this->price === null || (float) $this->price <= 0;
+    }
+
+    /** Promoție validă: produs cu preț public și sale_price real sub price. */
+    public function hasSalePrice(): bool
+    {
+        return ! $this->isPriceOnRequest()
+            && $this->sale_price !== null
+            && (float) $this->sale_price > 0
+            && (float) $this->sale_price < (float) $this->price;
+    }
+
+    /** Prețul curent de afișat/ofertat: sale_price dacă e promoție, altfel price. */
+    public function currentPrice(): ?float
+    {
+        if ($this->isPriceOnRequest()) {
+            return null;
+        }
+
+        return (float) ($this->hasSalePrice() ? $this->sale_price : $this->price);
+    }
+
+    public function discountPercent(): ?int
+    {
+        if (! $this->hasSalePrice()) {
+            return null;
+        }
+
+        return (int) round((1 - (float) $this->sale_price / (float) $this->price) * 100);
+    }
+
+    /** Format RON pentru front: „1.250,00 lei". */
+    public static function formatLei(float $amount): string
+    {
+        return number_format($amount, 2, ',', '.').' lei';
+    }
+
     /**
      * Descrierea pentru pagina produs, sigură de randat cu {{ }} (HtmlString).
      * Suportă ambele formate din DB: text simplu și HTML din RichEditor.

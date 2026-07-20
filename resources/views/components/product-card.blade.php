@@ -40,9 +40,18 @@
             @if ($material)
                 <span class="mt-1.5 inline-flex w-fit items-center rounded-md bg-tint-sky px-2 py-0.5 text-xs font-medium text-ink-soft">{{ $material }}</span>
             @endif
-            <div class="mt-3 flex items-center justify-between">
-                <span class="inline-flex items-center rounded-full bg-accent-soft px-3 py-1 text-sm font-semibold text-accent">La cerere</span>
-                <span class="text-sm font-medium text-ink-soft transition-colors group-hover:text-ink">Detalii →</span>
+            <div class="mt-3 flex items-center justify-between gap-2">
+                @if ($product->isPriceOnRequest())
+                    <span class="inline-flex items-center rounded-full bg-accent-soft px-3 py-1 text-sm font-semibold text-accent">La cerere</span>
+                @elseif ($product->hasSalePrice())
+                    <span class="flex flex-wrap items-baseline gap-x-1.5">
+                        <s class="text-xs text-ink-muted">{{ \App\Models\Product::formatLei((float) $product->price) }}</s>
+                        <span class="text-sm font-bold text-accent">{{ \App\Models\Product::formatLei($product->currentPrice()) }}</span>
+                    </span>
+                @else
+                    <span class="text-sm font-bold text-ink">{{ \App\Models\Product::formatLei($product->currentPrice()) }}</span>
+                @endif
+                <span class="shrink-0 text-sm font-medium text-ink-soft transition-colors group-hover:text-ink">Detalii →</span>
             </div>
         </div>
     </a>
