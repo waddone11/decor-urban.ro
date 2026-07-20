@@ -6,6 +6,7 @@ use App\Livewire\CatalogBrowser;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductImage;
+use App\Support\JsonLd;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use Tests\TestCase;
@@ -51,7 +52,8 @@ class DesignListingTest extends TestCase
         $cat = Category::create(['name' => 'Cat', 'slug' => 'cat', 'sort_order' => 1, 'is_active' => true]);
         $lemn = $this->product('p-lemn', ['material' => ['lemn']]);
         $inox = $this->product('p-inox', ['material' => ['metal', 'inox']]);
-        $lemn->categories()->attach($cat); $inox->categories()->attach($cat);
+        $lemn->categories()->attach($cat);
+        $inox->categories()->attach($cat);
 
         Livewire::test(CatalogBrowser::class)
             ->set('materials', ['inox'])
@@ -81,7 +83,7 @@ class DesignListingTest extends TestCase
         $p = $this->product('banca-jsonld', ['material' => ['lemn', 'metal'], 'dimensiuni' => ['1800x90x45mm'], 'finisaj' => ['vopsit electrostatic']]);
         $p->categories()->attach($cat, ['is_primary' => true]);
 
-        $ld = \App\Support\JsonLd::product($p->fresh());
+        $ld = JsonLd::product($p->fresh());
 
         $this->assertSame('Lemn + metal', $ld['material']);
         $this->assertNotEmpty($ld['additionalProperty']);
@@ -89,6 +91,6 @@ class DesignListingTest extends TestCase
         $this->assertContains('Material', $names);
         $this->assertContains('Dimensiuni', $names);
         $this->assertContains('Finisaj', $names);
-        $this->assertArrayNotHasKey('price', $ld['offers']); // fără preț fals
+        $this->assertArrayNotHasKey('offers', $ld); // fără Offer / preț fals
     }
 }

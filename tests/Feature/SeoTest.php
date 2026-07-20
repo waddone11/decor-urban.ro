@@ -61,8 +61,7 @@ class SeoTest extends TestCase
         $product = collect($blocks)->firstWhere('@type', 'Product');
         $this->assertSame('C120', $product['sku']);
         $this->assertSame(config('contact.brand'), $product['brand']['name']);
-        $this->assertSame('https://schema.org/PreOrder', $product['offers']['availability']);
-        $this->assertArrayNotHasKey('price', $product['offers'], 'Niciun preț fals la „la cerere"');
+        $this->assertArrayNotHasKey('offers', $product, 'Produsele la cerere nu publică Offer structurat.');
     }
 
     public function test_category_page_has_itemlist_and_breadcrumb(): void
@@ -91,9 +90,11 @@ class SeoTest extends TestCase
         $this->seedProduct();
         Product::create(['name' => 'Inactiv', 'slug' => 'inactiv', 'price_on_request' => true, 'is_active' => false, 'sort_order' => 9]);
 
-        $res = $this->get('/sitemap.xml')->assertOk();
-        $res->assertHeader('Content-Type', 'application/xml');
+        $this->get('/sitemap.xml')->assertOk()->assertSee(url('/sitemaps/products.xml'), false);
+        $res = $this->get('/sitemaps/products.xml')->assertOk();
+        $this->assertStringStartsWith('application/xml', $res->headers->get('Content-Type'));
         $res->assertSee(route('product', 'cos-c120'), false);
+        $res = $this->get('/sitemaps/categories.xml')->assertOk();
         $res->assertSee(route('category', 'cosuri-de-gunoi'), false);
         $res->assertDontSee(route('product', 'inactiv'), false);
     }

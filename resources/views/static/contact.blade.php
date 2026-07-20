@@ -7,6 +7,8 @@
     $address = config('company.address');
     $legalName = config('company.legal_name');
     $isPlaceholder = config('contact.is_placeholder');
+    $mapsUrl = config('business.google_maps_url');
+    $directionsUrl = \App\Support\Business::directionsUrl();
 
     $metaTitle = 'Contact';
     $metaDescription = 'Contactează '.$brand.' — telefon, WhatsApp și email. '.config('company.supplier_label').' de mobilier urban și stradal. Cere o ofertă pentru proiectul tău.';
@@ -37,22 +39,22 @@
                     <div class="flex items-start gap-3">
                         <svg class="mt-0.5 h-5 w-5 shrink-0 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" /></svg>
                         <div>
-                            <dt class="text-sm text-ink-muted">Telefon</dt>
-                            <dd><a href="tel:{{ preg_replace('/\s+/', '', $phone) }}" class="font-semibold text-ink hover:text-accent transition-colors">{{ $phone }}</a></dd>
+                            <dt class="text-sm text-ink-muted">Telefon general</dt>
+                            <dd><a href="{{ \App\Support\Business::phoneHref() }}" class="font-semibold text-ink hover:text-accent transition-colors" {!! \App\Support\Tracking::attrs('click_phone') !!}>{{ $phone }}</a></dd>
                         </div>
                     </div>
                     <div class="flex items-start gap-3">
                         <svg class="mt-0.5 h-5 w-5 shrink-0 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" /></svg>
                         <div>
                             <dt class="text-sm text-ink-muted">Email</dt>
-                            <dd><a href="mailto:{{ $email }}" class="font-semibold text-ink hover:text-accent transition-colors">{{ $email }}</a></dd>
+                            <dd><a href="mailto:{{ $email }}" class="font-semibold text-ink hover:text-accent transition-colors" {!! \App\Support\Tracking::attrs('click_email') !!}>{{ $email }}</a></dd>
                         </div>
                     </div>
                     <div class="flex items-start gap-3">
                         <svg class="mt-0.5 h-5 w-5 shrink-0 text-accent" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163a11.867 11.867 0 0 1-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.82 11.82 0 0 1 8.413 3.488 11.82 11.82 0 0 1 3.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 0 1-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 0 0 1.51 5.26l-.999 3.648 3.488-1.607z"/></svg>
                         <div>
                             <dt class="text-sm text-ink-muted">WhatsApp</dt>
-                            <dd><a href="https://wa.me/{{ $whatsapp }}" class="font-semibold text-accent hover:text-accent-hover transition-colors">Scrie-ne pe WhatsApp</a></dd>
+                            <dd><a href="{{ \App\Support\Business::whatsappUrl() }}" target="_blank" rel="noopener noreferrer" aria-label="Contactează Decor Urban pe WhatsApp" class="font-semibold text-accent hover:text-accent-hover transition-colors" {!! \App\Support\Tracking::attrs('click_whatsapp') !!}>{{ config('business.whatsapp') }}</a></dd>
                         </div>
                     </div>
                     @if ($address)
@@ -71,13 +73,22 @@
                 @endif
 
                 @if ($address)
+                    <div class="mt-6 grid gap-2 sm:grid-cols-3">
+                        <x-button :href="$mapsUrl" variant="outline" target="_blank" rel="noopener noreferrer" aria-label="Vezi Decor Urban pe Google Maps" data-track-event="click_google_maps" data-track-params="{}">Vezi pe Google Maps</x-button>
+                        <x-button :href="$directionsUrl" variant="outline" target="_blank" rel="noopener noreferrer" aria-label="Obține indicații către Decor Urban" data-track-event="click_directions" data-track-params="{}">Obține indicații</x-button>
+                        <x-button :href="$mapsUrl" variant="ghost" target="_blank" rel="noopener noreferrer" aria-label="Vezi profilul Google Decor Urban" data-track-event="outbound_social_click" data-track-params='{"social_network":"google_maps"}'>Profil Google</x-button>
+                    </div>
+                    <div class="mt-6 rounded-card border border-line bg-tint-sky p-4 text-sm leading-relaxed text-ink-soft">
+                        Primim clienți la atelier, cu programare telefonică recomandată. Livrăm în toată România, iar echipa se poate deplasa la client în funcție de proiect.
+                    </div>
                     <div class="mt-6 overflow-hidden rounded-card border border-line">
                         <iframe
                             title="Hartă {{ $legalName ?: $brand }}"
-                            src="https://maps.google.com/maps?q={{ urlencode($address) }}&output=embed"
+                            src="{{ \App\Support\Business::mapsEmbedUrl() }}"
                             class="aspect-video w-full" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                     </div>
                 @endif
+                <x-storefront.social-links class="mt-6" />
             </div>
 
             {{-- Formular de contact (Livewire — Partea 4). --}}

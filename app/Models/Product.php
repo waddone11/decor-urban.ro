@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
 
 class Product extends Model
 {
@@ -20,8 +23,27 @@ class Product extends Model
         'description_draft',
         'description_source',
         'price',
+        'sale_price',
+        'currency',
         'price_on_request',
         'availability',
+        'condition',
+        'brand',
+        'gtin',
+        'mpn',
+        'google_product_category',
+        'facebook_product_category',
+        'shipping_weight',
+        'minimum_order_quantity',
+        'custom_label_0',
+        'custom_label_1',
+        'custom_label_2',
+        'custom_label_3',
+        'custom_label_4',
+        'feed_enabled',
+        'quote_only',
+        'feed_updated_at',
+        'show_in_google_business',
         'is_active',
         'sort_order',
         'legacy_urls',
@@ -33,9 +55,15 @@ class Product extends Model
 
     protected $casts = [
         'price' => 'decimal:2',
+        'sale_price' => 'decimal:2',
         'price_on_request' => 'bool',
+        'feed_enabled' => 'bool',
+        'quote_only' => 'bool',
+        'show_in_google_business' => 'bool',
         'is_active' => 'bool',
         'sort_order' => 'int',
+        'minimum_order_quantity' => 'int',
+        'feed_updated_at' => 'datetime',
         'legacy_urls' => 'array',
         'legacy_categories' => 'array',
         'specs' => 'array',
@@ -95,7 +123,7 @@ class Product extends Model
      * imagini source='ai', folosește-le pe acelea. Altfel toate imaginile.
      * Defensiv: merge și înainte ca migrația poze-ai să fie aplicată.
      */
-    public function galleryImages(): \Illuminate\Support\Collection
+    public function galleryImages(): Collection
     {
         $images = $this->images;
 
@@ -113,7 +141,7 @@ class Product extends Model
     {
         static $has = null;
 
-        return $has ??= \Illuminate\Support\Facades\Schema::hasColumn('product_images', 'source');
+        return $has ??= Schema::hasColumn('product_images', 'source');
     }
 
     // ── SEO ────────────────────────────────────────────────────────────────
@@ -130,7 +158,7 @@ class Product extends Model
         }
 
         if ($this->description) {
-            return (string) \Illuminate\Support\Str::of($this->description)->stripTags()->squish()->limit(155);
+            return (string) Str::of($this->description)->stripTags()->squish()->limit(155);
         }
 
         $cat = $this->primaryCategory() ?? $this->categories->first();
@@ -143,6 +171,16 @@ class Product extends Model
     public function ogImageUrl(): ?string
     {
         return $this->primaryImage()?->url();
+    }
+
+    public function canonicalUrl(): string
+    {
+        return route('product', $this->slug);
+    }
+
+    public function feedId(): string
+    {
+        return $this->slug ?: (string) $this->id;
     }
 
     // ── Specs (afișare; doar ce există — fără fabricare) ─────────────────────

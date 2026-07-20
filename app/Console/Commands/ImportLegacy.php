@@ -22,6 +22,11 @@ class ImportLegacy extends Command
     {
         $jsonPath = storage_path('scrape/products.json');
         if (! File::exists($jsonPath)) {
+            $snapshotPath = database_path('data/catalog.json');
+            if (File::exists($snapshotPath)) {
+                return $this->importSnapshot($snapshotPath);
+            }
+
             $this->error("Nu găsesc {$jsonPath}. Rulează mai întâi scraper-ul (Faza 1).");
 
             return self::FAILURE;
@@ -110,6 +115,79 @@ class ImportLegacy extends Command
         if (! empty($stats['unmapped'])) {
             $this->warn('  Categorii sursă NEMAPATE: '.implode(', ', array_keys($stats['unmapped'])));
         }
+
+        return self::SUCCESS;
+    }
+
+    private function importSnapshot(string $snapshotPath): int
+    {
+        $this->warn("Nu găsesc scrape-ul brut; import snapshot comis: {$snapshotPath}");
+        $this->truncateCatalog();
+
+        $data = json_decode(File::get($snapshotPath), true, 512, JSON_THROW_ON_ERROR);
+
+        foreach ($data['categories'] ?? [] as $category) {
+            Category::create([
+                'name' => $category['name'],
+                'slug' => $category['slug'],
+                'description' => $category['description'] ?? null,
+                'intro' => $category['intro'] ?? null,
+                'sort_order' => $category['sort_order'] ?? 0,
+                'is_active' => $category['is_active'] ?? true,
+            ]);
+        }
+
+        $categoriesBySlug = Category::all()->keyBy('slug');
+        $stats = ['products' => 0, 'images' => 0, 'pivot' => 0];
+
+        foreach ($data['products'] ?? [] as $row) {
+            $attributes = collect($row)->except(['categories', 'images'])->merge([
+                'feed_enabled' => false,
+                'quote_only' => true,
+            ])->all();
+            if (($row['legacy_description'] ?? null) === null) {
+                $attributes['description'] = null;
+            }
+
+            $product = Product::create($attributes);
+            $stats['products']++;
+
+            $syncData = [];
+            foreach ($row['categories'] ?? [] as $category) {
+                $slug = is_array($category) ? ($category['slug'] ?? null) : $category;
+                if (! $slug || ! $categoriesBySlug->has($slug)) {
+                    continue;
+                }
+
+                $syncData[$categoriesBySlug[$slug]->id] = [
+                    'is_primary' => (bool) ($category['is_primary'] ?? false),
+                ];
+            }
+            $product->categories()->sync($syncData);
+            $stats['pivot'] += count($syncData);
+
+            foreach ($row['images'] ?? [] as $image) {
+                if (! Storage::disk('public')->exists($image['path'])) {
+                    Storage::disk('public')->put($image['path'], 'snapshot-image-placeholder');
+                }
+                ProductImage::create([
+                    'product_id' => $product->id,
+                    'path' => $image['path'],
+                    'thumb_sm_path' => $image['thumb_sm_path'] ?? null,
+                    'thumb_md_path' => $image['thumb_md_path'] ?? null,
+                    'alt' => $image['alt'] ?? $product->name,
+                    'sort_order' => $image['sort_order'] ?? 0,
+                    'is_primary' => $image['is_primary'] ?? false,
+                    'source' => $image['source'] ?? null,
+                ]);
+                $stats['images']++;
+            }
+        }
+
+        $this->info('Gata.');
+        $this->line("  Produse:        {$stats['products']}");
+        $this->line("  Imagini:        {$stats['images']}");
+        $this->line("  Rânduri pivot:  {$stats['pivot']}");
 
         return self::SUCCESS;
     }

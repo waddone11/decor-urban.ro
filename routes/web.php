@@ -9,7 +9,9 @@ use App\Livewire\Checkout;
 use App\Livewire\OrderSuccess;
 use App\Models\Category;
 use App\Models\Product;
+use App\Support\Feeds\ProductFeed;
 use App\Support\LegacyRedirects;
+use App\Support\Sitemap;
 use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 use Illuminate\Http\Request;
 use Illuminate\Session\Middleware\StartSession;
@@ -90,14 +92,46 @@ Route::view('/politica-cookies', 'static.politica-cookies')->name('politica-cook
 // /sitemap.xml: dinamic (dev/test); pe prod `sitemap:generate` scrie un fișier
 // static în public/ care e servit direct de webserver (mai rapid).
 Route::get('/sitemap.xml', function () {
-    return response(\App\Support\Sitemap::xml(), 200, ['Content-Type' => 'application/xml']);
+    return response(Sitemap::index(), 200, ['Content-Type' => 'application/xml; charset=UTF-8']);
 })->name('sitemap');
+
+Route::get('/sitemaps/pages.xml', fn () => response(Sitemap::pages(), 200, ['Content-Type' => 'application/xml; charset=UTF-8']))->name('sitemaps.pages');
+Route::get('/sitemaps/categories.xml', fn () => response(Sitemap::categories(), 200, ['Content-Type' => 'application/xml; charset=UTF-8']))->name('sitemaps.categories');
+Route::get('/sitemaps/products.xml', fn () => response(Sitemap::products(), 200, ['Content-Type' => 'application/xml; charset=UTF-8']))->name('sitemaps.products');
+Route::get('/sitemaps/images.xml', fn () => response(Sitemap::images(), 200, ['Content-Type' => 'application/xml; charset=UTF-8']))->name('sitemaps.images');
+
+Route::get('/feeds/google-merchant.xml', fn () => response(ProductFeed::googleXml(), 200, ['Content-Type' => 'application/xml; charset=UTF-8']))->name('feeds.google-merchant');
+Route::get('/feeds/meta-catalog.csv', function (Request $request) {
+    $token = config('business.feeds.meta_token');
+    if ($token && ! hash_equals($token, (string) $request->query('token'))) {
+        abort(404);
+    }
+
+    return response(ProductFeed::metaCsv(), 200, ['Content-Type' => 'text/csv; charset=UTF-8']);
+})->name('feeds.meta-catalog');
+
+Route::get('/admin/exports/google-business-products.csv', fn () => response(ProductFeed::googleBusinessProductsCsv(), 200, [
+    'Content-Type' => 'text/csv; charset=UTF-8',
+    'Content-Disposition' => 'attachment; filename="google-business-products.csv"',
+]))->middleware('auth')->name('admin.exports.google-business-products');
+
+Route::get('/admin/exports/feed-exclusions.csv', fn () => response(ProductFeed::exclusionReportCsv(), 200, [
+    'Content-Type' => 'text/csv; charset=UTF-8',
+    'Content-Disposition' => 'attachment; filename="feed-exclusions.csv"',
+]))->middleware('auth')->name('admin.exports.feed-exclusions');
 
 Route::get('/robots.txt', function () {
     $lines = [
         'User-agent: *',
         'Disallow: /admin',
+        'Disallow: /admin/',
         'Disallow: /commands',
+        'Disallow: /commands/',
+        'Disallow: /login',
+        'Disallow: /cart/',
+        'Disallow: /cos',
+        'Disallow: /*?sort=',
+        'Disallow: /*?filter=',
         '',
         'Sitemap: '.url('/sitemap.xml'),
         '',
@@ -115,7 +149,13 @@ Route::middleware([VerifySecretKey::class, 'throttle:'.config('commands.rate_lim
     ->group(function () {
         Route::get('/', [CommandController::class, 'index'])->name('commands.index');
         Route::get('/clear-cache', [CommandController::class, 'clearCache'])->name('commands.clearCache');
+        Route::get('/config-clear', [CommandController::class, 'configClear'])->name('commands.configClear');
+        Route::get('/route-clear', [CommandController::class, 'routeClear'])->name('commands.routeClear');
+        Route::get('/view-clear', [CommandController::class, 'viewClear'])->name('commands.viewClear');
         Route::get('/optimize-clear', [CommandController::class, 'optimizeClear'])->name('commands.optimizeClear');
+        Route::get('/config-cache', [CommandController::class, 'configCache'])->name('commands.configCache');
+        Route::get('/route-cache', [CommandController::class, 'routeCache'])->name('commands.routeCache');
+        Route::get('/view-cache', [CommandController::class, 'viewCache'])->name('commands.viewCache');
         Route::get('/optimize', [CommandController::class, 'optimize'])->name('commands.optimize');
         Route::get('/create-storage-link', [CommandController::class, 'createStorageLink'])->name('commands.createStorageLink');
         Route::get('/create-sitemap', [CommandController::class, 'createSitemap'])->name('commands.createSitemap');
@@ -126,6 +166,12 @@ Route::middleware([VerifySecretKey::class, 'throttle:'.config('commands.rate_lim
         Route::get('/catalog-summary', [CommandController::class, 'catalogSummary'])->name('commands.catalogSummary');
         Route::get('/queue-restart', [CommandController::class, 'queueRestart'])->name('commands.queueRestart');
         Route::get('/trigger-queue/{queue?}', [CommandController::class, 'triggerQueue'])->name('commands.triggerQueue');
+        Route::get('/thumbnails', [CommandController::class, 'thumbnails'])->name('commands.thumbnails');
+        Route::get('/export-snapshot', [CommandController::class, 'exportSnapshot'])->name('commands.exportSnapshot');
+        Route::get('/feeds-google', [CommandController::class, 'feedsGoogle'])->name('commands.feedsGoogle');
+        Route::get('/feeds-meta', [CommandController::class, 'feedsMeta'])->name('commands.feedsMeta');
+        Route::get('/feeds-all', [CommandController::class, 'feedsAll'])->name('commands.feedsAll');
+        Route::get('/google-business-export', [CommandController::class, 'googleBusinessExport'])->name('commands.googleBusinessExport');
     });
 
 // ── 301 din URL-urile vechi ─────────────────────────────────────────────────

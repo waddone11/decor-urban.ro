@@ -39,7 +39,8 @@
     <h2>Cui le divulgăm</h2>
     <p>
         Nu vindem datele tale. Le putem divulga doar furnizorilor care ne ajută să operăm (ex. găzduire,
-        email), pe bază de contract, și autorităților când legea o cere.
+        email, analytics sau marketing, dacă ai acordat consimțământul relevant), pe bază de contract, și
+        autorităților când legea o cere.
     </p>
 
     <h2>Drepturile tale</h2>
@@ -52,6 +53,8 @@
 
     <h2>Cookie-uri</h2>
     <p>
-        Detalii despre cookie-uri în <a href="{{ route('politica-cookies') }}">Politica de cookie-uri</a>.
+        Cookie-urile analytics și marketing sunt dezactivate implicit și se activează numai după acord.
+        Detalii despre cookie-uri și retragerea consimțământului în
+        <a href="{{ route('politica-cookies') }}">Politica de cookie-uri</a>.
     </p>
 </x-static.legal-page>

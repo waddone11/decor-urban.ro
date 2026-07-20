@@ -58,7 +58,7 @@
         @endif
 
         <div class="mt-10 flex flex-wrap items-center gap-3 border-t border-line pt-8">
-            <x-button :href="'https://wa.me/'.$whatsapp" variant="accent" size="lg" target="_blank" rel="noopener">Cere ofertă similară</x-button>
+            <x-button :href="\App\Support\Business::whatsappUrl()" variant="accent" size="lg" target="_blank" rel="noopener noreferrer" aria-label="Contactează Decor Urban pe WhatsApp" data-track-event="click_whatsapp" data-track-params="{}">Cere ofertă similară</x-button>
             <x-button :href="route('proiecte')" variant="outline" size="lg">← Toate proiectele</x-button>
         </div>
 

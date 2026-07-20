@@ -6,6 +6,13 @@
     @php
         $images = $product->galleryImages();
         $hasPrice = ! $product->price_on_request && $product->price;
+        $shareUrl = route('product', $product->slug);
+        $productTrackParams = e(json_encode([
+            'product_id' => $product->id,
+            'product_name' => $product->name,
+            'product_code' => $product->code,
+            'product_category' => $primaryCategory?->name,
+        ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
     @endphp
 
     <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
@@ -126,11 +133,32 @@
                 {{-- CTA rapid 1-produs (WhatsApp) + contact --}}
                 <div class="mt-3 flex flex-col gap-3 sm:flex-row">
                     <x-button :href="$whatsappUrl" variant="accent" size="lg" class="flex-1"
-                              target="_blank" rel="noopener">
+                              target="_blank" rel="noopener noreferrer" aria-label="Contactează Decor Urban pe WhatsApp"
+                              data-track-event="click_whatsapp" data-track-params="{{ $productTrackParams }}">
                         <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2Zm0 18.15c-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.23 8.24-8.23s8.23 3.69 8.23 8.23-3.69 8.24-8.22 8.24Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.12-.16.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.01-.38.11-.51.11-.11.25-.29.37-.43.13-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.22.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.06-.1-.22-.16-.47-.28Z"/></svg>
                         Cere ofertă pe WhatsApp
                     </x-button>
                     <x-button :href="route('contact')" variant="outline" size="lg">Cere ofertă</x-button>
+                </div>
+
+                <div class="mt-4 flex flex-wrap items-center gap-2">
+                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode($shareUrl) }}" target="_blank" rel="noopener noreferrer"
+                       aria-label="Distribuie produsul pe Facebook"
+                       class="inline-flex h-10 items-center gap-2 rounded-button border border-line bg-white px-3 text-sm font-medium text-ink-soft hover:border-accent hover:text-accent">
+                        <x-social-icon name="facebook" class="h-5 w-5" /> Facebook
+                    </a>
+                    <a href="https://wa.me/?text={{ rawurlencode($product->name.' '.$shareUrl) }}" target="_blank" rel="noopener noreferrer"
+                       aria-label="Distribuie produsul pe WhatsApp"
+                       class="inline-flex h-10 items-center gap-2 rounded-button border border-line bg-white px-3 text-sm font-medium text-ink-soft hover:border-accent hover:text-accent">
+                        <x-social-icon name="whatsapp" class="h-5 w-5" /> WhatsApp
+                    </a>
+                    <button type="button"
+                            x-data="{ copied: false }"
+                            @click="navigator.clipboard.writeText('{{ $shareUrl }}'); copied = true; setTimeout(() => copied = false, 1600)"
+                            class="inline-flex h-10 items-center gap-2 rounded-button border border-line bg-white px-3 text-sm font-medium text-ink-soft hover:border-accent hover:text-accent">
+                        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2M10 8h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2Z"/></svg>
+                        <span x-text="copied ? 'Copiat' : 'Copiază link'"></span>
+                    </button>
                 </div>
 
                 {{-- Trust-row: diferențiatori de producător --}}
@@ -151,7 +179,8 @@
                 {{-- Notă custom — diferențiatorul de producător --}}
                 <div class="mt-6 flex flex-col gap-3 rounded-card border border-line bg-tint-sky p-4 sm:flex-row sm:items-center sm:justify-between">
                     <p class="text-sm text-ink-soft"><span class="font-semibold text-ink">Solicită dimensiuni sau culoare custom.</span> Producem la comandă — culori RAL și dimensiuni adaptate proiectului tău.</p>
-                    <x-button :href="$whatsappUrl" variant="outline" size="sm" target="_blank" rel="noopener" class="shrink-0">Solicită custom</x-button>
+                    <x-button :href="$whatsappUrl" variant="outline" size="sm" target="_blank" rel="noopener noreferrer" class="shrink-0"
+                              aria-label="Contactează Decor Urban pe WhatsApp" data-track-event="click_whatsapp" data-track-params="{{ $productTrackParams }}">Solicită custom</x-button>
                 </div>
 
                 {{-- Tab-uri: Descriere / Specificații / Livrare (accesibile, reduced-motion safe) --}}

@@ -56,12 +56,19 @@ class ProductForm
                         TextInput::make('price')
                             ->label('Preț (RON)')
                             ->numeric()
+                            ->gt(0)
                             ->prefix('RON')
                             ->visible(fn (Get $get): bool => ! $get('price_on_request'))
                             ->required(fn (Get $get): bool => ! $get('price_on_request')),
+                        TextInput::make('sale_price')
+                            ->label('Preț promoțional')
+                            ->numeric()
+                            ->prefix('RON')
+                            ->lt('price')
+                            ->visible(fn (Get $get): bool => ! $get('price_on_request')),
                         TextInput::make('availability')
                             ->label('Disponibilitate')
-                            ->placeholder('la comanda')
+                            ->placeholder('in stock')
                             ->maxLength(255),
                     ]),
 
@@ -82,6 +89,63 @@ class ProductForm
                             ->label('Ordine')
                             ->numeric()
                             ->default(0),
+                    ]),
+
+                Section::make('Feeduri și cataloage')
+                    ->columns(2)
+                    ->collapsible()
+                    ->collapsed()
+                    ->components([
+                        Toggle::make('feed_enabled')
+                            ->label('Include în feeduri Merchant/Meta')
+                            ->default(false)
+                            ->live()
+                            ->rules([
+                                fn (Get $get): \Closure => function (string $attribute, $value, \Closure $fail) use ($get): void {
+                                    if (! $value) {
+                                        return;
+                                    }
+                                    if ($get('quote_only') || $get('price_on_request')) {
+                                        $fail('Feedul nu poate fi activat pentru produse la cerere.');
+                                    }
+                                    if (! $get('price') || (float) $get('price') <= 0) {
+                                        $fail('Feedul cere un preț real mai mare decât zero.');
+                                    }
+                                    if (! $get('is_active')) {
+                                        $fail('Feedul nu poate fi activat pentru produse inactive.');
+                                    }
+                                },
+                            ]),
+                        Toggle::make('quote_only')
+                            ->label('Produs doar la cerere')
+                            ->default(true)
+                            ->helperText('Activ = exclus din feeduri comerciale.'),
+                        Toggle::make('show_in_google_business')
+                            ->label('Export Google Business Products')
+                            ->default(false),
+                        Select::make('condition')
+                            ->label('Condiție')
+                            ->options(['new' => 'new', 'refurbished' => 'refurbished', 'used' => 'used'])
+                            ->default('new'),
+                        TextInput::make('currency')
+                            ->label('Monedă')
+                            ->default('RON')
+                            ->maxLength(3),
+                        TextInput::make('brand')
+                            ->label('Brand')
+                            ->default(config('business.name'))
+                            ->maxLength(255),
+                        TextInput::make('mpn')->label('MPN')->maxLength(255),
+                        TextInput::make('gtin')->label('GTIN')->maxLength(255),
+                        TextInput::make('google_product_category')->label('Google product category')->maxLength(255),
+                        TextInput::make('facebook_product_category')->label('Facebook product category')->maxLength(255),
+                        TextInput::make('shipping_weight')->label('Greutate livrare')->maxLength(255),
+                        TextInput::make('minimum_order_quantity')->label('Cantitate minimă')->numeric()->minValue(1),
+                        TextInput::make('custom_label_0')->label('Custom label 0')->maxLength(255),
+                        TextInput::make('custom_label_1')->label('Custom label 1')->maxLength(255),
+                        TextInput::make('custom_label_2')->label('Custom label 2')->maxLength(255),
+                        TextInput::make('custom_label_3')->label('Custom label 3')->maxLength(255),
+                        TextInput::make('custom_label_4')->label('Custom label 4')->maxLength(255),
                     ]),
 
                 Section::make('SEO')

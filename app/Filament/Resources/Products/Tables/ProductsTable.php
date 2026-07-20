@@ -55,6 +55,13 @@ class ProductsTable
                     ->color(fn ($record): string => $record->price_on_request ? 'warning' : 'success'),
                 ToggleColumn::make('is_active')
                     ->label('Activ'),
+                ToggleColumn::make('feed_enabled')
+                    ->label('Feed')
+                    ->toggleable(),
+                IconColumn::make('show_in_google_business')
+                    ->label('GBP')
+                    ->boolean()
+                    ->toggleable(),
                 TextColumn::make('sort_order')
                     ->label('Ordine')
                     ->numeric()
@@ -71,6 +78,10 @@ class ProductsTable
                     ->label('Preț la cerere'),
                 TernaryFilter::make('is_active')
                     ->label('Activ'),
+                TernaryFilter::make('feed_enabled')
+                    ->label('În feeduri'),
+                TernaryFilter::make('show_in_google_business')
+                    ->label('Google Business'),
             ])
             ->recordActions([
                 EditAction::make(),

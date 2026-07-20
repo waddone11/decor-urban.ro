@@ -1,8 +1,7 @@
 @php
     $brand = config('contact.brand');
     $supplierLabel = config('company.supplier_label');
-    $whatsapp = config('contact.whatsapp');
-    $waOferta = 'https://wa.me/'.$whatsapp.'?text='.rawurlencode('Bună ziua, doresc o ofertă pentru o achiziție publică / licitație.');
+    $waOferta = \App\Support\Business::whatsappUrl('Bună ziua, doresc o ofertă pentru o achiziție publică / licitație.');
     $legalName = config('company.legal_name');
     $cui = config('company.cui');
     $regCom = config('company.reg_com');
@@ -23,6 +22,9 @@
 @endphp
 
 <x-layouts.storefront :title="$metaTitle" :description="$metaDescription">
+    @push('head')
+        <script>window.dataLayer = window.dataLayer || []; window.dataLayer.push({event: 'view_institution_page'});</script>
+    @endpush
     <x-seo.jsonld :data="\App\Support\JsonLd::breadcrumb([
         ['name' => 'Acasă', 'url' => url('/')],
         ['name' => 'Instituții', 'url' => route('institutii')],
@@ -110,7 +112,7 @@
 
         {{-- CTA --}}
         <div class="mt-8 flex flex-wrap items-center gap-3">
-            <x-button :href="$waOferta" variant="accent" size="lg" target="_blank" rel="noopener">Cere ofertă pentru licitație</x-button>
+            <x-button :href="$waOferta" variant="accent" size="lg" target="_blank" rel="noopener noreferrer" aria-label="Contactează Decor Urban pe WhatsApp" data-track-event="click_whatsapp" data-track-params="{}">Cere ofertă pentru licitație</x-button>
             <x-button :href="route('contact')" variant="outline" size="lg">Contact</x-button>
             <x-button :href="route('proiecte')" variant="ghost" size="lg">Vezi lucrări livrate →</x-button>
         </div>

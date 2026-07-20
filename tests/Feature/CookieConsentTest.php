@@ -16,7 +16,10 @@ class CookieConsentTest extends TestCase
         $this->assertStringContainsString('Consimțământ cookie-uri', $html);
         $this->assertStringContainsString('cookie_consent=', $html);
         $this->assertStringContainsString(route('politica-cookies'), $html);
-        $this->assertStringContainsString('@click="accept()"', $html);
-        $this->assertMatchesRegularExpression('/>\s*Accept\s*</', $html);
+        $this->assertStringContainsString('analytics_storage', $html);
+        $this->assertStringContainsString('Meta Pixel', $html);
+        $this->assertStringContainsString('TikTok Pixel', $html);
+        $this->assertStringContainsString('Acceptă tot', $html);
+        $this->assertStringContainsString('Respinge', $html);
     }
 }

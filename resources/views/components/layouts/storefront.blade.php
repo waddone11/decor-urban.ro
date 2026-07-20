@@ -8,7 +8,7 @@
 
 @php
     $canonicalUrl = $canonical ?? url()->current();
-    $ogImageUrl = $ogImage ?? asset('images/logo.svg');
+    $ogImageUrl = $ogImage ?? asset('images/social-card.svg');
 @endphp
 
 <!DOCTYPE html>
@@ -35,37 +35,23 @@
     <meta property="og:description" content="{{ $description }}">
     <meta property="og:url" content="{{ $canonicalUrl }}">
     <meta property="og:image" content="{{ $ogImageUrl }}">
+    <meta property="og:locale" content="ro_RO">
+    <meta name="twitter:title" content="{{ $fullTitle }}">
+    <meta name="twitter:description" content="{{ $description }}">
+    <meta name="twitter:image" content="{{ $ogImageUrl }}">
     <meta name="twitter:card" content="{{ $ogImage ? 'summary_large_image' : 'summary' }}">
+    @if (config('business.verification.google'))
+        <meta name="google-site-verification" content="{{ config('business.verification.google') }}">
+    @endif
+    @if (config('business.verification.bing'))
+        <meta name="msvalidate.01" content="{{ config('business.verification.bing') }}">
+    @endif
+    @if (config('business.verification.facebook'))
+        <meta name="facebook-domain-verification" content="{{ config('business.verification.facebook') }}">
+    @endif
 
-    {{-- Date structurate: Organization (site-wide). --}}
-    @php
-        $ldOrganization = array_filter([
-            '@context' => 'https://schema.org',
-            '@type' => 'Organization',
-            'name' => config('contact.brand'),
-            'legalName' => config('company.legal_name') ?: null,
-            'url' => url('/'),
-            'logo' => asset('images/logo.svg'),
-            'description' => config('company.supplier_label').' de mobilier urban și stradal: bănci, coșuri, jardiniere, stații, locuri de joacă.',
-            'areaServed' => 'RO',
-            'taxID' => config('company.cui') ?: null,
-            'foundingDate' => config('company.founded') ?: null,
-            'address' => config('company.address') ? array_filter([
-                '@type' => 'PostalAddress',
-                'streetAddress' => config('company.address'),
-                'addressCountry' => 'RO',
-            ]) : null,
-            'contactPoint' => [
-                '@type' => 'ContactPoint',
-                'contactType' => 'sales',
-                'telephone' => config('contact.phone'),
-                'email' => config('contact.email'),
-                'areaServed' => 'RO',
-                'availableLanguage' => 'Romanian',
-            ],
-        ]);
-    @endphp
-    <script type="application/ld+json">{!! json_encode($ldOrganization, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
+    <script type="application/ld+json">{!! json_encode(\App\Support\JsonLd::business(), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
+    <x-storefront.tracking />
 
     @stack('head')
 

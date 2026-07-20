@@ -55,7 +55,8 @@ class ProjectPublicTest extends TestCase
         Project::create(['title' => 'Parc Slatina', 'slug' => 'parc-slatina', 'is_published' => true, 'sort_order' => 1]);
         Project::create(['title' => 'Draft', 'slug' => 'draft', 'is_published' => false, 'sort_order' => 2]);
 
-        $res = $this->get('/sitemap.xml')->assertOk();
+        $this->get('/sitemap.xml')->assertOk()->assertSee(url('/sitemaps/pages.xml'), false);
+        $res = $this->get('/sitemaps/pages.xml')->assertOk();
         $res->assertSee(route('project.show', 'parc-slatina'), false);
         $res->assertDontSee(route('project.show', 'draft'), false);
         $res->assertSee(route('institutii'), false);

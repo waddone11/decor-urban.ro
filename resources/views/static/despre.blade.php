@@ -78,7 +78,9 @@
 
         <div class="mt-10 flex flex-wrap gap-3">
             <x-button :href="route('contact')" variant="primary" size="lg">Contactează-ne</x-button>
-            <x-button :href="'https://wa.me/'.$whatsapp" variant="accent" size="lg">Cere ofertă pe WhatsApp</x-button>
+            <x-button :href="\App\Support\Business::whatsappUrl()" variant="accent" size="lg" target="_blank" rel="noopener noreferrer"
+                      aria-label="Contactează Decor Urban pe WhatsApp" data-track-event="click_whatsapp" data-track-params="{}">Cere ofertă pe WhatsApp</x-button>
         </div>
+        <x-storefront.social-links class="mt-6" />
     </div>
 </x-layouts.storefront>

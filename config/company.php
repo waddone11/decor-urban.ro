@@ -12,10 +12,10 @@
 
 return [
     // Identitate legală — afișată ca semnal de încredere pentru instituții.
-    'legal_name' => env('COMPANY_LEGAL_NAME', ''), // denumire firmă (SRL)
-    'brand' => env('COMPANY_BRAND', 'Decor Urban'),
+    'legal_name' => env('COMPANY_LEGAL_NAME', env('BUSINESS_LEGAL_NAME', 'MOBILIER-STRADAL RO 2026 S.R.L.')),
+    'brand' => env('COMPANY_BRAND', env('BUSINESS_NAME', 'Decor Urban')),
     'euid' => env('COMPANY_EUID', ''),             // identificator unic european
-    'address' => env('COMPANY_ADDRESS', ''),       // sediu social
+    'address' => env('COMPANY_ADDRESS', env('BUSINESS_ADDRESS', 'Str. Băltați nr. 149, Sat Băltați, Oraș Scornicești, Județul Olt, România')),
     'caen' => env('COMPANY_CAEN', ''),             // cod CAEN principal
     'founded' => env('COMPANY_FOUNDED', ''),       // data înființării (Y-m-d)
 
@@ -23,8 +23,8 @@ return [
     'supplier_label' => env('COMPANY_SUPPLIER_LABEL', 'producător / furnizor direct'),
 
     // Identitate fiscală — afișate doar dacă sunt completate.
-    'cui' => env('COMPANY_CUI', ''),            // ex. RO12345678
-    'reg_com' => env('COMPANY_REG_COM', ''),    // ex. J40/1234/2010
+    'cui' => env('COMPANY_CUI', env('BUSINESS_VAT_NUMBER', '54295156')),
+    'reg_com' => env('COMPANY_REG_COM', env('BUSINESS_REGISTRATION_NUMBER', 'J2026018529009')),
 
     // Achiziții publice.
     'cpv' => env('COMPANY_CPV', ''),            // cod CPV principal, ex. 34928400-2
@@ -57,5 +57,5 @@ return [
     ))),
 
     // True cât timp datele de mai sus sunt necompletate / provizorii.
-    'is_placeholder' => env('COMPANY_IS_PLACEHOLDER', true),
+    'is_placeholder' => env('COMPANY_IS_PLACEHOLDER', false),
 ];

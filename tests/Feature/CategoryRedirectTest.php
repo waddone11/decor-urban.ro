@@ -60,7 +60,8 @@ class CategoryRedirectTest extends TestCase
 
     public function test_static_pages_in_sitemap(): void
     {
-        $res = $this->get('/sitemap.xml')->assertOk();
+        $this->get('/sitemap.xml')->assertOk()->assertSee(url('/sitemaps/pages.xml'), false);
+        $res = $this->get('/sitemaps/pages.xml')->assertOk();
         $res->assertSee(route('despre'), false);
         $res->assertSee(route('contact'), false);
         $res->assertSee(route('confidentialitate'), false);

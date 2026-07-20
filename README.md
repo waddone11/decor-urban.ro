@@ -194,17 +194,30 @@ php artisan images:thumbnails --only <slug>
 
 Rulează comenzi artisan din URL, securizat cu **o singură cheie `secret`** din `.env`.
 Rutele rulează **fără sesiune/CSRF**, deci merg și pe o **DB proaspătă/goală** (înainte de migrate).
+Runner-ul rămâne **permanent activ**; singura poartă este `SECRET`.
 
 1. În `.env`: `SECRET=<cheie-lungă-random>` (`php artisan str:random 48`). **NU o comite.**
 2. `/commands?secret=...` → pagină cu linkuri către comenzi. Fără `secret` corect (sau header
    `X-Command-Secret`) → **404** (nu dezvăluie că ruta există).
 3. `migrate-fresh-seed` (distructiv) cere în plus `&confirm=YES`.
 4. Fiecare invocare e logată în `storage/logs/commands.log` (IP, comandă, timestamp).
-5. **După ce termini: rotește/șterge `SECRET`.**
+5. Folosește HTTPS, rotește `SECRET` periodic și nu pune cheia în linkuri partajate.
 
-Comenzi: `clear-cache`, `optimize-clear`, `optimize`, `create-storage-link`, `create-sitemap`,
+Comenzi mentenanță: `clear-cache`, `config-clear`, `route-clear`, `view-clear`, `optimize-clear`,
+`config-cache`, `route-cache`, `view-cache`, `optimize`, `create-storage-link`, `create-sitemap`,
 `migrate`, `migrate-fresh-seed` (confirm=YES), `migrate-status`, `about`, `catalog-summary`,
-`queue-restart`, `trigger-queue` (util doar dacă emailurile trec pe coadă — acum `sync`).
+`queue-restart`, `trigger-queue`, `thumbnails`, `export-snapshot`.
+
+Comenzi feed-uri: `feeds-google`, `feeds-meta`, `feeds-all`, `google-business-export`.
+Endpointurile publice rămân separate: `/feeds/google-merchant.xml` și `/feeds/meta-catalog.csv`;
+`/commands/feeds-*` doar regenerează cache-ul și întorc raport text cu produse incluse/excluse.
+
+Cron cPanel pentru feeduri proaspete zilnic:
+
+```cron
+# zilnic 04:00 — regenerează feed-urile
+0 4 * * * curl -s "https://decor-urban.ro/commands/feeds-all?secret=CHEIA" > /dev/null
+```
 
 > Helper pentru hosting fără SSH — **nu** înlocuiește un deploy real.
 
@@ -215,7 +228,7 @@ Comenzi: `clear-cache`, `optimize-clear`, `optimize`, `create-storage-link`, `cr
 3. urci fișierele imagine **+ variantele 400/800** în `storage/app/public/products|projects/...` (FTP);
    generează variantele local înainte (`php artisan images:thumbnails`);
 4. `/commands/create-storage-link?secret=...`, `/commands/optimize?secret=...`, `/commands/create-sitemap?secret=...`;
-5. rotește/șterge `SECRET` după ce ai terminat.
+5. verifică `/commands/feeds-all?secret=...` și rotește periodic `SECRET`.
 
 ## Coș & comandă (Faza 4c)
 

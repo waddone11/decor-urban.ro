@@ -10,20 +10,19 @@
 */
 
 return [
-    'brand' => env('CONTACT_BRAND', 'Decor Urban'),
+    'brand' => env('CONTACT_BRAND', env('BUSINESS_NAME', 'Decor Urban')),
 
-    // TODO(owner): telefon afișabil + WhatsApp în format internațional pentru wa.me.
-    'phone' => env('CONTACT_PHONE', '+40 7XX XXX XXX'),          // TODO
-    'whatsapp' => env('CONTACT_WHATSAPP', '40700000000'),         // TODO — doar cifre, ex. 40712345678
-    'email' => env('CONTACT_EMAIL', 'contact@decor-urban.ro'),   // TODO de confirmat
+    'phone' => env('CONTACT_PHONE', env('BUSINESS_PHONE', '+40 758 522 227')),
+    'whatsapp' => env('CONTACT_WHATSAPP', env('BUSINESS_WHATSAPP_DIGITS', '40756222260')),
+    'email' => env('CONTACT_EMAIL', env('BUSINESS_EMAIL', 'contact@decor-urban.ro')),
 
     // Adresă / oraș (opțional, pentru footer).
-    'city' => env('CONTACT_CITY', 'România'),
+    'city' => env('CONTACT_CITY', 'Scornicești, Olt'),
 
     // Social (opțional — gol = ascuns).
-    'facebook' => env('CONTACT_FACEBOOK', ''),
-    'instagram' => env('CONTACT_INSTAGRAM', ''),
+    'facebook' => env('CONTACT_FACEBOOK', env('BUSINESS_FACEBOOK', 'https://www.facebook.com/profile.php?id=61592205237734')),
+    'instagram' => env('CONTACT_INSTAGRAM', env('BUSINESS_INSTAGRAM', 'https://www.instagram.com/decor.urban.ro')),
 
     // True cât timp datele sunt placeholdere (afișează un mic avertisment în footer).
-    'is_placeholder' => env('CONTACT_IS_PLACEHOLDER', true),
+    'is_placeholder' => env('CONTACT_IS_PLACEHOLDER', false),
 ];

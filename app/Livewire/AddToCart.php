@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Product;
 use App\Support\Cart;
 use Livewire\Component;
 
@@ -36,6 +37,13 @@ class AddToCart extends Component
         $this->qty = 1;
 
         $this->dispatch('cart-updated');
+        $product = Product::with('categories')->find($this->productId);
+        $this->dispatch('decor-track', name: 'add_to_quote', params: [
+            'product_id' => $product?->id,
+            'product_name' => $product?->name,
+            'product_code' => $product?->code,
+            'product_category' => $product?->categories->first()?->name,
+        ]);
     }
 
     public function render()

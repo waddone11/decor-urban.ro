@@ -29,7 +29,7 @@
                     și instituții. Până atunci, cere-ne referințe direct.
                 </p>
                 <div class="mt-6 flex flex-wrap justify-center gap-3">
-                    <x-button :href="'https://wa.me/'.$whatsapp" variant="accent" size="lg" target="_blank" rel="noopener">Cere ofertă pe WhatsApp</x-button>
+                    <x-button :href="\App\Support\Business::whatsappUrl()" variant="accent" size="lg" target="_blank" rel="noopener noreferrer" aria-label="Contactează Decor Urban pe WhatsApp" data-track-event="click_whatsapp" data-track-params="{}">Cere ofertă pe WhatsApp</x-button>
                     <x-button :href="route('catalog')" variant="outline" size="lg">Vezi catalogul</x-button>
                 </div>
             </div>

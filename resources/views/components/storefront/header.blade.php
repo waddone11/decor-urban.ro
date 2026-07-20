@@ -1,6 +1,6 @@
 @php
     $categories = $navCategories ?? \App\Models\Category::query()->active()->ordered()->withCount('products')->get();
-    $whatsapp = config('contact.whatsapp');
+    $whatsappUrl = \App\Support\Business::whatsappUrl();
 @endphp
 
 <header x-data="{ mobileOpen: false }" class="sticky top-0 z-40 border-b border-shell-line bg-shell/95 backdrop-blur">
@@ -79,7 +79,8 @@
 
             {{-- CTA doar pe desktop; pe mobil rămâne în meniul hamburger. --}}
             <div class="hidden lg:block ml-1">
-                <x-button :href="'https://wa.me/'.$whatsapp" variant="accent" size="sm">
+                <x-button :href="$whatsappUrl" variant="accent" size="sm" target="_blank" rel="noopener noreferrer"
+                          aria-label="Contactează Decor Urban pe WhatsApp" data-track-event="click_whatsapp" data-track-params="{}">
                     Cere ofertă
                 </x-button>
             </div>
@@ -136,11 +137,13 @@
                     </a>
                 @endforeach
             </div>
+            <x-storefront.social-links class="mt-5" />
         </div>
 
         {{-- CTA sticky jos — mereu accesibil, conținutul scrollează deasupra --}}
         <div class="shrink-0 border-t border-shell-line bg-shell px-4 py-3">
-            <x-button :href="'https://wa.me/'.$whatsapp" variant="accent" size="md" class="w-full">Cere ofertă pe WhatsApp</x-button>
+            <x-button :href="$whatsappUrl" variant="accent" size="md" class="w-full" target="_blank" rel="noopener noreferrer"
+                      aria-label="Contactează Decor Urban pe WhatsApp" data-track-event="click_whatsapp" data-track-params="{}">Cere ofertă pe WhatsApp</x-button>
         </div>
     </div>
 </header>

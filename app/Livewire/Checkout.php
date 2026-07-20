@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Mail\OrderPlacedAdmin;
 use App\Mail\OrderPlacedCustomer;
 use App\Models\Order;
+use App\Models\Product;
 use App\Support\Cart;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -14,14 +15,23 @@ use Livewire\Component;
 class Checkout extends Component
 {
     public string $customer_name = '';
+
     public string $company = '';
+
     public string $cui = '';
+
     public string $phone = '';
+
     public string $email = '';
+
     public string $county = '';
+
     public string $city = '';
+
     public string $address = '';
+
     public string $payment_method = 'ramburs';
+
     public string $notes = '';
 
     /** Honeypot anti-spam. */
@@ -90,7 +100,7 @@ class Checkout extends Component
             $order = Order::createWithNumber($data);
 
             foreach ($lines as $line) {
-                /** @var \App\Models\Product $product */
+                /** @var Product $product */
                 $product = $line['product'];
                 $order->items()->create([
                     'product_id' => $product->id,
@@ -116,6 +126,9 @@ class Checkout extends Component
         } catch (\Throwable $e) {
             Log::error('Eroare trimitere email comandă '.$order->number.': '.$e->getMessage());
         }
+
+        $this->dispatch('decor-track', name: 'submit_quote', params: ['lead_type' => 'quote', 'order_number' => $order->number]);
+        $this->dispatch('decor-track', name: 'generate_lead', params: ['lead_type' => 'quote', 'order_number' => $order->number]);
 
         return redirect()->route('order.success', $order->number);
     }

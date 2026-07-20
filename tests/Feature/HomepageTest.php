@@ -101,7 +101,8 @@ class HomepageTest extends TestCase
         $res = $this->get('/');
 
         $res->assertSee('application/ld+json', false);
-        $res->assertSee('"@type":"Organization"', false);
+        $res->assertSee('"Organization"', false);
+        $res->assertSee('"LocalBusiness"', false);
         $res->assertSee('"@type":"FAQPage"', false);
         $res->assertSee('"@type":"BreadcrumbList"', false);
         $res->assertSee('"@type":"Product"', false);

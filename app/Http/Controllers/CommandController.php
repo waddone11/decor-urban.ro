@@ -15,7 +15,13 @@ class CommandController extends Controller
     /** Comenzile mapate (cheie rută → comandă artisan). Doar acestea rulează. */
     private const COMMANDS = [
         'clear-cache' => 'cache:clear',
+        'config-clear' => 'config:clear',
+        'route-clear' => 'route:clear',
+        'view-clear' => 'view:clear',
         'optimize-clear' => 'optimize:clear',
+        'config-cache' => 'config:cache',
+        'route-cache' => 'route:cache',
+        'view-cache' => 'view:cache',
         'optimize' => 'optimize',
         'create-storage-link' => 'storage:link',
         'create-sitemap' => 'sitemap:generate',
@@ -24,38 +30,154 @@ class CommandController extends Controller
         'about' => 'about',
         'catalog-summary' => 'catalog:summary',
         'queue-restart' => 'queue:restart',
+        'thumbnails' => 'images:thumbnails',
+        'export-snapshot' => 'catalog:export-snapshot',
+        'feeds-google' => 'feeds:google',
+        'feeds-meta' => 'feeds:meta',
+        'feeds-all' => 'feeds:all',
+        'google-business-export' => 'feeds:google-business',
+    ];
+
+    private const GROUPS = [
+        'Feed-uri' => ['feeds-google', 'feeds-meta', 'feeds-all', 'google-business-export'],
+        'Mentenanță' => [
+            'clear-cache', 'config-clear', 'route-clear', 'view-clear', 'optimize-clear',
+            'config-cache', 'route-cache', 'view-cache', 'optimize', 'create-storage-link',
+            'create-sitemap', 'migrate', 'migrate-status', 'about', 'catalog-summary',
+            'queue-restart', 'trigger-queue', 'thumbnails', 'export-snapshot', 'migrate-fresh-seed',
+        ],
     ];
 
     public function index(Request $request)
     {
         $secret = (string) $request->query('secret', '');
-        $links = array_keys(self::COMMANDS);
-        $links[] = 'migrate-fresh-seed';
-        $links[] = 'trigger-queue';
-
         $html = '<!doctype html><meta charset=utf-8><meta name=robots content="noindex,nofollow">'
             .'<title>Commands</title><body style="font-family:ui-monospace,monospace;max-width:640px;margin:2rem auto;padding:0 1rem">'
-            .'<h1>⚙️ Commands</h1><ul>';
-        foreach ($links as $cmd) {
-            $danger = $cmd === 'migrate-fresh-seed';
-            $url = url('/commands/'.$cmd).'?secret='.urlencode($secret).($danger ? '&confirm=YES' : '');
-            $html .= '<li><a href="'.e($url).'">'.$cmd.'</a>'.($danger ? ' ⚠️ distructiv' : '').'</li>';
+            .'<h1>Commands</h1>';
+
+        foreach (self::GROUPS as $group => $links) {
+            $html .= '<h2>'.e($group).'</h2><ul>';
+            foreach ($links as $cmd) {
+                $danger = $cmd === 'migrate-fresh-seed';
+                $url = url('/commands/'.$cmd).'?secret='.urlencode($secret).($danger ? '&confirm=YES' : '');
+                $html .= '<li><a href="'.e($url).'">'.$cmd.'</a>'.($danger ? ' <strong style="color:#b42318">distructiv: cere confirm=YES</strong>' : '').'</li>';
+            }
+            $html .= '</ul>';
         }
-        $html .= '</ul><p style="color:#777;font-size:.85rem">Helper deploy. Rotește/șterge SECRET când nu-l folosești.</p></body>';
+        $html .= '<p style="color:#777;font-size:.85rem">Runner permanent, protejat de SECRET. Folosește HTTPS, rotește SECRET periodic și nu pune cheia în linkuri partajate.</p></body>';
 
         return response($html)->header('X-Robots-Tag', 'noindex, nofollow');
     }
 
-    public function clearCache(Request $r) { return $this->run($r, 'clear-cache'); }
-    public function optimizeClear(Request $r) { return $this->run($r, 'optimize-clear'); }
-    public function optimize(Request $r) { return $this->run($r, 'optimize'); }
-    public function createStorageLink(Request $r) { return $this->run($r, 'create-storage-link'); }
-    public function createSitemap(Request $r) { return $this->run($r, 'create-sitemap'); }
-    public function migrate(Request $r) { return $this->run($r, 'migrate'); }
-    public function migrateStatus(Request $r) { return $this->run($r, 'migrate-status'); }
-    public function about(Request $r) { return $this->run($r, 'about'); }
-    public function catalogSummary(Request $r) { return $this->run($r, 'catalog-summary'); }
-    public function queueRestart(Request $r) { return $this->run($r, 'queue-restart'); }
+    public function clearCache(Request $r)
+    {
+        return $this->run($r, 'clear-cache');
+    }
+
+    public function configClear(Request $r)
+    {
+        return $this->run($r, 'config-clear');
+    }
+
+    public function routeClear(Request $r)
+    {
+        return $this->run($r, 'route-clear');
+    }
+
+    public function viewClear(Request $r)
+    {
+        return $this->run($r, 'view-clear');
+    }
+
+    public function optimizeClear(Request $r)
+    {
+        return $this->run($r, 'optimize-clear');
+    }
+
+    public function configCache(Request $r)
+    {
+        return $this->run($r, 'config-cache');
+    }
+
+    public function routeCache(Request $r)
+    {
+        return $this->run($r, 'route-cache');
+    }
+
+    public function viewCache(Request $r)
+    {
+        return $this->run($r, 'view-cache');
+    }
+
+    public function optimize(Request $r)
+    {
+        return $this->run($r, 'optimize');
+    }
+
+    public function createStorageLink(Request $r)
+    {
+        return $this->run($r, 'create-storage-link');
+    }
+
+    public function createSitemap(Request $r)
+    {
+        return $this->run($r, 'create-sitemap');
+    }
+
+    public function migrate(Request $r)
+    {
+        return $this->run($r, 'migrate');
+    }
+
+    public function migrateStatus(Request $r)
+    {
+        return $this->run($r, 'migrate-status');
+    }
+
+    public function about(Request $r)
+    {
+        return $this->run($r, 'about');
+    }
+
+    public function catalogSummary(Request $r)
+    {
+        return $this->run($r, 'catalog-summary');
+    }
+
+    public function queueRestart(Request $r)
+    {
+        return $this->run($r, 'queue-restart');
+    }
+
+    public function thumbnails(Request $r)
+    {
+        return $this->run($r, 'thumbnails');
+    }
+
+    public function exportSnapshot(Request $r)
+    {
+        return $this->run($r, 'export-snapshot');
+    }
+
+    public function feedsGoogle(Request $r)
+    {
+        return $this->run($r, 'feeds-google');
+    }
+
+    public function feedsMeta(Request $r)
+    {
+        return $this->run($r, 'feeds-meta');
+    }
+
+    public function feedsAll(Request $r)
+    {
+        return $this->run($r, 'feeds-all');
+    }
+
+    public function googleBusinessExport(Request $r)
+    {
+        return $this->run($r, 'google-business-export');
+    }
 
     /** Distructiv → cere ?confirm=YES. */
     public function migrateFreshSeed(Request $request)

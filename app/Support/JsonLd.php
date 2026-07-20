@@ -11,6 +11,59 @@ use Illuminate\Support\Collection;
  */
 class JsonLd
 {
+    public static function business(): array
+    {
+        $geo = null;
+        if (config('business.latitude') && config('business.longitude')) {
+            $geo = [
+                '@type' => 'GeoCoordinates',
+                'latitude' => config('business.latitude'),
+                'longitude' => config('business.longitude'),
+            ];
+        }
+
+        return array_filter([
+            '@context' => 'https://schema.org',
+            '@type' => ['Organization', 'LocalBusiness'],
+            '@id' => url('/#business'),
+            'name' => config('business.name'),
+            'legalName' => config('business.legal_name'),
+            'url' => url('/'),
+            'logo' => asset('images/logo.svg'),
+            'image' => asset('images/logo.svg'),
+            'description' => 'Producător și furnizor direct de mobilier urban și stradal pentru spații publice, instituții, firme și proiecte private.',
+            'telephone' => config('business.phone'),
+            'email' => config('business.email'),
+            'taxID' => config('business.vat_number'),
+            'address' => [
+                '@type' => 'PostalAddress',
+                'streetAddress' => 'Str. Băltați nr. 149',
+                'addressLocality' => 'Scornicești',
+                'addressRegion' => 'Olt',
+                'addressCountry' => 'RO',
+            ],
+            'geo' => $geo,
+            'areaServed' => [
+                '@type' => 'Country',
+                'name' => 'România',
+            ],
+            'hasMap' => config('business.google_maps_url'),
+            'sameAs' => Business::sameAs(),
+            'contactPoint' => [
+                '@type' => 'ContactPoint',
+                'contactType' => 'sales',
+                'telephone' => config('business.phone'),
+                'email' => config('business.email'),
+                'areaServed' => 'RO',
+                'availableLanguage' => 'Romanian',
+            ],
+            'makesOffer' => [
+                '@type' => 'OfferCatalog',
+                'name' => 'Mobilier urban și stradal la comandă',
+            ],
+        ]);
+    }
+
     /**
      * @param  array<int, array{name: string, url?: string}>  $items  pașii breadcrumb, în ordine
      */
@@ -62,19 +115,6 @@ class JsonLd
         $images = $product->galleryImages()->map(fn ($img) => $img->url())->values()->all();
         $primaryCategory = $product->primaryCategory() ?? $product->categories->first();
 
-        $hasRealPrice = ! $product->price_on_request && $product->price;
-
-        $offer = array_filter([
-            '@type' => 'Offer',
-            'url' => route('product', $product->slug),
-            'priceCurrency' => 'RON',
-            'availability' => $hasRealPrice
-                ? 'https://schema.org/InStock'
-                : 'https://schema.org/PreOrder',
-            // Preț DOAR dacă e real și nu „la cerere" — niciun preț fals.
-            'price' => $hasRealPrice ? number_format((float) $product->price, 2, '.', '') : null,
-        ]);
-
         // additionalProperty din specs (doar câmpurile prezente) + material.
         $specs = $product->displaySpecs();
         $additional = [];
@@ -95,9 +135,14 @@ class JsonLd
                 '@type' => 'Brand',
                 'name' => config('contact.brand'),
             ],
+            'manufacturer' => [
+                '@type' => 'Organization',
+                'name' => config('business.name'),
+            ],
             'category' => $primaryCategory?->name,
+            'url' => route('product', $product->slug),
+            'mpn' => $product->mpn ?: ($product->code ? ltrim($product->code, '#') : null),
             'additionalProperty' => $additional ?: null,
-            'offers' => $offer,
         ]);
     }
 }
