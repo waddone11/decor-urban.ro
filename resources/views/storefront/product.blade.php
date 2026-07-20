@@ -131,6 +131,17 @@
                         <span class="inline-flex items-center rounded-full bg-accent-soft px-3.5 py-1.5 text-sm font-semibold text-accent">Preț la cerere</span>
                     @endif
                     <p class="mt-2 text-sm text-ink-muted">Disponibilitate: {{ $product->availability ?: 'la comandă' }}</p>
+
+                    {{-- SEAP/SICAP: semnal pentru achizitori publici + cod CPV (completat manual) --}}
+                    @if ($product->available_seap)
+                        <p class="mt-2 flex flex-wrap items-center gap-2 text-sm">
+                            <span class="inline-flex items-center rounded-full bg-accent-warm px-2.5 py-0.5 text-xs font-bold text-ink">SEAP/SICAP</span>
+                            <span class="text-ink-soft">Disponibil pentru achiziții publice</span>
+                            @if ($product->cpv_code)
+                                <span class="text-ink-muted">· Cod CPV: {{ $product->cpv_code }}</span>
+                            @endif
+                        </p>
+                    @endif
                 </div>
 
                 {{-- Adaugă în coș (cerere de ofertă multi-produs) --}}
