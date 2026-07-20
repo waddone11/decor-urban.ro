@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\SafeHtml;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
@@ -9,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 
 class Product extends Model
@@ -142,6 +144,15 @@ class Product extends Model
         static $has = null;
 
         return $has ??= Schema::hasColumn('product_images', 'source');
+    }
+
+    /**
+     * Descrierea pentru pagina produs, sigură de randat cu {{ }} (HtmlString).
+     * Suportă ambele formate din DB: text simplu și HTML din RichEditor.
+     */
+    public function descriptionHtml(): ?HtmlString
+    {
+        return SafeHtml::render($this->description);
     }
 
     // ── SEO ────────────────────────────────────────────────────────────────

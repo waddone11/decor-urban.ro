@@ -195,8 +195,9 @@
                         @endforeach
                     </div>
 
-                    <div role="tabpanel" x-show="tab === 'descriere'" class="pt-4 text-ink-soft leading-relaxed">
-                        {!! $product->description ? nl2br(e($product->description)) : 'Descriere disponibilă la cerere.' !!}
+                    <div role="tabpanel" x-show="tab === 'descriere'"
+                         class="pt-4 text-ink-soft leading-relaxed [&_p+p]:mt-3 [&_ul]:mt-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:mt-3 [&_ol]:list-decimal [&_ol]:pl-5">
+                        {{ $product->descriptionHtml() ?? 'Descriere disponibilă la cerere.' }}
                     </div>
 
                     <div role="tabpanel" x-show="tab === 'specificatii'" x-cloak class="pt-4">
