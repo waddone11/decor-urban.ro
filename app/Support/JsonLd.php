@@ -145,7 +145,57 @@ class JsonLd
             'mpn' => $product->mpn ?: ($product->code ? ltrim($product->code, '#') : null),
             'additionalProperty' => $additional ?: null,
             'offers' => self::offer($product),
+            'aggregateRating' => self::aggregateRating($product),
+            'review' => self::reviews($product),
         ]);
+    }
+
+    /**
+     * AggregateRating DOAR din recenzii reale aprobate, afișate pe pagină.
+     * 0 recenzii → null (fără rating inventat). Nu se pune niciodată pe
+     * Organization/LocalBusiness (self-serving) — doar aici, pe Product.
+     */
+    private static function aggregateRating(Product $product): ?array
+    {
+        $stats = $product->reviews()->approved()
+            ->selectRaw('COUNT(*) as cnt, AVG(rating) as avg_rating')
+            ->toBase()
+            ->first();
+
+        if (! $stats || (int) $stats->cnt === 0) {
+            return null;
+        }
+
+        return [
+            '@type' => 'AggregateRating',
+            'ratingValue' => round((float) $stats->avg_rating, 1),
+            'reviewCount' => (int) $stats->cnt,
+            'bestRating' => 5,
+            'worstRating' => 1,
+        ];
+    }
+
+    /** Recenziile reale aprobate (cele afișate pe pagină), max 10 în schema. */
+    private static function reviews(Product $product): ?array
+    {
+        $reviews = $product->approvedReviews()->take(10)->get();
+        if ($reviews->isEmpty()) {
+            return null;
+        }
+
+        return $reviews->map(fn ($r) => array_filter([
+            '@type' => 'Review',
+            'author' => ['@type' => 'Person', 'name' => $r->author_name],
+            'datePublished' => $r->created_at->toDateString(),
+            'name' => $r->title,
+            'reviewBody' => $r->body,
+            'reviewRating' => [
+                '@type' => 'Rating',
+                'ratingValue' => $r->rating,
+                'bestRating' => 5,
+                'worstRating' => 1,
+            ],
+        ]))->values()->all();
     }
 
     /** Offer DOAR pentru produse cu preț real (vezi nota „fără preț fals" de sus). */
