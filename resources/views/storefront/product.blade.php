@@ -231,6 +231,9 @@
             </div>
         </div>
 
+        {{-- Recenzii reale de la clienți (doar approved; formular cu moderare) --}}
+        <livewire:product-reviews :product-id="$product->id" />
+
         {{-- Produse similare --}}
         @if ($similar->isNotEmpty())
             <section class="mt-16 border-t border-line pt-10">

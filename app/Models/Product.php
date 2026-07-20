@@ -108,6 +108,17 @@ class Product extends Model
         return $this->hasMany(ProductImage::class)->orderBy('sort_order');
     }
 
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(ProductReview::class);
+    }
+
+    /** Doar recenziile aprobate (singurele publice), cele mai noi primele. */
+    public function approvedReviews(): HasMany
+    {
+        return $this->reviews()->approved()->latest();
+    }
+
     public function primaryCategory(): ?Category
     {
         return $this->categories->firstWhere('pivot.is_primary', true);
