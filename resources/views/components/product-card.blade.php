@@ -16,9 +16,16 @@
 <div {{ $attributes->merge(['class' => 'group relative flex flex-col overflow-hidden rounded-card bg-surface-card border border-line shadow-card transition-all duration-300 hover:shadow-card-hover hover:-translate-y-1']) }}>
     <a href="{{ $href }}" class="flex flex-1 flex-col">
         <div class="relative aspect-square overflow-hidden bg-tint-stone">
-            {{-- Badge promoție (sus-stânga; sus-dreapta e ocupat de quick-add) --}}
-            @if ($product->hasSalePrice())
-                <span class="absolute left-2 top-2 z-10 inline-flex items-center rounded-full bg-signal px-2 py-0.5 text-xs font-bold text-white">-{{ $product->discountPercent() }}%</span>
+            {{-- Badge-uri promoție + SEAP (sus-stânga; sus-dreapta e ocupat de quick-add) --}}
+            @if ($product->hasSalePrice() || $product->available_seap)
+                <span class="absolute left-2 top-2 z-10 flex flex-col items-start gap-1">
+                    @if ($product->hasSalePrice())
+                        <span class="inline-flex items-center rounded-full bg-signal px-2 py-0.5 text-xs font-bold text-white">-{{ $product->discountPercent() }}%</span>
+                    @endif
+                    @if ($product->available_seap)
+                        <span class="inline-flex items-center rounded-full bg-accent-warm px-2 py-0.5 text-xs font-bold text-ink">SEAP/SICAP</span>
+                    @endif
+                </span>
             @endif
             @if ($image)
                 <img src="{{ $thumb400 }}" srcset="{{ $thumb400 }} 400w, {{ $thumb800 }} 800w"

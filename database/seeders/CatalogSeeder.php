@@ -78,6 +78,8 @@ class CatalogSeeder extends Seeder
                     'price_on_request' => $p['price_on_request'] ?? true,
                     'quote_only' => $p['quote_only'] ?? true,
                     'feed_enabled' => $p['feed_enabled'] ?? false,
+                    'available_seap' => $p['available_seap'] ?? false,
+                    'cpv_code' => $p['cpv_code'] ?? null,
                     'availability' => $p['availability'] ?? null,
                     'is_active' => $p['is_active'] ?? true,
                     'sort_order' => $p['sort_order'] ?? 0,

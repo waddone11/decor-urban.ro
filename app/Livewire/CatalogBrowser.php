@@ -29,10 +29,28 @@ class CatalogBrowser extends Component
     #[Url(as: 'mat')]
     public array $materials = [];
 
+    /** Doar produsele cu preț promoțional (hasSalePrice). */
+    #[Url(as: 'promo')]
+    public bool $promo = false;
+
+    /** Doar produsele marcate manual „disponibil pe SEAP/SICAP". */
+    #[Url(as: 'seap')]
+    public bool $seap = false;
+
     /** Ordinea facetelor de material (canonice, ca în SpecsExtractor). */
     public const MATERIAL_FACETS = ['lemn', 'metal', 'inox', 'beton', 'alucobond', 'policarbonat'];
 
     public function updatedMaterials(): void
+    {
+        $this->resetPage();
+    }
+
+    public function updatedPromo(): void
+    {
+        $this->resetPage();
+    }
+
+    public function updatedSeap(): void
     {
         $this->resetPage();
     }
@@ -54,7 +72,7 @@ class CatalogBrowser extends Component
 
     public function clearFilters(): void
     {
-        $this->reset(['cat', 'q', 'sort', 'materials']);
+        $this->reset(['cat', 'q', 'sort', 'materials', 'promo', 'seap']);
         $this->resetPage();
     }
 
@@ -77,10 +95,10 @@ class CatalogBrowser extends Component
             }
         };
 
-        // Facete material: din specs (cat+search aplicat, FĂRĂ filtrul de material), cu count.
+        // Facete: din specs + coloane (cat+search aplicat, FĂRĂ propriul filtru), cu count.
         $facetQuery = Product::query()->active();
         $applyBase($facetQuery);
-        $facetRows = $facetQuery->get(['id', 'specs']);
+        $facetRows = $facetQuery->get(['id', 'specs', 'price', 'sale_price', 'price_on_request', 'available_seap']);
 
         $materialFacets = [];
         foreach (self::MATERIAL_FACETS as $m) {
@@ -89,6 +107,9 @@ class CatalogBrowser extends Component
                 $materialFacets[$m] = $c;
             }
         }
+
+        $promoCount = $facetRows->filter(fn ($p) => $p->hasSalePrice())->count();
+        $seapCount = $facetRows->filter(fn ($p) => $p->available_seap)->count();
 
         $query = Product::query()->active()->with(['images', 'categories']);
         $applyBase($query);
@@ -99,6 +120,14 @@ class CatalogBrowser extends Component
                 ->filter(fn ($p) => array_intersect($this->materials, (array) ($p->specs['material'] ?? [])))
                 ->pluck('id');
             $query->whereIn('id', $ids);
+        }
+
+        if ($this->promo) {
+            $query->whereIn('id', $facetRows->filter(fn ($p) => $p->hasSalePrice())->pluck('id'));
+        }
+
+        if ($this->seap) {
+            $query->where('available_seap', true);
         }
 
         match ($this->sort) {
@@ -118,7 +147,7 @@ class CatalogBrowser extends Component
 
         $itemListLd = JsonLd::itemList($products->getCollection(), $title);
 
-        return view('livewire.catalog-browser', compact('categories', 'products', 'totalCount', 'activeCategory', 'itemListLd', 'materialFacets'))
+        return view('livewire.catalog-browser', compact('categories', 'products', 'totalCount', 'activeCategory', 'itemListLd', 'materialFacets', 'promoCount', 'seapCount'))
             ->layout('components.layouts.storefront', ['title' => $title, 'description' => $description]);
     }
 }

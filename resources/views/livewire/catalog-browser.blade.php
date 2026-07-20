@@ -15,7 +15,7 @@
 
     <div class="mt-6 grid gap-8 lg:grid-cols-[16rem_1fr]">
         {{-- Sidebar filtre --}}
-        <aside class="lg:sticky lg:top-20 lg:self-start">
+        <aside class="lg:sticky lg:top-20 lg:self-start" x-data="{ filtersOpen: false }">
             {{-- Search --}}
             <div class="relative">
                 <input type="search" wire:model.live.debounce.300ms="q"
@@ -26,6 +26,14 @@
                 </svg>
             </div>
 
+            {{-- Mobil: filtrele stau într-un accordion ca să nu ocupe tot ecranul --}}
+            <button type="button" @click="filtersOpen = !filtersOpen" :aria-expanded="filtersOpen"
+                    class="mt-4 flex w-full items-center justify-between rounded-button border border-line bg-white px-4 py-2.5 text-sm font-medium text-ink lg:hidden">
+                Filtre
+                <svg class="h-4 w-4 transition-transform motion-reduce:transition-none" :class="filtersOpen && 'rotate-180'" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" /></svg>
+            </button>
+
+            <div :class="filtersOpen ? 'block' : 'hidden'" class="lg:block">
             {{-- Categorii --}}
             <nav class="mt-6">
                 <p class="mb-2 text-xs font-semibold uppercase tracking-wider text-ink-muted">Categorii</p>
@@ -78,6 +86,38 @@
                     </ul>
                 </fieldset>
             @endif
+
+            {{-- Oferte & achiziții publice --}}
+            @if ($promoCount > 0 || $seapCount > 0)
+                <fieldset class="mt-6">
+                    <legend class="mb-2 text-xs font-semibold uppercase tracking-wider text-ink-muted">Oferte</legend>
+                    <ul class="space-y-0.5">
+                        @if ($promoCount > 0)
+                            <li>
+                                <label class="flex cursor-pointer items-center gap-2.5 rounded-lg px-3 py-1.5 text-sm text-ink-soft transition-colors hover:bg-tint-stone hover:text-ink has-[:checked]:font-semibold has-[:checked]:text-accent">
+                                    <input type="checkbox" wire:model.live="promo"
+                                           class="rounded border-line text-accent focus:ring-accent">
+                                    <span class="flex-1">Doar reduceri</span>
+                                    <span class="text-xs text-ink-muted">{{ $promoCount }}</span>
+                                </label>
+                            </li>
+                        @endif
+                        @if ($seapCount > 0)
+                            <li>
+                                <label class="flex cursor-pointer items-center gap-2.5 rounded-lg px-3 py-1.5 text-sm text-ink-soft transition-colors hover:bg-tint-stone hover:text-ink has-[:checked]:font-semibold has-[:checked]:text-accent">
+                                    <input type="checkbox" wire:model.live="seap"
+                                           class="rounded border-line text-accent focus:ring-accent">
+                                    <span class="flex-1">SEAP / SICAP</span>
+                                    <span class="text-xs text-ink-muted">{{ $seapCount }}</span>
+                                </label>
+                            </li>
+                        @endif
+                    </ul>
+                </fieldset>
+            @endif
+            {{-- TODO(filtre): interval de preț — amânat până când 30-40+ produse au preț
+                 real (azi ~10/127, doar bănci — vezi docs/AUDIT-FILTRE.md). --}}
+            </div>
         </aside>
 
         {{-- Rezultate --}}
@@ -85,7 +125,7 @@
             <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
                 <p class="text-sm text-ink-muted">
                     {{ $products->total() }} {{ $products->total() === 1 ? 'produs' : 'produse' }}
-                    @if ($cat || trim($q) !== '' || ! empty($materials))
+                    @if ($cat || trim($q) !== '' || ! empty($materials) || $promo || $seap)
                         · <button type="button" wire:click="clearFilters" class="text-accent hover:underline">resetează filtrele</button>
                     @endif
                 </p>
