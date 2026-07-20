@@ -45,6 +45,8 @@ class ExportCatalogSnapshot extends Command
                     'price_on_request' => (bool) $p->price_on_request,
                     'quote_only' => (bool) $p->quote_only,
                     'feed_enabled' => (bool) $p->feed_enabled,
+                    'available_seap' => (bool) $p->available_seap,
+                    'cpv_code' => $p->cpv_code,
                     'availability' => $p->availability,
                     'is_active' => (bool) $p->is_active,
                     'sort_order' => $p->sort_order,

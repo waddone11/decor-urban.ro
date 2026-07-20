@@ -2,9 +2,11 @@
 
 namespace App\Filament\Resources\Products\Tables;
 
+use Filament\Actions\BulkAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Notifications\Notification;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -12,6 +14,7 @@ use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Collection;
 
 class ProductsTable
 {
@@ -82,12 +85,35 @@ class ProductsTable
                     ->label('În feeduri'),
                 TernaryFilter::make('show_in_google_business')
                     ->label('Google Business'),
+                TernaryFilter::make('available_seap')
+                    ->label('SEAP/SICAP'),
             ])
             ->recordActions([
                 EditAction::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
+                    // Marcare SEAP în bloc (127 de produse nu se bifează unul câte unul).
+                    BulkAction::make('seap_on')
+                        ->label('Marchează disponibil pe SEAP')
+                        ->icon('heroicon-o-building-library')
+                        ->color('success')
+                        ->requiresConfirmation()
+                        ->deselectRecordsAfterCompletion()
+                        ->action(function (Collection $records): void {
+                            $records->each->update(['available_seap' => true]);
+                            Notification::make()->title($records->count().' produse marcate SEAP')->success()->send();
+                        }),
+                    BulkAction::make('seap_off')
+                        ->label('Scoate de pe SEAP')
+                        ->icon('heroicon-o-building-library')
+                        ->color('gray')
+                        ->requiresConfirmation()
+                        ->deselectRecordsAfterCompletion()
+                        ->action(function (Collection $records): void {
+                            $records->each->update(['available_seap' => false]);
+                            Notification::make()->title($records->count().' produse scoase de pe SEAP')->send();
+                        }),
                     DeleteBulkAction::make(),
                 ]),
             ]);

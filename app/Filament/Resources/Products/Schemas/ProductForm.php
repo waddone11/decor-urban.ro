@@ -74,6 +74,20 @@ class ProductForm
                             ->maxLength(255),
                     ]),
 
+                Section::make('SEAP / achiziții publice')
+                    ->columns(2)
+                    ->components([
+                        Toggle::make('available_seap')
+                            ->label('Disponibil pe SEAP/SICAP')
+                            ->default(false)
+                            ->helperText('Bifezi manual produsele eligibile — apar în filtrul SEAP și primesc badge.'),
+                        TextInput::make('cpv_code')
+                            ->label('Cod CPV')
+                            ->maxLength(20)
+                            ->placeholder('ex. 34928400-2')
+                            ->helperText('Se completează MANUAL — un cod greșit pe licitație e o eroare reală. Gol = nu se afișează.'),
+                    ]),
+
                 Section::make('Organizare')
                     ->columns(2)
                     ->components([

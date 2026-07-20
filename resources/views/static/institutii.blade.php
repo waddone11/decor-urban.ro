@@ -68,6 +68,9 @@
                         @if ($seapPresent)<span class="font-semibold text-accent">Prezenți în SEAP/SICAP</span>@endif
                     </div>
                 @endif
+                <x-button href="{{ url('/catalog?seap=1') }}" variant="accent" class="mt-5">
+                    Vezi produsele disponibile pe SEAP/SICAP →
+                </x-button>
             </section>
 
             {{-- De ce direct de la producător --}}
