@@ -17,6 +17,7 @@ return [
     'google_review_url' => env('BUSINESS_GOOGLE_REVIEW_URL', ''),
     'google_maps_embed_url' => env('BUSINESS_GOOGLE_MAPS_EMBED_URL', ''),
     'google_place_id' => env('BUSINESS_GOOGLE_PLACE_ID', ''),
+    'google_places_api_key' => env('GOOGLE_PLACES_API_KEY', ''),
     'latitude' => env('BUSINESS_LATITUDE', ''),
     'longitude' => env('BUSINESS_LONGITUDE', ''),
     'social' => [

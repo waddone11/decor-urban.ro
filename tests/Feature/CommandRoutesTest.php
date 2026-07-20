@@ -64,6 +64,8 @@ class CommandRoutesTest extends TestCase
             ->assertSee('feeds-meta')
             ->assertSee('feeds-all')
             ->assertSee('google-business-export')
+            ->assertSee('Recenzii')
+            ->assertSee('reviews-fetch')
             ->assertSee('Mentenanță')
             ->assertSee('migrate-fresh-seed')
             ->assertSee('distructiv')

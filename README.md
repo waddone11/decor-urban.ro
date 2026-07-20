@@ -212,11 +212,28 @@ Comenzi feed-uri: `feeds-google`, `feeds-meta`, `feeds-all`, `google-business-ex
 Endpointurile publice rămân separate: `/feeds/google-merchant.xml` și `/feeds/meta-catalog.csv`;
 `/commands/feeds-*` doar regenerează cache-ul și întorc raport text cu produse incluse/excluse.
 
+Recenzii Google:
+
+```dotenv
+BUSINESS_GOOGLE_REVIEW_URL=   # link GBP "get more reviews" (g.page/r/...), diferit de Maps
+BUSINESS_GOOGLE_PLACE_ID=     # Place ID real pentru Places API
+GOOGLE_PLACES_API_KEY=        # cheie server-side, restricționată
+```
+
+Comanda `reviews-fetch` rulează `google:reviews-fetch`, preia recenziile reale prin Places API
+Place Details (`rating,user_ratings_total,reviews`) și cache-uiește rezultatul 24h. Dacă lipsesc
+`BUSINESS_GOOGLE_PLACE_ID` sau `GOOGLE_PLACES_API_KEY`, site-ul nu afișează recenzii placeholder;
+arată doar CTA-ul de review când `BUSINESS_GOOGLE_REVIEW_URL` este setat. Nu se publică
+`aggregateRating` sau `Review` în JSON-LD pentru firma proprie.
+
 Cron cPanel pentru feeduri proaspete zilnic:
 
 ```cron
 # zilnic 04:00 — regenerează feed-urile
 0 4 * * * curl -s "https://decor-urban.ro/commands/feeds-all?secret=CHEIA" > /dev/null
+
+# zilnic 04:15 — sincronizează recenziile reale din Google Places
+15 4 * * * curl -s "https://decor-urban.ro/commands/reviews-fetch?secret=CHEIA" > /dev/null
 ```
 
 > Helper pentru hosting fără SSH — **nu** înlocuiește un deploy real.
