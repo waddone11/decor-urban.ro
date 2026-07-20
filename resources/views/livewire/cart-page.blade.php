@@ -15,7 +15,11 @@
             <x-button :href="route('catalog')" variant="accent" size="lg" class="mt-6">Vezi catalogul</x-button>
         </div>
     @else
-        <p class="mt-1 text-sm text-ink-muted">{{ $count }} {{ $count === 1 ? 'produs' : 'produse' }} · prețuri la cerere — trimiți o cerere de ofertă.</p>
+        @php
+            $allPriced = $lines->every(fn ($line) => ! $line['product']->isPriceOnRequest());
+            $cartTotal = $allPriced ? $lines->sum(fn ($line) => $line['product']->currentPrice() * $line['qty']) : null;
+        @endphp
+        <p class="mt-1 text-sm text-ink-muted">{{ $count }} {{ $count === 1 ? 'produs' : 'produse' }}{{ $allPriced ? '' : ' · prețurile lipsă sunt la cerere — trimiți o cerere de ofertă' }}.</p>
 
         <div class="mt-6 divide-y divide-line rounded-card border border-line bg-surface-card">
             @foreach ($lines as $line)
@@ -32,7 +36,11 @@
                         @if ($product->code)
                             <p class="text-xs text-ink-muted">Cod {{ ltrim($product->code, '#') }}</p>
                         @endif
-                        <p class="mt-0.5 text-sm font-medium text-accent">La cerere</p>
+                        @if ($product->isPriceOnRequest())
+                            <p class="mt-0.5 text-sm font-medium text-accent">La cerere</p>
+                        @else
+                            <p class="mt-0.5 text-sm font-semibold {{ $product->hasSalePrice() ? 'text-accent' : 'text-ink' }}">{{ \App\Models\Product::formatLei($product->currentPrice()) }}</p>
+                        @endif
                     </div>
 
                     {{-- Cantitate editabilă --}}
@@ -55,6 +63,13 @@
                 </div>
             @endforeach
         </div>
+
+        @if ($cartTotal !== null)
+            <div class="mt-4 flex items-center justify-end gap-3 rounded-card border border-line bg-surface-card px-4 py-3">
+                <span class="text-sm text-ink-soft">Total</span>
+                <span class="text-lg font-bold text-ink">{{ \App\Models\Product::formatLei($cartTotal) }}</span>
+            </div>
+        @endif
 
         <div class="mt-6 flex flex-col items-stretch justify-between gap-3 sm:flex-row sm:items-center">
             <x-button :href="route('catalog')" variant="outline">← Continuă cumpărăturile</x-button>

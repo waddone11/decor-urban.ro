@@ -99,20 +99,34 @@
         <aside class="lg:sticky lg:top-20 lg:self-start">
             <div class="rounded-card border border-line bg-surface-card p-5">
                 <h2 class="text-sm font-semibold uppercase tracking-wider text-ink-muted">Comanda ta ({{ $count }})</h2>
+                @php
+                    $allPriced = $lines->every(fn ($line) => ! $line['product']->isPriceOnRequest());
+                    $orderTotal = $allPriced ? $lines->sum(fn ($line) => $line['product']->currentPrice() * $line['qty']) : null;
+                @endphp
                 <ul class="mt-4 divide-y divide-line">
                     @foreach ($lines as $line)
                         <li class="flex items-start justify-between gap-3 py-2.5 text-sm" wire:key="sum-{{ $line['product']->id }}">
                             <span class="min-w-0 text-ink">
                                 {{ $line['product']->name }}
                                 @if ($line['product']->code)<span class="block text-xs text-ink-muted">Cod {{ ltrim($line['product']->code, '#') }}</span>@endif
+                                <span class="block text-xs {{ $line['product']->isPriceOnRequest() ? 'text-accent' : 'font-medium text-ink-soft' }}">
+                                    {{ $line['product']->isPriceOnRequest() ? 'La cerere' : \App\Models\Product::formatLei($line['product']->currentPrice()) }}
+                                </span>
                             </span>
                             <span class="shrink-0 font-semibold text-ink-soft">× {{ $line['qty'] }}</span>
                         </li>
                     @endforeach
                 </ul>
-                <p class="mt-4 rounded-lg bg-tint-sky px-3 py-2 text-xs text-ink-soft">
-                    Preț: <strong>la cerere</strong>. Revenim cu oferta după ce primim comanda.
-                </p>
+                @if ($orderTotal !== null)
+                    <p class="mt-4 flex items-center justify-between rounded-lg bg-tint-sky px-3 py-2 text-sm">
+                        <span class="text-ink-soft">Total</span>
+                        <strong class="text-ink">{{ \App\Models\Product::formatLei($orderTotal) }}</strong>
+                    </p>
+                @else
+                    <p class="mt-4 rounded-lg bg-tint-sky px-3 py-2 text-xs text-ink-soft">
+                        Prețurile lipsă sunt <strong>la cerere</strong>. Revenim cu oferta după ce primim comanda.
+                    </p>
+                @endif
 
                 <button type="submit"
                         class="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-button bg-accent px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-accent-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-accent disabled:opacity-60"

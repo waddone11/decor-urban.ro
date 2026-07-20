@@ -122,7 +122,7 @@
                             <p class="flex flex-wrap items-baseline gap-x-2.5 gap-y-1">
                                 <s class="text-lg font-medium text-ink-muted">{{ \App\Models\Product::formatLei((float) $product->price) }}</s>
                                 <span class="text-2xl font-bold text-accent">{{ \App\Models\Product::formatLei($product->currentPrice()) }}</span>
-                                <span class="inline-flex items-center rounded-full bg-accent px-2.5 py-0.5 text-xs font-bold text-white">-{{ $product->discountPercent() }}%</span>
+                                <span class="inline-flex items-center rounded-full bg-signal px-2.5 py-0.5 text-xs font-bold text-white">-{{ $product->discountPercent() }}%</span>
                             </p>
                         @else
                             <p class="text-2xl font-bold text-ink">{{ \App\Models\Product::formatLei($product->currentPrice()) }}</p>

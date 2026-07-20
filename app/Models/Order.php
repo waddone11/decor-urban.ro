@@ -67,7 +67,12 @@ class Order extends Model
 
         foreach ($this->items as $item) {
             $code = $item->product_code ? ' ('.ltrim($item->product_code, '#').')' : '';
-            $lines[] = '• '.$item->product_name.$code.' × '.$item->quantity;
+            $price = $item->unit_price !== null ? ' — '.Product::formatLei((float) $item->unit_price) : '';
+            $lines[] = '• '.$item->product_name.$code.' × '.$item->quantity.$price;
+        }
+
+        if ($this->total !== null) {
+            $lines[] = 'Total: '.Product::formatLei((float) $this->total);
         }
 
         $lines[] = '';

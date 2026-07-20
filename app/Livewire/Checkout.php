@@ -107,8 +107,16 @@ class Checkout extends Component
                     'product_name' => $product->name,
                     'product_code' => $product->code,
                     'quantity' => $line['qty'],
-                    'unit_price' => $product->price_on_request ? null : $product->price,
+                    // Snapshot la momentul comenzii: prețul EFECTIV (sale_price
+                    // dacă e promoție). Dacă promoția expiră, comanda rămâne corectă.
+                    'unit_price' => $product->currentPrice(),
                 ]);
+            }
+
+            // Total doar când TOATE liniile au preț — altfel rămâne null („fără total fals").
+            $order->load('items');
+            if ($order->items->every(fn ($item) => $item->unit_price !== null)) {
+                $order->update(['total' => $order->items->sum(fn ($item) => (float) $item->unit_price * $item->quantity)]);
             }
 
             return $order;
