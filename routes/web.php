@@ -172,6 +172,7 @@ Route::middleware([VerifySecretKey::class, 'throttle:'.config('commands.rate_lim
         Route::get('/feeds-meta', [CommandController::class, 'feedsMeta'])->name('commands.feedsMeta');
         Route::get('/feeds-all', [CommandController::class, 'feedsAll'])->name('commands.feedsAll');
         Route::get('/google-business-export', [CommandController::class, 'googleBusinessExport'])->name('commands.googleBusinessExport');
+        Route::get('/reviews-fetch', [CommandController::class, 'reviewsFetch'])->name('commands.reviewsFetch');
     });
 
 // ── 301 din URL-urile vechi ─────────────────────────────────────────────────

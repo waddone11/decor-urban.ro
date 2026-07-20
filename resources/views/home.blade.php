@@ -451,6 +451,8 @@
     </section>
 
     {{-- 11. CTA FINAL --}}
+    <x-storefront.google-reviews class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14" />
+
     <section id="cta" data-scroll-reveal class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20">
         <div class="rounded-card border border-line bg-tint-sky px-8 py-14 text-center sm:px-12">
             <h2 class="text-3xl font-bold text-ink sm:text-4xl">Pregătit să ceri o ofertă?</h2>

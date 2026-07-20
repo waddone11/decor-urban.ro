@@ -81,6 +81,11 @@
                     <li>
                         <a href="{{ config('business.google_maps_url') }}" target="_blank" rel="noopener noreferrer" aria-label="Vezi Decor Urban pe Google Maps" class="hover:text-accent transition-colors" {!! \App\Support\Tracking::attrs('click_google_maps') !!}>Google Maps</a>
                     </li>
+                    @if (config('business.google_review_url'))
+                        <li>
+                            <x-storefront.google-review-cta compact />
+                        </li>
+                    @endif
                     @if ($isPlaceholder && app()->environment('local'))
                         <li class="mt-1 text-xs text-ink-soft">⚠️ [dev] Date de contact provizorii — de confirmat.</li>
                     @endif

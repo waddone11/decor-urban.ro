@@ -89,6 +89,7 @@
                     </div>
                 @endif
                 <x-storefront.social-links class="mt-6" />
+                <x-storefront.google-review-cta class="mt-4" />
             </div>
 
             {{-- Formular de contact (Livewire — Partea 4). --}}
@@ -97,5 +98,7 @@
                 <livewire:contact-form />
             </div>
         </div>
+
+        <x-storefront.google-reviews class="mt-14" />
     </div>
 </x-layouts.storefront>

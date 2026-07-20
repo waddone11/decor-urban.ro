@@ -36,10 +36,12 @@ class CommandController extends Controller
         'feeds-meta' => 'feeds:meta',
         'feeds-all' => 'feeds:all',
         'google-business-export' => 'feeds:google-business',
+        'reviews-fetch' => 'google:reviews-fetch',
     ];
 
     private const GROUPS = [
         'Feed-uri' => ['feeds-google', 'feeds-meta', 'feeds-all', 'google-business-export'],
+        'Recenzii' => ['reviews-fetch'],
         'Mentenanță' => [
             'clear-cache', 'config-clear', 'route-clear', 'view-clear', 'optimize-clear',
             'config-cache', 'route-cache', 'view-cache', 'optimize', 'create-storage-link',
@@ -177,6 +179,11 @@ class CommandController extends Controller
     public function googleBusinessExport(Request $r)
     {
         return $this->run($r, 'google-business-export');
+    }
+
+    public function reviewsFetch(Request $r)
+    {
+        return $this->run($r, 'reviews-fetch');
     }
 
     /** Distructiv → cere ?confirm=YES. */
