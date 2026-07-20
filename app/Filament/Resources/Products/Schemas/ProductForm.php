@@ -63,8 +63,10 @@ class ProductForm
                         TextInput::make('sale_price')
                             ->label('Preț promoțional')
                             ->numeric()
+                            ->gt(0)
                             ->prefix('RON')
                             ->lt('price')
+                            ->helperText('Opțional. Trebuie să fie mai mic decât prețul normal — pe front apare prețul vechi tăiat.')
                             ->visible(fn (Get $get): bool => ! $get('price_on_request')),
                         TextInput::make('availability')
                             ->label('Disponibilitate')
