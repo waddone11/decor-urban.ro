@@ -1,17 +1,25 @@
 <x-mail::message>
 # Am primit comanda ta, {{ $order->customer_name }}!
 
+@if ($order->total !== null)
+Mulțumim pentru comanda **{{ $order->number }}**. Revenim curând cu confirmarea. Pentru ceva
+urgent, ne poți scrie pe WhatsApp.
+@else
 Mulțumim pentru comanda **{{ $order->number }}**. Revenim curând cu confirmarea și oferta
-(prețurile sunt la cerere). Pentru ceva urgent, ne poți scrie pe WhatsApp.
+(prețurile fără valoare afișată sunt la cerere). Pentru ceva urgent, ne poți scrie pe WhatsApp.
+@endif
 
 ## Produse comandate
 
 <x-mail::table>
-| Produs | Cod | Cantitate |
-|:-------|:----|:---------:|
+| Produs | Cod | Cantitate | Preț unitar |
+|:-------|:----|:---------:|------------:|
 @foreach ($order->items as $item)
-| {{ $item->product_name }} | {{ $item->product_code ? ltrim($item->product_code, '#') : '—' }} | {{ $item->quantity }} |
+| {{ $item->product_name }} | {{ $item->product_code ? ltrim($item->product_code, '#') : '—' }} | {{ $item->quantity }} | {{ $item->priceLabel() }} |
 @endforeach
+@if ($order->total !== null)
+| **Total** | | | **{{ \App\Models\Product::formatLei((float) $order->total) }}** |
+@endif
 </x-mail::table>
 
 **Metodă:** {{ $order->paymentMethodLabel() }}

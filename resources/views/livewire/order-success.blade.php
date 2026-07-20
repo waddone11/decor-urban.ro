@@ -21,7 +21,10 @@
                         {{ $item->product_name }}
                         @if ($item->product_code)<span class="block text-xs text-ink-muted">Cod {{ ltrim($item->product_code, '#') }}</span>@endif
                     </span>
-                    <span class="shrink-0 font-semibold text-ink-soft">× {{ $item->quantity }}</span>
+                    <span class="shrink-0 text-right">
+                        <span class="block font-semibold text-ink-soft">× {{ $item->quantity }}</span>
+                        <span class="block text-xs {{ $item->unit_price === null ? 'text-accent' : 'font-medium text-ink-soft' }}">{{ $item->priceLabel() }}</span>
+                    </span>
                 </li>
             @endforeach
         </ul>

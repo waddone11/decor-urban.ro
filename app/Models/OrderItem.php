@@ -16,6 +16,18 @@ class OrderItem extends Model
         'unit_price' => 'decimal:2',
     ];
 
+    /** Totalul liniei (unit_price snapshot × cantitate); null la „la cerere". */
+    public function lineTotal(): ?float
+    {
+        return $this->unit_price === null ? null : (float) $this->unit_price * $this->quantity;
+    }
+
+    /** „999,00 lei" sau „La cerere" — pentru email/coș/WhatsApp. */
+    public function priceLabel(): string
+    {
+        return $this->unit_price === null ? 'La cerere' : Product::formatLei((float) $this->unit_price);
+    }
+
     public function order(): BelongsTo
     {
         return $this->belongsTo(Order::class);
